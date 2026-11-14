@@ -41,9 +41,9 @@ As cores digitadas pela pessoa usuária são arbitrárias. Para que elas não "v
 
 Ordem das seções, todas com âncora no menu:
 
-1. **Início** (`#inicio`): hero com o nome Paletrês, uma frase e o CTA "Montar minha paleta".
-2. **Paleta** (`#paleta`): 3 slots de cor (amostra, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
-3. **Comparações** (`#comparacoes`): 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile) e um resumo com o pior par.
+1. **Início** (`#inicio`): hero com o nome Paletrês, uma frase simples ("Escolha 3 cores e descubra se elas combinam e se dá para ler") e o passo a passo **1. Escolha 3 cores · 2. Veja se dá para ler · 3. Teste e exporte**. O CTA é "Montar minha paleta".
+2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões Desfazer, Refazer e "Sortear paleta", os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
+3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 combinações boas para texto"), o botão "Consertar contraste" e os 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile).
 4. **Harmonias** (`#harmonias`): roda cromática, seletor de harmonia, seletor de garantia (Livre/AA/AAA), botão "Gerar paleta" e a faixa de proporção de uso.
 5. **Teste na prática** (`#pratica`): seletor de proporção (60-30-10, áurea, Fibonacci), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: área de upload (arrastar ou escolher arquivo), imagem antes/depois com divisor arrastável, slider de intensidade e botão "Baixar PNG".
 6. **Tints e shades** (`#tons`): uma linha de 21 células por cor (10 claros, a original, 10 escuros).
@@ -120,7 +120,28 @@ Mensagem curta ("HEX copiado") num `role="status"`, fundo roxo e texto cinza, po
 - **Disabled:** borda tracejada, sem opacidade.
 - **Erro no HEX:** borda tracejada de 3px e mensagem "Use 3 ou 6 dígitos hexadecimais, como #230023" ligada por `aria-describedby`.
 
-## 7. Boas práticas de UX aplicadas
+## 7. Didático e prático (RNF-09)
+
+O Paletrês precisa servir também a quem **não é designer**. Regras:
+
+1. **Linguagem simples primeiro, número depois.** Cada card abre com o veredito:
+
+   | Razão WCAG | Veredito | Ícone |
+   | :--- | :--- | :--- |
+   | ≥ 7 | **Excelente:** pode usar em qualquer texto. | check duplo |
+   | ≥ 4,5 | **Bom:** pode usar em textos e parágrafos. | check |
+   | ≥ 3 | **Só para títulos grandes**, ícones e bordas. | alerta |
+   | < 3 | **Não use para texto:** fica difícil de ler. | x |
+
+   Logo abaixo vêm a razão, os selos AA/AAA e o APCA, para quem quer o detalhe.
+2. **"O que é isso?"** Cada termo técnico (WCAG, APCA, AA, AAA, HEX, Matiz, Saturação, Brilho e o nome de cada harmonia) tem um botão "?" ao lado. Ele abre uma explicação curta ali mesmo (disclosure com `aria-expanded`) e não muda de página.
+3. **Rótulos amigáveis:** "Matiz (o tom da cor)", "Saturação (o quanto é viva)", "Brilho (o quanto é clara)". As harmonias têm uma descrição de efeito ("calma", "vibrante", "elegante").
+4. **Um clique para as tarefas comuns:** paleta pronta, sortear paleta, consertar contraste, copiar HEX, baixar imagem e copiar link.
+5. **Sem medo de errar:** Desfazer e Refazer sempre visíveis.
+6. **Sugestão pronta:** "Use a cor A no fundo, a B no texto e a C nos botões." Ela já vem aplicada nos mockups.
+7. **Visual antes da teoria:** os mockups e o color grading mostram a paleta "de verdade"; a seção Aprenda fica no fim.
+
+## 8. Boas práticas de UX aplicadas
 
 - **Lei de Hick:** 11 harmonias em chips agrupados (clássicas, matemáticas e de contraste).
 - **Feedback imediato:** cada tecla no HEX ou movimento de slider atualiza tudo.

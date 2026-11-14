@@ -22,6 +22,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 
 - O próprio Mário (Prazo Certo), para testar paletas de marcas, slides e sites.
 - Designers, pessoas desenvolvedoras e criadoras de conteúdo que precisam de paletas acessíveis.
+- **Pessoas que não são designers** (empreendedoras, professoras, social media) e querem escolher cores para uma marca, um slide ou um post sem errar no contraste. Esse é o público que define o tom da interface.
 - Estudantes de design que querem entender harmonias e contraste.
 
 ## 4. Requisitos funcionais
@@ -45,6 +46,12 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-15 | Botão "Visitar Prazo Certo" no menu, que abre https://prazocerto.me numa nova aba e avisa disso em texto para leitores de tela. | Must |
 | RF-17 | Mockups de **site web** e de **app mobile** pintados com a paleta numa proporção de uso (60-30-10, áurea ou Fibonacci). A pessoa escolhe qual cor é a dominante, a secundária e o destaque. O texto de cada superfície usa a cor da paleta com mais contraste, e o mockup avisa quando nenhuma passa em AA. | Must |
 | RF-18 | Color grading: a pessoa envia uma imagem (JPG, PNG ou WebP, até 15 MB) e vê a imagem recolorida com a paleta por *gradient map* (sombras → cor mais escura, meios-tons → cor do meio, luzes → cor mais clara). Tem slider de intensidade (0–100%), comparação antes/depois e download em PNG. A imagem é processada só no navegador. | Must |
+| RF-19 | **Paletas prontas** ("Comece por aqui"): pelo menos 8 paletas de partida com nomes simples (ex.: "Marca Prazo Certo", "Oceano", "Café"). Um clique aplica. | Must |
+| RF-20 | **Consertar contraste**: um botão que aplica o `ContrastGuard` à paleta atual (nível AA ou AAA) e explica o que mudou. | Must |
+| RF-21 | **Desfazer e refazer** (botões e atalhos Ctrl+Z / Ctrl+Shift+Z) para qualquer mudança na paleta. | Should |
+| RF-22 | **Seletor visual de cor** (`input type="color"`) ao lado de cada campo HEX. | Must |
+| RF-23 | **Veredito em linguagem simples** em cada comparação ("Excelente", "Bom", "Só para títulos grandes", "Não use para texto") e botões "O que é isso?" que explicam cada termo técnico ali mesmo. | Must |
+| RF-24 | **Sugestão de papéis**: o app indica qual cor usar no fundo, no texto e nos botões e já aplica essa sugestão nos mockups (a pessoa pode trocar). | Must |
 | RF-16 | Rodapé com o crédito: "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto." | Must |
 
 ## 5. Requisitos não funcionais
@@ -58,6 +65,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RNF-05 | Cada mudança de cor atualiza a tela em menos de 50 ms num notebook comum. |
 | RNF-06 | Desenvolvimento orientado a testes (TDD): o teste é escrito antes do código. |
 | RNF-07 | Respeita `prefers-reduced-motion`. |
+| RNF-09 | **Didático e prático, como o Canva:** quem não é designer entende o resultado sem saber o que é WCAG ou HEX. A linguagem simples vem primeiro e o número técnico depois; cada termo técnico tem explicação no próprio lugar; as tarefas comuns levam 1 clique. |
 | RNF-08 | Funciona nos navegadores modernos (Chrome, Edge, Firefox e Safari, nas duas versões mais recentes). |
 
 ## 6. Fora do escopo (v1)

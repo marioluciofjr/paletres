@@ -1,13 +1,18 @@
 /**
  * UrlStateCodec — guarda a paleta no endereço da página (RF-11).
- * Formato: #rrggbb-rrggbb-rrggbb (ex.: paletres/#230023-f2f2f2-42ffff).
+ * Formato: ?p=rrggbb-rrggbb-rrggbb (ex.: paletres/?p=230023-f2f2f2-42ffff).
  *
- * Usamos o "hash" (a parte depois do #) porque mudar o hash não recarrega a página
- * e funciona em qualquer hospedagem estática, como o GitHub Pages.
+ * Por que na query string (?p=) e não no hash (#)? O hash é usado pelas âncoras do menu
+ * (#paleta, #tons…). Se a paleta morasse no hash, clicar no menu apagaria a paleta do link.
+ * Gravamos com history.replaceState: a página não recarrega e o histórico não enche.
+ * Links antigos (#rrggbb-rrggbb-rrggbb) continuam sendo lidos.
  * A janela (window) é injetada: nos testes passamos um objeto falso.
  */
 import { Color } from '../domain/color/Color.js';
 import { Palette } from '../domain/palette/Palette.js';
+
+const PART = /^([0-9a-f]{3}|[0-9a-f]{6})$/i;
+const LEGACY_HASH = /^#([0-9a-f]{3}|[0-9a-f]{6})(-([0-9a-f]{3}|[0-9a-f]{6})){2}$/i;
 
 export class UrlStateCodec {
   #win;
@@ -17,27 +22,41 @@ export class UrlStateCodec {
   }
 
   static encode(palette) {
-    return `#${palette.hexes.map((h) => h.slice(1).toLowerCase()).join('-')}`;
+    return palette.hexes.map((h) => h.slice(1).toLowerCase()).join('-');
   }
 
-  /** @returns {Palette|null} null quando o hash não é uma paleta válida */
-  static decode(hash) {
-    const parts = String(hash ?? '').replace(/^#/, '').split('-');
-    if (parts.length !== Palette.SIZE || !parts.every((p) => /^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(p))) return null;
+  /** @returns {Palette|null} null quando o texto não é uma paleta válida */
+  static decode(value) {
+    const parts = String(value ?? '').replace(/^#/, '').split('-');
+    if (parts.length !== Palette.SIZE || !parts.every((p) => PART.test(p))) return null;
     return new Palette(parts.map((p) => Color.fromHex(p)));
   }
 
-  read() {
-    return UrlStateCodec.decode(this.#win.location.hash);
+  #param() {
+    return new URLSearchParams(this.#win.location.search ?? '').get('p');
   }
 
-  /** Troca o hash sem criar uma entrada nova no histórico do navegador. */
+  read() {
+    const param = this.#param();
+    if (param !== null) return UrlStateCodec.decode(param);
+    const { hash } = this.#win.location;
+    return LEGACY_HASH.test(hash ?? '') ? UrlStateCodec.decode(hash) : null;
+  }
+
+  /** O link trouxe ?p= mas ele não é uma paleta válida (ex.: 2 ou 4 cores). */
+  hasInvalid() {
+    const param = this.#param();
+    return param !== null && UrlStateCodec.decode(param) === null;
+  }
+
   write(palette) {
-    this.#win.history.replaceState(null, '', UrlStateCodec.encode(palette));
+    const { hash } = this.#win.location;
+    const keepHash = hash && !LEGACY_HASH.test(hash) ? hash : '';
+    this.#win.history.replaceState(null, '', `?p=${UrlStateCodec.encode(palette)}${keepHash}`);
   }
 
   shareUrl(palette) {
     const { origin, pathname } = this.#win.location;
-    return `${origin}${pathname}${UrlStateCodec.encode(palette)}`;
+    return `${origin}${pathname}?p=${UrlStateCodec.encode(palette)}`;
   }
 }

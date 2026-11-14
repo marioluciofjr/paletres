@@ -77,6 +77,21 @@ describe('Color: RGB e HSB', () => {
   });
 });
 
+describe('Casos extremos (auditoria E01 e E04)', () => {
+  it('sameAs considera o HSB guardado: cinzas com matizes diferentes não são "a mesma"', () => {
+    const a = Color.fromHsb(0, 0, 0);
+    const b = Color.fromHsb(200, 0, 0);
+    expect(a.equals(b)).toBe(true); // mesmo HEX na tela
+    expect(a.sameAs(b)).toBe(false); // mas o slider de Matiz mudou
+  });
+
+  it('normalizeInput limpa o que costuma vir ao colar um HEX', () => {
+    expect(Color.normalizeInput('  #aabbcc ')).toBe('#aabbcc');
+    expect(Color.normalizeInput('AA BB CC')).toBe('AABBCC');
+    expect(Color.normalizeInput('#abc;')).toBe('#abc');
+  });
+});
+
 describe('ColorConverter', () => {
   it('ida e volta RGB → HSB → RGB sem perda nas cores da marca', () => {
     for (const hex of ['#230023', '#F2F2F2', '#42FFFF']) {

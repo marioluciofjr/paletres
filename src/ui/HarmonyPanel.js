@@ -16,9 +16,16 @@ const GROUPS = Object.freeze([
 
 const GUARDS = Object.freeze([
   [GuardLevel.NONE, 'Livre (harmonia pura)'],
-  [GuardLevel.AA, 'Garantir AA'],
-  [GuardLevel.AAA, 'Garantir AAA'],
+  [GuardLevel.AA, 'Garantir AA (texto legível)'],
+  [GuardLevel.AAA, 'Garantir AAA (contraste máximo)'],
 ]);
+
+/** Explicações dos botões "?" deste painel (RF-23). */
+const HELP = Object.freeze({
+  matematica: 'Proporção áurea e Fibonacci usam números famosos da natureza (1,618 e 1, 2, 3, 5, 8, 13…) para decidir o quanto cada cor gira no círculo e o quanto escurece. Veja a seção "Aprenda" para os detalhes.',
+  contraste: 'A âncora de contraste foi criada pensando em leitura: uma cor bem escura, uma bem clara e um destaque que aparece bem sobre as duas.',
+  garantia: 'Livre mostra a harmonia "pura", mesmo que fique difícil de ler. Garantir AA ajusta só o brilho até um texto normal ficar legível (4,5:1). Garantir AAA vai até o nível mais exigente (7:1). A matiz da harmonia não muda.',
+});
 
 export class HarmonyPanel {
   #root;
@@ -41,11 +48,13 @@ export class HarmonyPanel {
 
     const groups = GROUPS.map(([group, legend]) => Dom.el('fieldset', { class: 'chip-group' }, [
       Dom.el('legend', { text: legend }),
+      ...this.#help(group),
       Dom.el('div', { class: 'chips' }, this.#store.harmonies.byGroup(group).map((h) => this.#chip(name, h.id, h.name, () => this.#store.setHarmony(h.id)))),
     ]));
     this.#desc = Dom.el('p', { class: 'harmony__desc', 'aria-live': 'polite' });
     const guard = Dom.el('fieldset', { class: 'chip-group' }, [
       Dom.el('legend', { text: 'Contraste da paleta gerada' }),
+      ...this.#help('garantia'),
       Dom.el('div', { class: 'chips' }, GUARDS.map(([level, label]) => this.#chip(guardName, level, label, () => this.#store.setGuard(level)))),
     ]);
     this.#callout = Dom.el('p', { class: 'callout', role: 'status' });
@@ -70,6 +79,15 @@ export class HarmonyPanel {
       this.#callout.classList.toggle('callout--warning', m.kind === 'warning');
     });
     this.#render();
+  }
+
+  /** Botão "O que é isso?" + painel de explicação (ligados depois pelo InfoTips). */
+  #help(key) {
+    if (!HELP[key]) return [];
+    return [
+      Dom.el('button', { type: 'button', class: 'info-btn', 'data-info': `harmonia-${key}` }, 'O que é isso?'),
+      Dom.el('div', { class: 'info-panel', id: `info-harmonia-${key}`, hidden: true, text: HELP[key] }),
+    ];
   }
 
   #chip(name, value, label, onChange) {

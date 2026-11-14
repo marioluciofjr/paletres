@@ -38,6 +38,7 @@ export class ComparisonGrid {
   #live;
   #liveTimer = null;
   #showMessage = false;
+  #mounted = false;
 
   constructor({ root, store, bus, comparator = new PaletteComparator(), verdict = new PlainVerdict() }) {
     this.#root = root;
@@ -74,6 +75,7 @@ export class ComparisonGrid {
     this.#bus.on(StoreEvent.MESSAGE, (message) => {
       if (!this.#showMessage) return;
       this.#showMessage = false;
+      clearTimeout(this.#liveTimer);
       this.#callout.textContent = message.text;
       this.#callout.classList.toggle('callout--warning', message.kind === 'warning');
     });
@@ -91,11 +93,18 @@ export class ComparisonGrid {
     const worst = comparisons.reduce((min, c) => (c.ratio < min.ratio ? c : min));
     const worstVerdict = this.#verdict.of(worst.ratio);
 
+    const repeated = this.#store.state.palette.distinctCount() < 3;
     this.#summary.textContent = summary.text;
-    this.#worst.textContent = `Combinação mais fraca: ${worst.text.label} sobre ${worst.background.label} (${NumberFormat.ratio(worst.ratio)}). ${worstVerdict.title}.`;
+    this.#worst.textContent = repeated
+      ? 'Atenção: a paleta tem cores repetidas. Troque pelo menos uma para comparar de verdade.'
+      : `Combinação mais fraca: ${worst.text.label} sobre ${worst.background.label} (${NumberFormat.ratio(worst.ratio)}). ${worstVerdict.title}.`;
     Dom.replace(this.#grid, comparisons.map((c) => this.#card(c)));
-    this.#callout.textContent = '';
-    this.#announce(`${summary.text} ${this.#worst.textContent}`);
+    // Ao carregar a página e durante o "Consertar" (o aviso da correção já fala), ficamos em silêncio.
+    if (this.#mounted && !this.#showMessage) {
+      this.#callout.textContent = '';
+      this.#announce(`${summary.text} ${this.#worst.textContent}`);
+    }
+    this.#mounted = true;
   }
 
   #card(c) {

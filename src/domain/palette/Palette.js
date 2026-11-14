@@ -56,7 +56,13 @@ export class Palette {
     return [...this.#colors].sort((a, b) => Wcag2Contrast.luminance(a) - Wcag2Contrast.luminance(b));
   }
 
+  /** Igualdade estrita (HEX e HSB de cada cor): ver Color.sameAs. */
   equals(other) {
-    return other instanceof Palette && other.hexes.join() === this.hexes.join();
+    return other instanceof Palette && this.#colors.every((c, i) => c.sameAs(other.at(i)));
+  }
+
+  /** Quantas cores diferentes (pelo HEX) a paleta tem: 1, 2 ou 3. */
+  distinctCount() {
+    return new Set(this.hexes).size;
   }
 }

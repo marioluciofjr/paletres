@@ -34,6 +34,9 @@ export class UsageMockupPanel {
   #site;
   #app;
   #legend;
+  #live;
+  #liveTimer = null;
+  #lastRoles = '';
 
   constructor({ root, store, bus, verdict = new PlainVerdict() }) {
     this.#root = root;
@@ -59,7 +62,9 @@ export class UsageMockupPanel {
       this.#selects[role] = select;
       return Dom.el('div', { class: 'field' }, [Dom.el('label', { class: 'field__label', for: id, text: label }), select]);
     });
-    this.#suggestion = Dom.el('p', { class: 'callout', role: 'status' });
+    // Texto visível, sem região viva: quem anuncia é o #live, com pausa e só quando os papéis mudam.
+    this.#suggestion = Dom.el('p', { class: 'callout' });
+    this.#live = Dom.el('p', { class: 'visually-hidden', 'aria-live': 'polite' });
     const roles = Dom.el('fieldset', { class: 'chip-group' }, [
       Dom.el('legend', { text: 'Quem faz o quê' }),
       Dom.el('div', { class: 'roles' }, [
@@ -77,11 +82,12 @@ export class UsageMockupPanel {
     Dom.replace(this.#root, [
       Dom.el('div', { class: 'mock-controls' }, [proportion, roles]),
       this.#suggestion,
+      this.#live,
       this.#shareBar,
       this.#shareLegend,
       Dom.el('div', { class: 'mockups' }, [
-        Dom.el('figure', {}, [this.#site, Dom.el('figcaption', { text: 'Mockup de site' })]),
-        Dom.el('figure', {}, [this.#app, Dom.el('figcaption', { text: 'Mockup de app' })]),
+        Dom.el('figure', {}, [this.#site, Dom.el('figcaption', { text: 'Exemplo em site' })]),
+        Dom.el('figure', {}, [this.#app, Dom.el('figcaption', { text: 'Exemplo em app' })]),
       ]),
       this.#legend,
     ]);
@@ -114,10 +120,24 @@ export class UsageMockupPanel {
       ? `Sugestão do Paletrês: ${this.#store.roleSuggestion().message}`
       : 'Você escolheu os papéis à mão. Clique em "Usar a sugestão do Paletrês" para voltar.';
 
+    this.#announceRoles(roles);
     this.#renderShareBar(palette, roles, proportion);
     this.#renderSite(d);
     this.#renderApp(d);
     this.#renderLegend(d);
+  }
+
+  /** Anuncia (com pausa de 700 ms) só quando a distribuição dos papéis muda. */
+  #announceRoles(roles) {
+    const key = ROLES.map(([r]) => roles[r]).join();
+    if (key === this.#lastRoles) return;
+    const first = this.#lastRoles === '';
+    this.#lastRoles = key;
+    if (first) return; // não fala nada ao carregar a página
+    const names = { [Role.DOMINANT]: 'fundo', [Role.SECONDARY]: 'cards e barras', [Role.ACCENT]: 'botões' };
+    const text = ROLES.map(([r]) => `cor ${Palette.LABELS[roles[r]]} em ${names[r]}`).join(', ');
+    clearTimeout(this.#liveTimer);
+    this.#liveTimer = setTimeout(() => { this.#live.textContent = `Papéis atualizados: ${text}.`; }, 700);
   }
 
   #renderShareBar(palette, roles, proportion) {

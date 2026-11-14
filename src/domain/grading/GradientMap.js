@@ -47,12 +47,12 @@ export class GradientMap {
   }
 
   /**
-   * Aplica o mapa e devolve um NOVO array (o original fica intacto).
+   * Aplica o mapa e devolve o resultado num array de saída (o original fica intacto).
    * @param {Uint8ClampedArray} data pixels RGBA
    * @param {number} intensity 0 (foto original) a 1 (só a paleta)
+   * @param {Uint8ClampedArray} [out] buffer reaproveitado entre chamadas (evita alocar ~7 MB a cada quadro)
    */
-  apply(data, intensity = 1) {
-    const out = new Uint8ClampedArray(data.length);
+  apply(data, intensity = 1, out = new Uint8ClampedArray(data.length)) {
     const k = Math.min(1, Math.max(0, intensity));
     for (let p = 0; p < data.length; p += 4) {
       const r = data[p];

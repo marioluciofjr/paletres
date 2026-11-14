@@ -81,9 +81,26 @@ export class Color {
     return Color.fromHsb(next.h, next.s, next.b);
   }
 
-  /** Duas cores são iguais quando têm o mesmo HEX. */
+  /** Duas cores são iguais quando têm o mesmo HEX (o que aparece na tela). */
   equals(other) {
     return other instanceof Color && other.hex === this.#hex;
+  }
+
+  /**
+   * Igualdade estrita: mesmo HEX e mesmo HSB guardado.
+   * Em preto e cinzas, a matiz não muda o HEX, mas muda a posição do slider;
+   * o estado precisa saber disso para não ignorar o movimento.
+   */
+  sameAs(other) {
+    if (!this.equals(other)) return false;
+    const a = this.#hsb;
+    const b = other.hsb;
+    return a.h === b.h && a.s === b.s && a.b === b.b;
+  }
+
+  /** Limpa o texto colado num campo HEX: tira espaços e ponto e vírgula. */
+  static normalizeInput(value) {
+    return String(value ?? '').replace(/[\s;]/g, '');
   }
 
   toString() {

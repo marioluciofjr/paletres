@@ -55,7 +55,8 @@ export class ExportPanel {
     ]);
 
     const codeCards = this.#exporters.map((exp) => {
-      const pre = Dom.el('pre', { class: 'export__code', tabindex: '0', 'aria-label': `Código ${exp.label}` });
+      // role="region" permite que o nome (aria-label) seja lido; tabindex deixa rolar pelo teclado.
+      const pre = Dom.el('pre', { class: 'export__code', tabindex: '0', role: 'region', 'aria-label': `Código ${exp.label}` });
       this.#codes.set(exp.id, pre);
       return Dom.el('article', { class: 'export__card card zone-roxo' }, [
         Dom.el('h3', { text: exp.label }),

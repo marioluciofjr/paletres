@@ -31,6 +31,13 @@ describe('GradientMap', () => {
     expect([...map.apply(src, 0.5)]).toEqual([0, 0, 64, 255]);
   });
 
+  it('reaproveita o buffer de saída quando ele é informado (desempenho)', () => {
+    const out = new Uint8ClampedArray(4);
+    const result = map.apply(pixels(0, 0, 0, 255), 1, out);
+    expect(result).toBe(out);
+    expect([...out]).toEqual([0, 0, 128, 255]);
+  });
+
   it('preserva a transparência (canal alfa) e não altera o original', () => {
     const src = pixels(10, 20, 30, 77);
     const out = map.apply(src, 1);

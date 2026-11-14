@@ -133,6 +133,20 @@ describe('PaletteStore', () => {
     expect(store.state.rolesAuto).toBe(true);
   });
 
+  it('mudar a matiz de uma cor preta é registrado (auditoria E01)', () => {
+    store.setColor(0, Color.fromHsb(0, 0, 0));
+    store.setColor(0, Color.fromHsb(120, 0, 0));
+    expect(store.state.palette.at(0).hsb.h).toBe(120);
+  });
+
+  it('harmonia a partir de cor cinza ou preta usa uma base colorida e avisa (auditoria E02)', () => {
+    store.setColor(0, Color.fromHex('#000000'));
+    store.setHarmony('triade');
+    store.generate();
+    expect(new Set(store.state.palette.hexes).size).toBe(3);
+    expect(store.state.message.text).toMatch(/sem cor/);
+  });
+
   it('selectColor muda a cor em edição', () => {
     store.selectColor(2);
     expect(store.state.selectedIndex).toBe(2);

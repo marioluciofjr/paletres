@@ -65,11 +65,10 @@ export class ColorSlots {
       inputmode: 'text',
       autocomplete: 'off',
       spellcheck: 'false',
-      maxlength: '7',
       'aria-describedby': errorId,
       on: {
         input: (e) => this.#onHexInput(index, e.target, error),
-        change: () => this.#gesture.end(),
+        change: (e) => { this.#applyShort(index, e.target); this.#gesture.end(); },
         blur: (e) => this.#onHexBlur(index, e.target, error),
       },
     });
@@ -89,8 +88,9 @@ export class ColorSlots {
       on: { click: () => this.#store.selectColor(index) },
     }, [Icons.svg('edit'), 'Ajustar']);
 
-    const card = Dom.el('article', { class: 'slot card zone-roxo', 'aria-label': `Cor ${label}` }, [
-      Dom.el('div', { class: 'slot__head' }, [Dom.el('h3', { text: `Cor ${label}` }), role]),
+    const titleId = Dom.uid('cor-titulo');
+    const card = Dom.el('article', { class: 'slot card zone-roxo', 'aria-labelledby': titleId }, [
+      Dom.el('div', { class: 'slot__head' }, [Dom.el('h3', { id: titleId, text: `Cor ${label}` }), role]),
       swatch,
       Dom.el('div', { class: 'field' }, [
         Dom.el('label', { class: 'field__label', for: hexId, text: `Código HEX da cor ${label}` }),
@@ -103,22 +103,35 @@ export class ColorSlots {
   }
 
   #onHexInput(index, input, error) {
-    const value = input.value.trim();
+    const value = Color.normalizeInput(input.value);
     if (!Color.isValidHex(value)) {
       // Valor incompleto (ex.: "#12"): a pessoa ainda está digitando, então só avisamos ao sair do campo.
-      // Caractere inválido (ex.: "#12g"): avisamos na hora.
+      // Caractere inválido (ex.: "#12g") ou longo demais: avisamos na hora.
       const stillTyping = /^#?[0-9a-f]{0,5}$/i.test(value);
       this.#setError(input, error, stillTyping ? '' : this.#errorText(value));
       return;
     }
     this.#setError(input, error, '');
+    // Enquanto digita, só aplicamos o formato completo (6 dígitos). Assim, digitar "#ffcc00"
+    // não aplica "#fff" no meio do caminho. O formato curto (#abc) vale ao terminar (change/blur).
+    if (value.replace('#', '').length !== 6) return;
     this.#gesture.step((opts) => this.#store.setColor(index, Color.fromHex(value), opts));
   }
 
+  /** Ao terminar de digitar: aplica também o formato curto (#abc). */
+  #applyShort(index, input) {
+    const value = Color.normalizeInput(input.value);
+    if (Color.isValidHex(value) && value.replace('#', '').length === 3) {
+      this.#gesture.step((opts) => this.#store.setColor(index, Color.fromHex(value), opts));
+    }
+  }
+
   #onHexBlur(index, input, error) {
+    this.#applyShort(index, input);
     this.#gesture.end();
     // Ao sair do campo com um valor incompleto, avisamos.
-    if (!Color.isValidHex(input.value)) this.#setError(input, error, this.#errorText(input.value));
+    const value = Color.normalizeInput(input.value);
+    if (!Color.isValidHex(value)) this.#setError(input, error, this.#errorText(value));
   }
 
   #errorText(value) {
@@ -137,7 +150,7 @@ export class ColorSlots {
   }
 
   #render() {
-    const { palette, selectedIndex, roles } = this.#store.state;
+    const { palette, selectedIndex, roles, rolesAuto } = this.#store.state;
     const roleOf = Object.fromEntries(Object.entries(roles).map(([role, i]) => [i, ROLE_NAMES[role]]));
     this.#slots.forEach((slot, i) => {
       const color = palette.at(i);
@@ -147,7 +160,7 @@ export class ColorSlots {
         slot.hex.value = color.hex;
         this.#setError(slot.hex, slot.error, '');
       }
-      slot.role.textContent = roleOf[i] ? `Sugestão: ${roleOf[i]}` : '';
+      slot.role.textContent = roleOf[i] ? `${rolesAuto ? 'Sugestão' : 'Papel'}: ${roleOf[i]}` : '';
       const selected = i === selectedIndex;
       slot.card.classList.toggle('is-selected', selected);
       slot.select.setAttribute('aria-pressed', String(selected));

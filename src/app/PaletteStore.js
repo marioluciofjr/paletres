@@ -165,11 +165,18 @@ export class PaletteStore {
    * random=false parte da cor A atual; random=true sorteia uma cor base.
    */
   generate({ random = false } = {}) {
-    const base = random ? HarmonyStrategy.randomBase(this.#rng) : this.#palette.at(0).hsb;
+    let base = random ? HarmonyStrategy.randomBase(this.#rng) : this.#palette.at(0).hsb;
+    const parts = [];
+    // Cor A sem cor (cinza, preto ou quase isso): girar a matiz não muda nada.
+    // Usamos uma versão colorida dela como base e avisamos.
+    if (base.s < 15 || base.b < 15) {
+      base = { h: base.h, s: Math.max(base.s, 60), b: Math.max(base.b, 70) };
+      parts.push('A cor A estava sem cor (cinza, preto ou branco), então usei uma versão colorida dela como base.');
+    }
     const harmony = this.#harmonies.get(this.#harmonyId);
     const result = harmony.generate(base, this.#rng);
     let palette = new Palette(result.colors);
-    const parts = [`${harmony.name}: ${harmony.description}`];
+    parts.push(`${harmony.name}: ${harmony.description}`);
     if (result.note) parts.push(result.note);
     let kind = 'info';
     if (this.#guardLevel !== GuardLevel.NONE) {

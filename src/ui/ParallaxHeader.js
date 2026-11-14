@@ -65,6 +65,12 @@ export class ParallaxHeader {
     this.#header.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.#toggle.getAttribute('aria-expanded') === 'true') this.#setOpen(false);
     });
+    // Se o foco sair do menu aberto (Tab para fora), o menu fecha sozinho.
+    this.#nav.addEventListener('focusout', (e) => {
+      const next = e.relatedTarget;
+      const stillInside = next && (this.#nav.contains(next) || next === this.#toggle);
+      if (!stillInside && this.#toggle.getAttribute('aria-expanded') === 'true') this.#setOpen(false, false);
+    });
   }
 
   #setOpen(open, restoreFocus = true) {

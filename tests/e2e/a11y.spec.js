@@ -45,3 +45,54 @@ test('alvos interativos têm pelo menos 24×24 px (WCAG 2.5.8)', async ({ page }
   });
   expect(small, small.join('\n')).toEqual([]);
 });
+
+// ---------- Foco visível e anúncios (auditoria a11y-web: C1, A1, A2, B12) ----------
+// O axe não mede se o foco aparece nem se a região viva "fala demais". Estes testes medem.
+
+/** Estilo de contorno calculado de um elemento. */
+const outlineOf = (locator) => locator.evaluate((el) => {
+  const s = getComputedStyle(el);
+  return `${s.outlineStyle} ${s.outlineWidth} ${s.outlineColor} ${s.outlineOffset}`;
+});
+
+for (const theme of ['light', 'dark']) {
+  test(`tints e shades: o foco muda o contorno (tema ${theme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: theme });
+    await page.goto('/');
+    for (const cell of [page.locator('.tint-cell').first(), page.locator('.tint-cell').nth(9)]) {
+      const before = await outlineOf(cell);
+      await cell.focus();
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
+      const after = await outlineOf(cell);
+      expect(after).not.toBe(before);
+    }
+  });
+}
+
+test('roda cromática: o foco é visível no controle inteiro', async ({ page }) => {
+  await page.goto('/');
+  const stage = page.locator('.wheel__stage');
+  const before = await outlineOf(stage);
+  await page.locator('.wheel__svg').focus();
+  await page.keyboard.press('ArrowRight');
+  expect(await outlineOf(stage)).not.toBe(before);
+});
+
+test('regiões vivas não falam a cada passo do slider (no máximo 1 anúncio)', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForTimeout(1200);
+  await page.evaluate(() => {
+    window.__mutations = 0;
+    const observer = new MutationObserver((list) => { window.__mutations += list.length; });
+    for (const el of document.querySelectorAll('[role="status"], [aria-live]')) {
+      if (el.closest('.toast')) continue;
+      observer.observe(el, { childList: true, characterData: true, subtree: true });
+    }
+  });
+  const hue = page.locator('#paleta input[type="range"]').first();
+  await hue.focus();
+  for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(1200);
+  expect(await page.evaluate(() => window.__mutations)).toBeLessThanOrEqual(2);
+});

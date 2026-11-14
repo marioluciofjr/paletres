@@ -72,9 +72,22 @@ describe('ColorSlots', () => {
     }
   });
 
-  it('digitar um HEX válido atualiza a paleta (RF-01)', () => {
-    type(root.querySelectorAll('input.input--hex')[1], '#abc');
+  it('digitar um HEX de 6 dígitos atualiza a paleta na hora (RF-01)', () => {
+    type(root.querySelectorAll('input.input--hex')[1], '#ffcc00');
+    expect(store.state.palette.at(1).hex).toBe('#FFCC00');
+  });
+
+  it('o formato curto (#abc) só vale ao terminar de digitar, sem "piscar" no meio (auditoria E23)', () => {
+    const input = root.querySelectorAll('input.input--hex')[1];
+    type(input, '#abc');
+    expect(store.state.palette.at(1).hex).toBe('#F2F2F2');
+    input.dispatchEvent(new Event('change'));
     expect(store.state.palette.at(1).hex).toBe('#AABBCC');
+  });
+
+  it('aceita HEX colado com espaços (auditoria E04)', () => {
+    type(root.querySelectorAll('input.input--hex')[0], '  #12 34 56 ');
+    expect(store.state.palette.at(0).hex).toBe('#123456');
   });
 
   it('caractere inválido mostra o erro na hora', () => {
@@ -175,10 +188,10 @@ describe('PresetBar e HistoryToolbar', () => {
     new HistoryToolbar({ root: toolbar, store, bus, doc: document }).mount();
 
     const undo = toolbar.querySelector('[data-action="undo"]');
-    expect(undo.disabled).toBe(true);
+    expect(undo.getAttribute('aria-disabled')).toBe('true');
     root.querySelector('[data-preset="cafe"]').click();
     expect(store.state.palette.hexes).toEqual(['#3E2723', '#F5EBDD', '#C47F3B']);
-    expect(undo.disabled).toBe(false);
+    expect(undo.getAttribute('aria-disabled')).toBe('false');
     undo.click();
     expect(store.state.palette.hexes[0]).toBe('#230023');
   });

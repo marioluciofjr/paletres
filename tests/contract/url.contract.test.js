@@ -1,43 +1,60 @@
-// Contrato do link compartilhável (RF-11): #rrggbb-rrggbb-rrggbb.
+// Contrato do link compartilhável (RF-11): ?p=rrggbb-rrggbb-rrggbb.
+// A paleta fica na query string (?p=) para o hash (#) continuar livre para as âncoras do menu (#paleta, #tons…).
+// Links antigos com a paleta no hash (#rrggbb-rrggbb-rrggbb) continuam funcionando.
 import { describe, it, expect } from 'vitest';
 import { Palette } from '../../src/domain/palette/Palette.js';
 import { UrlStateCodec } from '../../src/infra/UrlStateCodec.js';
 
-const fakeWindow = (hash = '') => {
+const fakeWindow = ({ search = '', hash = '' } = {}) => {
   const calls = [];
   return {
     calls,
-    location: { hash, origin: 'https://exemplo.dev', pathname: '/paletres/' },
+    location: { search, hash, origin: 'https://exemplo.dev', pathname: '/paletres/' },
     history: { replaceState: (_s, _t, url) => calls.push(url) },
   };
 };
 
 describe('UrlStateCodec', () => {
   it('codifica em minúsculas, sem #, separadas por hífen', () => {
-    expect(UrlStateCodec.encode(Palette.default())).toBe('#230023-f2f2f2-42ffff');
+    expect(UrlStateCodec.encode(Palette.default())).toBe('230023-f2f2f2-42ffff');
   });
 
-  it('decodifica maiúsculas, minúsculas e o formato curto', () => {
-    expect(UrlStateCodec.decode('#230023-F2F2F2-42ffff').hexes).toEqual(['#230023', '#F2F2F2', '#42FFFF']);
+  it('decodifica maiúsculas, minúsculas, o formato curto e um # inicial', () => {
+    expect(UrlStateCodec.decode('230023-F2F2F2-42ffff').hexes).toEqual(['#230023', '#F2F2F2', '#42FFFF']);
     expect(UrlStateCodec.decode('#fff-000-abc').hexes).toEqual(['#FFFFFF', '#000000', '#AABBCC']);
   });
 
-  it('hash inválido devolve null (a página usa a paleta padrão)', () => {
-    for (const bad of ['', '#', '#123', '#zzzzzz-000000-ffffff', '#000000-ffffff']) {
+  it('valor inválido devolve null (a página usa a paleta padrão)', () => {
+    for (const bad of ['', '#', '123', 'zzzzzz-000000-ffffff', '000000-ffffff', '000000-ffffff-ff0000-123456']) {
       expect(UrlStateCodec.decode(bad)).toBeNull();
     }
   });
 
-  it('read lê da URL e write troca o hash sem recarregar a página', () => {
-    const w = fakeWindow('#000000-ffffff-ff0000');
-    const codec = new UrlStateCodec(w);
-    expect(codec.read().hexes).toEqual(['#000000', '#FFFFFF', '#FF0000']);
-    codec.write(Palette.default());
-    expect(w.calls).toEqual(['#230023-f2f2f2-42ffff']);
+  it('read lê ?p= e, se não houver, aceita o formato antigo no hash', () => {
+    expect(new UrlStateCodec(fakeWindow({ search: '?p=000000-ffffff-ff0000' })).read().hexes).toEqual(['#000000', '#FFFFFF', '#FF0000']);
+    expect(new UrlStateCodec(fakeWindow({ hash: '#000000-ffffff-ff0000' })).read().hexes).toEqual(['#000000', '#FFFFFF', '#FF0000']);
+    expect(new UrlStateCodec(fakeWindow({ hash: '#tons' })).read()).toBeNull();
+  });
+
+  it('hasInvalid avisa quando o link trouxe uma paleta quebrada', () => {
+    expect(new UrlStateCodec(fakeWindow({ search: '?p=000000-ffffff' })).hasInvalid()).toBe(true);
+    expect(new UrlStateCodec(fakeWindow({ search: '' })).hasInvalid()).toBe(false);
+    expect(new UrlStateCodec(fakeWindow({ hash: '#tons' })).hasInvalid()).toBe(false);
+  });
+
+  it('write grava ?p= sem recarregar e preserva a âncora atual', () => {
+    const w = fakeWindow({ hash: '#tons' });
+    new UrlStateCodec(w).write(Palette.default());
+    expect(w.calls).toEqual(['?p=230023-f2f2f2-42ffff#tons']);
+  });
+
+  it('write descarta o hash antigo que era uma paleta', () => {
+    const w = fakeWindow({ hash: '#000000-ffffff-ff0000' });
+    new UrlStateCodec(w).write(Palette.default());
+    expect(w.calls).toEqual(['?p=230023-f2f2f2-42ffff']);
   });
 
   it('shareUrl monta o link completo', () => {
-    const codec = new UrlStateCodec(fakeWindow());
-    expect(codec.shareUrl(Palette.default())).toBe('https://exemplo.dev/paletres/#230023-f2f2f2-42ffff');
+    expect(new UrlStateCodec(fakeWindow()).shareUrl(Palette.default())).toBe('https://exemplo.dev/paletres/?p=230023-f2f2f2-42ffff');
   });
 });

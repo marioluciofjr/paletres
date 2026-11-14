@@ -26,7 +26,9 @@ export class Toast {
   }
 
   show(text) {
-    this.#live.textContent = text;
+    // Esvazia e preenche no quadro seguinte: assim a mesma mensagem repetida é lida de novo.
+    this.#live.textContent = '';
+    requestAnimationFrame(() => { this.#live.textContent = text; });
     this.#bubble.textContent = text;
     this.#bubble.classList.add('is-visible');
     clearTimeout(this.#timer);

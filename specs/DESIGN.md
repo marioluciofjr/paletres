@@ -23,6 +23,17 @@ As cores digitadas pela pessoa usuária são arbitrárias. Para que elas não "v
 - A exceção vale **só** para amostras, prévias das 6 comparações, células de tints e shades, faixas do simulador de daltonismo, faixa de proporção, marcadores da roda cromática, **mockups de site e app** e a **imagem do color grading**.
 - Texto da interface nunca fica sobre uma cor do usuário. As exceções são os textos de **prévia** (no card de comparação e dentro dos mockups), que são justamente o objeto do teste.
 - Aprovada pelo Mário em 13/11/2026.
+- Nas áreas roxas (cards, cabeçalho, hero) e no tema escuro, a moldura preta ganha um **anel cinza de 3px por fora**. Sem ele, uma cor do usuário igual ou parecida com o roxo sumiria (preto sobre roxo dá 1,1:1).
+
+### 1.2 Degradês funcionais (decorrentes da auditoria de UX)
+
+Ainda dentro da área de prévia (moldura preta), três elementos usam degradê **porque o degradê é a informação**, não um enfeite:
+
+- a **roda cromática** (todas as matizes e o centro sem saturação);
+- os **trilhos dos sliders HSB** (mostram as cores que o slider vai produzir);
+- a **imagem de exemplo** do color grading (é conteúdo, não interface).
+
+Fora desses três, a regra "sem degradê" continua valendo.
 
 ## 2. Tipografia
 

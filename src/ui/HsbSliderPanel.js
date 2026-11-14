@@ -54,7 +54,8 @@ export class HsbSliderPanel {
 
   #buildRow(ch) {
     const id = Dom.uid(`hsb-${ch.key}`);
-    const value = Dom.el('output', { class: 'hsb__value', for: id });
+    // span escondido do leitor de tela: o slider já anuncia o valor (aria-valuetext).
+    const value = Dom.el('span', { class: 'hsb__value', 'aria-hidden': 'true' });
     const range = Dom.el('input', {
       id,
       type: 'range',

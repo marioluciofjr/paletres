@@ -15,11 +15,11 @@ test.describe('Fluxo principal', () => {
     await page.goto('/');
     await hexInputs(page).nth(1).fill('#000000');
     await expect(page.locator('.cmp').first()).toContainText('Texto A sobre fundo B');
-    await expect(page).toHaveURL(/#230023-000000-42ffff$/);
+    await expect(page).toHaveURL(/\?p=230023-000000-42ffff/);
   });
 
   test('link compartilhado abre a mesma paleta (RF-11)', async ({ page }) => {
-    await page.goto('/#000000-ffffff-ff0000');
+    await page.goto('/?p=000000-ffffff-ff0000');
     await expect(hexInputs(page).nth(0)).toHaveValue('#000000');
     await expect(hexInputs(page).nth(2)).toHaveValue('#FF0000');
     await expect(page.locator('.cmp').first()).toContainText('21,00:1');
@@ -36,7 +36,7 @@ test.describe('Fluxo principal', () => {
   });
 
   test('"Consertar contraste" e "Desfazer" (RF-20, RF-21)', async ({ page }) => {
-    await page.goto('/#3366cc-6699ff-99bbff');
+    await page.goto('/?p=3366cc-6699ff-99bbff');
     await page.getByRole('button', { name: 'Consertar contraste (AA)' }).click();
     await expect(page.locator('#comparacoes .callout')).toContainText('Pronto');
     await page.getByRole('button', { name: 'Desfazer' }).click();
@@ -58,6 +58,26 @@ test.describe('Fluxo principal', () => {
   });
 });
 
+test.describe('Link e âncoras (auditoria E05 e E06)', () => {
+  test('clicar no menu não apaga a paleta do link', async ({ page }) => {
+    await page.goto('/?p=000000-ffffff-ff0000');
+    await page.locator('.site-nav a[href="#tons"]').click();
+    await expect(page).toHaveURL(/\?p=000000-ffffff-ff0000#tons/);
+    await page.reload();
+    await expect(hexInputs(page).nth(2)).toHaveValue('#FF0000');
+  });
+
+  test('link antigo com a paleta no # continua funcionando', async ({ page }) => {
+    await page.goto('/#000000-ffffff-ff0000');
+    await expect(hexInputs(page).nth(2)).toHaveValue('#FF0000');
+  });
+
+  test('link com paleta quebrada avisa a pessoa', async ({ page }) => {
+    await page.goto('/?p=000000-ffffff');
+    await expect(page.locator('.toast')).toContainText('paleta padrão');
+  });
+});
+
 test.describe('Teste na prática', () => {
   test('mockups e legenda com os 3 papéis (RF-17, RF-24)', async ({ page }) => {
     await page.goto('/');
@@ -71,7 +91,7 @@ test.describe('Teste na prática', () => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Usar imagem de exemplo' }).click();
     await expect(page.locator('.stage')).toBeVisible();
-    await expect(page.locator('[data-action="download-graded"]')).toBeEnabled();
+    await expect(page.locator('[data-action="download-graded"]')).toHaveAttribute('aria-disabled', 'false');
   });
 
   test('arquivo de formato errado mostra erro em texto (RF-18)', async ({ page }) => {

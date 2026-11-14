@@ -36,14 +36,24 @@
   font-weight: 500;
 }
 
-.btn--primary:hover,
-.btn--ghost:hover,
 .btn[aria-pressed='true'] {
   background: var(--ink);
   color: var(--surface);
   border-color: var(--ink);
 }
 
+/* Hover só em dispositivos com mouse: no toque, o hover "grudaria" depois do clique. */
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover,
+  .btn--ghost:hover {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+  }
+}
+
+/* aria-disabled em vez de disabled: o botão continua focável e o foco não "cai" no <body>. */
+.btn[aria-disabled='true'],
 .btn:disabled {
   background: transparent;
   color: var(--ink);
@@ -51,6 +61,12 @@
   border-color: var(--border);
   cursor: not-allowed;
   transform: none;
+}
+
+.btn[aria-disabled='true']:hover {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border);
 }
 
 .btn--sm {
@@ -105,7 +121,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  height: var(--header-h);
+  min-height: var(--header-h);
   border-bottom: var(--stroke-control) solid var(--card-border);
 }
 
@@ -120,10 +136,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 2400px;
+  width: 3840px;
   max-width: none;
   height: 100%;
-  will-change: transform;
 }
 
 .site-header__inner {
@@ -131,8 +146,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  height: 100%;
-  width: min(1280px, 100% - 2 * var(--space-4));
+  min-height: var(--header-h);
+  width: min(1200px, 100% - 2 * var(--space-4));
   margin-inline: auto;
 }
 
@@ -181,19 +196,17 @@
   font-size: 0.9375rem;
 }
 
-.site-nav a:not(.btn):hover {
-  background: var(--cinza);
-  color: var(--roxo);
+@media (hover: hover) and (pointer: fine) {
+  .site-nav a:not(.btn):hover,
+  .site-nav .btn:hover {
+    background: var(--cinza);
+    color: var(--roxo);
+  }
 }
 
 .site-nav .btn {
   background: var(--roxo);
   margin-left: var(--space-2);
-}
-
-.site-nav .btn:hover {
-  background: var(--cinza);
-  color: var(--roxo);
 }
 
 .menu-toggle {
@@ -224,6 +237,8 @@
 
   .site-nav.is-open {
     display: block;
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
   }
 
   .site-nav ul {
@@ -233,6 +248,31 @@
 
   .site-nav .btn {
     margin: var(--space-2) 0 0;
+  }
+}
+
+/* Telas muito estreitas (até 480px): o botão "Seções" vira só ícone e a marca encolhe. */
+@media (max-width: 480px) {
+  .menu-toggle {
+    width: var(--target);
+    padding: 0;
+  }
+
+  .menu-toggle__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .brand__name {
+    font-size: 1.25rem;
+  }
+
+  .site-header__inner {
+    gap: var(--space-2);
   }
 }
 
@@ -284,7 +324,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--ciano);
+  background: var(--cinza);
   color: var(--roxo);
   font-weight: 700;
 }
@@ -300,11 +340,11 @@
   position: relative;
   display: grid;
   place-items: end center;
-  width: clamp(120px, 14vw, 200px);
+  width: clamp(80px, 24vw, 200px);
   aspect-ratio: 1;
   border: 3px solid var(--frame);
   border-radius: 50%;
-  margin-left: calc(clamp(120px, 14vw, 200px) * -0.22);
+  margin-left: calc(clamp(80px, 24vw, 200px) * -0.22);
 }
 
 .hero-dot:first-child {
@@ -323,7 +363,7 @@
 
 @media (max-width: 860px) {
   .hero__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero__art {
@@ -382,9 +422,23 @@
   font-weight: 700;
   cursor: pointer;
   vertical-align: middle;
+  position: relative;
 }
 
-.info-btn:hover,
+/* Área de clique invisível de 44px de altura (Lei de Fitts), sem aumentar o desenho. */
+.info-btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .info-btn:hover {
+    background: var(--ink);
+    color: var(--surface);
+  }
+}
+
 .info-btn[aria-expanded='true'] {
   background: var(--ink);
   color: var(--surface);
@@ -649,6 +703,15 @@
   background: var(--track);
 }
 
+/* Nas áreas roxas, o trilho ganha anel cinza (a moldura preta some sobre o roxo). */
+.zone-roxo .range::-webkit-slider-runnable-track {
+  outline: 2px solid var(--cinza);
+}
+
+.zone-roxo .range::-moz-range-track {
+  outline: 2px solid var(--cinza);
+}
+
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 28px;
@@ -878,6 +941,13 @@
   outline: none;
 }
 
+/* Foco visível no controle inteiro: um anel em volta da roda. */
+.wheel__stage:has(.wheel__svg:focus-visible) {
+  outline: var(--stroke-focus) solid var(--focus-ring);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
 .wheel__svg:focus-visible .wheel__base-ring {
   stroke: var(--focus-ring);
   stroke-width: 4;
@@ -932,11 +1002,19 @@
   cursor: pointer;
 }
 
-.chip input:checked + span,
-.chip span:hover {
+.chip input:checked + span {
   background: var(--ink);
   color: var(--surface);
   font-weight: 700;
+}
+
+/* Hover diferente do selecionado: borda grossa e sublinhado, sem preencher. */
+@media (hover: hover) and (pointer: fine) {
+  .chip input:not(:checked) + span:hover {
+    border-width: var(--stroke-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 .chip input:focus-visible + span {
@@ -1052,6 +1130,8 @@
 
 .msite__nav {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   align-items: center;
   justify-content: space-between;
   padding: 12px 20px;
@@ -1060,7 +1140,8 @@
 
 .msite__links {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 4px 16px;
   font-weight: 500;
 }
 
@@ -1219,6 +1300,7 @@
 .grading__controls {
   display: grid;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .dropzone {
@@ -1245,32 +1327,52 @@
 
 .dropzone__file-name {
   margin: 0;
+  max-width: 100%;
   font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+.grading__status {
+  margin: 0;
+  font-weight: 700;
+}
+
+.grading__status:empty {
+  display: none;
 }
 
 .stage {
   position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
   overflow: hidden;
   line-height: 0;
 }
 
+/* Fotos muito altas (capturas de tela longas) não passam de 70% da altura da tela. */
 .stage canvas {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
+  max-height: 70vh;
 }
 
-.stage__after {
+.stage .stage__after {
   position: absolute;
   inset: 0;
-  clip-path: inset(0 0 0 var(--split, 50%));
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  clip-path: inset(0 0 0 50%);
 }
 
 .stage__divider {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--split, 50%);
+  left: 50%;
   width: 4px;
   margin-left: -2px;
   background: var(--frame);
@@ -1342,9 +1444,15 @@
   cursor: pointer;
 }
 
-.tint-cell[aria-current='true'] {
-  outline: var(--stroke-accent) solid var(--ink);
-  outline-offset: 2px;
+.tint-cell--base {
+  border-width: 5px;
+}
+
+/* Foco SEMPRE visível: vence o anel cinza do tema escuro (mais específico e declarado depois). */
+.tint-strip .tint-cell:focus-visible,
+[data-theme='dark'] .tint-strip .tint-cell:focus-visible {
+  outline: var(--stroke-focus) solid var(--focus-ring);
+  outline-offset: 4px;
 }
 
 .tint-scale {
@@ -1352,7 +1460,7 @@
   grid-template-columns: repeat(19, minmax(40px, 1fr));
   gap: 4px;
   padding: 0 4px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-align: center;
 }
@@ -1467,7 +1575,8 @@
   color: var(--ciano);
 }
 
-.learn__item ul {
+.learn__item ul,
+.learn__item ol {
   margin: 0;
   padding-left: var(--space-6);
 }
@@ -1535,7 +1644,7 @@
 .toast {
   position: fixed;
   left: 50%;
-  bottom: var(--space-6);
+  bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
   z-index: 80;
   max-width: min(480px, 100% - 2 * var(--space-4));
   padding: var(--space-3) var(--space-6);
@@ -1545,14 +1654,14 @@
   font-weight: 500;
   transform: translate(-50%, calc(100% + var(--space-12)));
   visibility: hidden;
-  transition: transform 250ms var(--ease-out), visibility 0s linear 250ms;
+  transition: transform 150ms ease-in, visibility 0s linear 150ms;
   pointer-events: none;
 }
 
 .toast.is-visible {
   transform: translate(-50%, 0);
   visibility: visible;
-  transition: transform 250ms var(--ease-out), visibility 0s;
+  transition: transform var(--dur-ui) var(--ease-out), visibility 0s;
 }
 
 [data-theme='dark'] .toast {

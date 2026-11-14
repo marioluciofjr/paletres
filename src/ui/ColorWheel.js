@@ -9,7 +9,6 @@
  * movido pelo teclado (setas ←/→ mudam a matiz; ↑/↓ mudam a saturação; Shift acelera).
  */
 import { ColorConverter } from '../domain/color/ColorConverter.js';
-import { Palette } from '../domain/palette/Palette.js';
 import { StoreEvent } from '../app/PaletteStore.js';
 import { GestureRecorder } from '../app/GestureRecorder.js';
 import { Dom } from './Dom.js';
@@ -36,12 +35,15 @@ export class ColorWheel {
   }
 
   mount() {
+    const hintId = Dom.uid('roda-dica');
     this.#svg = this.#svgEl('svg', {
       class: 'wheel__svg',
       viewBox: `0 0 ${SIZE} ${SIZE}`,
       tabindex: '0',
       role: 'slider',
+      'aria-roledescription': 'roda cromática',
       'aria-label': 'Tom base (cor A) na roda cromática',
+      'aria-describedby': hintId,
       'aria-valuemin': '0',
       'aria-valuemax': '359',
     });
@@ -61,7 +63,7 @@ export class ColorWheel {
 
     Dom.replace(this.#root, [
       Dom.el('div', { class: 'wheel__stage' }, [Dom.el('div', { class: 'wheel__disc', 'aria-hidden': 'true' }), this.#svg]),
-      Dom.el('p', { class: 'wheel__hint', text: 'Arraste o ponto maior (cor A) ou use as setas do teclado: ← → mudam o tom, ↑ ↓ mudam a intensidade.' }),
+      Dom.el('p', { id: hintId, class: 'wheel__hint', text: 'Arraste o ponto maior (cor A) ou use as setas do teclado: ← → mudam o tom, ↑ ↓ mudam a intensidade. Shift acelera.' }),
     ]);
 
     this.#bindPointer();
@@ -93,24 +95,40 @@ export class ColorWheel {
     return { h: Math.round(h), s: Math.round(s) };
   }
 
+  /**
+   * Arraste com desempenho: a caixa do SVG é lida uma vez no início (pointerdown) e
+   * os movimentos são aplicados no máximo uma vez por quadro (requestAnimationFrame).
+   */
   #bindPointer() {
-    const toSvg = (e) => {
-      const box = this.#svg.getBoundingClientRect();
-      return { x: ((e.clientX - box.left) / box.width) * SIZE, y: ((e.clientY - box.top) / box.height) * SIZE };
+    let box = null;
+    let pending = null;
+    let frame = 0;
+    const toSvg = (e) => ({ x: ((e.clientX - box.left) / box.width) * SIZE, y: ((e.clientY - box.top) / box.height) * SIZE });
+    const flush = () => {
+      frame = 0;
+      if (!pending) return;
+      this.#moveBase(ColorWheel.fromPoint(pending.x, pending.y));
+      pending = null;
     };
     let dragging = false;
     this.#svg.addEventListener('pointerdown', (e) => {
       dragging = true;
+      box = this.#svg.getBoundingClientRect();
       this.#svg.setPointerCapture?.(e.pointerId);
       this.#svg.focus({ preventScroll: true });
-      this.#moveBase(ColorWheel.fromPoint(...Object.values(toSvg(e))));
+      pending = toSvg(e);
+      flush();
     });
     this.#svg.addEventListener('pointermove', (e) => {
-      if (dragging) this.#moveBase(ColorWheel.fromPoint(...Object.values(toSvg(e))));
+      if (!dragging) return;
+      pending = toSvg(e);
+      if (!frame) frame = requestAnimationFrame(flush);
     });
     const stop = () => {
       if (!dragging) return;
       dragging = false;
+      cancelAnimationFrame(frame);
+      flush();
       this.#gesture.end();
     };
     this.#svg.addEventListener('pointerup', stop);
@@ -148,6 +166,6 @@ export class ColorWheel {
     });
     const { h, s } = palette.at(0).hsb;
     this.#svg.setAttribute('aria-valuenow', String(Math.round(h)));
-    this.#svg.setAttribute('aria-valuetext', `Matiz ${Math.round(h)} graus, saturação ${Math.round(s)} por cento. Cores: ${palette.hexes.map((hex, i) => `${Palette.LABELS[i]} ${hex}`).join(', ')}`);
+    this.#svg.setAttribute('aria-valuetext', `Matiz ${Math.round(h)} graus, intensidade ${Math.round(s)}%. Cor A ${palette.at(0).hex}`);
   }
 }

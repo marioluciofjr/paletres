@@ -2,7 +2,7 @@
 <html lang="pt-BR" data-theme="light">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Paletrês — 3 cores, 6 comparações de contraste</title>
     <meta name="description" content="Escolha 3 cores e descubra se elas combinam e se dá para ler. Compare 6 combinações (WCAG 2.2 e APCA), gere paletas por harmonias, proporção áurea e Fibonacci, e teste em mockups e fotos." />
     <meta name="theme-color" content="#230023" />
@@ -28,29 +28,29 @@
     <!-- ===================== CABEÇALHO COM PARALLAX ===================== -->
     <header class="site-header zone-roxo" data-component="header">
       <div class="parallax" aria-hidden="true">
-        <svg class="parallax__layer" data-parallax="0.15" data-period="240" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+        <svg class="parallax__layer" data-parallax="0.15" data-period="240" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
           <defs>
             <pattern id="pl-rings" width="240" height="96" patternUnits="userSpaceOnUse">
               <path d="M150 20a28 28 0 1 1-20 8" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
             </pattern>
           </defs>
-          <rect width="2400" height="96" fill="url(#pl-rings)" />
+          <rect width="3840" height="96" fill="url(#pl-rings)" />
         </svg>
-        <svg class="parallax__layer" data-parallax="0.3" data-period="320" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+        <svg class="parallax__layer" data-parallax="0.3" data-period="320" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
           <defs>
             <pattern id="pl-moons" width="320" height="96" patternUnits="userSpaceOnUse">
               <path d="M60 62a22 22 0 1 0 22-30a16 16 0 1 1-22 30z" fill="none" stroke="#F2F2F2" stroke-width="1.75" stroke-linejoin="round" />
             </pattern>
           </defs>
-          <rect width="2400" height="96" fill="url(#pl-moons)" />
+          <rect width="3840" height="96" fill="url(#pl-moons)" />
         </svg>
-        <svg class="parallax__layer" data-parallax="0.5" data-period="200" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+        <svg class="parallax__layer" data-parallax="0.5" data-period="200" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
           <defs>
             <pattern id="pl-waves" width="200" height="96" patternUnits="userSpaceOnUse">
               <path d="M0 80q25-14 50 0t50 0t50 0t50 0" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
             </pattern>
           </defs>
-          <rect width="2400" height="96" fill="url(#pl-waves)" />
+          <rect width="3840" height="96" fill="url(#pl-waves)" />
         </svg>
       </div>
 
@@ -61,7 +61,7 @@
         </a>
 
         <button class="btn btn--ghost menu-toggle" type="button" aria-expanded="false" aria-controls="menu-secoes" data-action="toggle-menu">
-          <span data-icon="menu"></span><span>Seções</span>
+          <span data-icon="menu"></span><span class="menu-toggle__text">Seções</span>
         </button>
 
         <nav class="site-nav" id="menu-secoes" aria-label="Seções da página">
@@ -111,7 +111,7 @@
       <section id="paleta" class="section" aria-labelledby="paleta-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Passo 1</p>
+            <p class="eyebrow">Passo 1 de 3 · Escolha</p>
             <h2 id="paleta-title">Escolha suas 3 cores</h2>
             <p class="section__lead">Clique no quadrado para escolher uma cor, digite o código HEX ou comece por uma paleta pronta.
               <button class="info-btn" type="button" data-info="hex">O que é HEX?</button></p>
@@ -120,7 +120,7 @@
 
           <div class="presets" data-component="presets"></div>
 
-          <div class="toolbar" data-component="history" role="toolbar" aria-label="Ações da paleta"></div>
+          <div class="toolbar" data-component="history" role="group" aria-label="Ações da paleta"></div>
 
           <div class="slots" data-component="slots"></div>
 
@@ -132,7 +132,7 @@
       <section id="comparacoes" class="section section--alt" aria-labelledby="comparacoes-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Passo 2</p>
+            <p class="eyebrow">Passo 2 de 3 · Confira</p>
             <h2 id="comparacoes-title">Dá para ler? As 6 combinações</h2>
             <p class="section__lead">Cada card mostra uma cor como texto sobre outra como fundo. Leia o veredito primeiro; os números ficam logo abaixo.
               <button class="info-btn" type="button" data-info="wcag">O que é WCAG?</button>
@@ -148,7 +148,7 @@
       <section id="harmonias" class="section" aria-labelledby="harmonias-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Sem ideia? Gere uma paleta</p>
+            <p class="eyebrow">Atalho · Sem ideia? Gere uma paleta</p>
             <h2 id="harmonias-title">Harmonias do círculo cromático</h2>
             <p class="section__lead">Escolha um estilo, ajuste o tom base na roda e clique em <strong>Gerar paleta</strong>. Ligue a garantia para a paleta já sair legível.
               <button class="info-btn" type="button" data-info="harmonia">O que é harmonia?</button></p>
@@ -162,7 +162,7 @@
       <section id="pratica" class="section section--alt" aria-labelledby="pratica-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Passo 3</p>
+            <p class="eyebrow">Passo 3 de 3 · Teste</p>
             <h2 id="pratica-title">Teste na prática</h2>
             <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10 (ou a proporção áurea e Fibonacci). Depois, aplique as cores numa foto.
               <button class="info-btn" type="button" data-info="603010">O que é 60-30-10?</button></p>
@@ -177,7 +177,7 @@
       <section id="tons" class="section" aria-labelledby="tons-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Variações</p>
+            <p class="eyebrow">Extra · Variações</p>
             <h2 id="tons-title">Tints e shades</h2>
             <p class="section__lead">Versões mais claras (tints, misturadas com branco) e mais escuras (shades, misturadas com preto) de cada cor, de 10% em 10%.</p>
           </header>
@@ -189,7 +189,7 @@
       <section id="daltonismo" class="section section--alt" aria-labelledby="daltonismo-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Para todo mundo</p>
+            <p class="eyebrow">Extra · Para todo mundo</p>
             <h2 id="daltonismo-title">Como pessoas com daltonismo veem</h2>
             <p class="section__lead">Cerca de 1 em cada 12 homens tem algum tipo de daltonismo. Veja a sua paleta pelos olhos dessas pessoas e o contraste em cada caso.</p>
           </header>
@@ -201,7 +201,7 @@
       <section id="exportar" class="section" aria-labelledby="exportar-title">
         <div class="container">
           <header class="section__head">
-            <p class="eyebrow">Leve com você</p>
+            <p class="eyebrow">Passo 3 de 3 · Exporte</p>
             <h2 id="exportar-title">Exportar e compartilhar</h2>
             <p class="section__lead">Baixe a imagem da paleta, copie o código para o seu site ou mande o link para alguém.</p>
           </header>
@@ -247,7 +247,13 @@
             <article class="learn__item card zone-roxo">
               <h3>Sequência de Fibonacci</h3>
               <p>1, 1, 2, 3, 5, 8, 13, 21… Cada número é a soma dos dois anteriores. Ao dividir um termo pelo seguinte (13 ÷ 21), obtemos um número próximo de 0,618, o inverso do número de ouro.</p>
-              <p>O Paletrês sorteia 3 termos seguidos (ex.: 8, 13, 21). O ângulo entre as cores é 360° × 13 ÷ 21 ≈ 222,9°, e o brilho segue 21/21, 13/21 e 8/21 (100%, 62% e 38%). Quanto maiores os termos, mais o ângulo se aproxima de 222,5°, que é o ângulo áureo (137,5°) medido pelo outro lado do círculo.</p>
+              <p>No Paletrês, funciona assim:</p>
+              <ol>
+                <li>Sorteamos 3 termos seguidos, por exemplo 8, 13 e 21.</li>
+                <li>O ângulo entre as cores é 360° × 13 ÷ 21, cerca de 222,9°.</li>
+                <li>O brilho segue 21/21, 13/21 e 8/21: 100%, 62% e 38%.</li>
+              </ol>
+              <p>Quanto maiores os termos, mais o ângulo se aproxima de 222,5°, que é o ângulo áureo (137,5°) medido pelo outro lado do círculo.</p>
             </article>
             <article class="learn__item card zone-roxo">
               <h3>Dicas rápidas</h3>

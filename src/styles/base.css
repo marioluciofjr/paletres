@@ -140,6 +140,7 @@ select {
 .skip-link:focus {
   top: var(--space-4);
   outline-color: var(--ciano);
+  outline-offset: -6px;
 }
 
 .noscript {

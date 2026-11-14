@@ -61,7 +61,7 @@ class PaletresApp {
 
     // Toda mudança de paleta vai para a URL: o link está sempre pronto para compartilhar.
     bus.on(StoreEvent.PALETTE, ({ palette }) => codec.write(palette));
-    // Link colado com outra paleta na mesma aba (o hash mudou): aplicamos.
+    // Link no formato antigo (#rrggbb-rrggbb-rrggbb) colado na mesma aba: aplicamos.
     this.#win.addEventListener('hashchange', () => {
       const p = codec.read();
       if (p) store.setPalette(p);
@@ -90,6 +90,8 @@ class PaletresApp {
 
     Icons.hydrate(this.#doc);
     new InfoTips({ root: this.#doc }).mount();
+    // Link com paleta quebrada (ex.: 2 ou 4 cores): avisamos antes de trocar pelo padrão.
+    if (codec.hasInvalid()) toast.show('O link tinha uma paleta inválida, então abri a paleta padrão.');
     codec.write(store.state.palette);
   }
 }

@@ -1,0 +1,32 @@
+{
+  "name": "paletres",
+  "version": "0.1.0",
+  "description": "Paletrês: compare 3 cores em 6 combinações de contraste (WCAG 2.2 e APCA) e gere paletas por harmonias, proporção áurea e Fibonacci.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "Mário Lúcio (Prazo Certo)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:contract": "vitest run tests/contract",
+    "test:regression": "vitest run tests/regression",
+    "test:e2e": "playwright test",
+    "lint": "eslint src tests"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "jsdom": "^31.0.1",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

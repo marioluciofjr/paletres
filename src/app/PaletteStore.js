@@ -132,6 +132,18 @@ export class PaletteStore {
     this.#bus.emit(StoreEvent.HISTORY, this.#historyState());
   }
 
+  /**
+   * Grava no histórico uma paleta ANTERIOR (usado ao fim de um gesto, pelo GestureRecorder).
+   * Só grava se a paleta atual for diferente dela.
+   */
+  recordFrom(previous) {
+    if (previous.equals(this.#palette)) return;
+    this.#past.push(previous);
+    if (this.#past.length > HISTORY_LIMIT) this.#past.shift();
+    this.#future = [];
+    this.#bus.emit(StoreEvent.HISTORY, this.#historyState());
+  }
+
   undo() {
     if (!this.canUndo) return false;
     this.#future.push(this.#palette);

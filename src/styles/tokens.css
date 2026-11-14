@@ -1,0 +1,74 @@
+/*
+ * Tokens do design system Prazo Certo (fonte: identidade-visual/DESIGN.md).
+ * Regra inviolável: só roxo, cinza e ciano, nos pares permitidos:
+ *   roxo sobre cinza · roxo sobre ciano · cinza sobre roxo · ciano sobre roxo.
+ * Exceção do Paletrês: --frame (preto) só na moldura das amostras de cor do usuário.
+ */
+:root,
+[data-theme='light'] {
+  --roxo: #230023;
+  --cinza: #f2f2f2;
+  --ciano: #42ffff;
+  --frame: #000000;
+
+  --surface: var(--cinza);
+  --ink: var(--roxo);
+  --border: var(--roxo);
+  --card: var(--roxo);
+  --card-border: var(--roxo);
+  --on-card: var(--cinza);
+  --highlight: var(--ciano);
+  --accent: var(--roxo);
+  --on-accent: var(--ciano);
+  --focus-ring: var(--roxo);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --surface: var(--roxo);
+  --ink: var(--cinza);
+  --border: var(--cinza);
+  --card-border: var(--ciano);
+  --accent: var(--ciano);
+  --on-accent: var(--roxo);
+  --focus-ring: var(--ciano);
+  color-scheme: dark;
+}
+
+/*
+ * Zona roxa: cabeçalho, hero, cards e rodapé. Dentro dela valem os tokens do tema escuro,
+ * em qualquer tema da página. Assim nunca aparece ciano sobre cinza.
+ */
+.zone-roxo {
+  --surface: var(--roxo);
+  --ink: var(--cinza);
+  --border: var(--cinza);
+  --accent: var(--ciano);
+  --on-accent: var(--roxo);
+  --focus-ring: var(--ciano);
+  background: var(--roxo);
+  color: var(--cinza);
+}
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --stroke-control: 1.5px;
+  --stroke-accent: 3px;
+  --stroke-focus: 3px;
+  --font-display: Kreon, Georgia, serif;
+  --font-body: Quicksand, system-ui, sans-serif;
+  --header-h: 72px;
+  --target: 44px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-ui: 200ms;
+}

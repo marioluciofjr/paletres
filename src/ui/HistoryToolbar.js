@@ -1,0 +1,63 @@
+/**
+ * HistoryToolbar — Desfazer, Refazer e Sortear paleta (RF-21), com atalhos de teclado:
+ * Ctrl+Z desfaz; Ctrl+Shift+Z ou Ctrl+Y refaz (Cmd no Mac).
+ * Os atalhos ficam desligados quando a pessoa digita num campo de texto,
+ * para não brigar com o "desfazer" do próprio campo.
+ */
+import { StoreEvent } from '../app/PaletteStore.js';
+import { Dom } from './Dom.js';
+import { Icons } from './Icons.js';
+
+export class HistoryToolbar {
+  #root;
+  #store;
+  #bus;
+  #doc;
+  #undo;
+  #redo;
+
+  constructor({ root, store, bus, doc = document }) {
+    this.#root = root;
+    this.#store = store;
+    this.#bus = bus;
+    this.#doc = doc;
+  }
+
+  mount() {
+    this.#undo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'undo', 'aria-keyshortcuts': 'Control+Z', on: { click: () => this.#store.undo() } },
+      [Icons.svg('undo'), 'Desfazer']);
+    this.#redo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'redo', 'aria-keyshortcuts': 'Control+Shift+Z', on: { click: () => this.#store.redo() } },
+      [Icons.svg('redo'), 'Refazer']);
+    const shuffle = Dom.el('button', {
+      type: 'button',
+      class: 'btn btn--ghost',
+      'data-action': 'shuffle',
+      on: { click: () => this.#store.generate({ random: true }) },
+    }, [Icons.svg('shuffle'), 'Sortear paleta']);
+
+    Dom.replace(this.#root, [this.#undo, this.#redo, shuffle]);
+    this.#bus.on(StoreEvent.HISTORY, () => this.#render());
+    this.#doc.addEventListener('keydown', (e) => this.#onKey(e));
+    this.#render();
+  }
+
+  #onKey(e) {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const target = e.target;
+    const typing = target instanceof HTMLElement && (target.isContentEditable || (target.tagName === 'INPUT' && target.type === 'text') || target.tagName === 'TEXTAREA');
+    if (typing) return;
+    const key = e.key.toLowerCase();
+    if (key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      this.#store.undo();
+    } else if ((key === 'z' && e.shiftKey) || key === 'y') {
+      e.preventDefault();
+      this.#store.redo();
+    }
+  }
+
+  #render() {
+    this.#undo.disabled = !this.#store.canUndo;
+    this.#redo.disabled = !this.#store.canRedo;
+  }
+}

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paletrês — 3 cores, 6 comparações de contraste</title>
+    <meta name="description" content="Escolha 3 cores e descubra se elas combinam e se dá para ler. Compare 6 combinações (WCAG 2.2 e APCA), gere paletas por harmonias, proporção áurea e Fibonacci, e teste em mockups e fotos." />
+    <meta name="theme-color" content="#230023" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Kreon:wght@600;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script>
+      // Aplica o tema antes de desenhar a página, para não "piscar" no tema errado.
+      (function () {
+        try {
+          var saved = localStorage.getItem('paletres:tema');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        } catch (e) { /* sem armazenamento: fica no claro */ }
+      })();
+    </script>
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#paleta">Pular para a ferramenta</a>
+
+    <!-- ===================== CABEÇALHO COM PARALLAX ===================== -->
+    <header class="site-header zone-roxo" data-component="header">
+      <div class="parallax" aria-hidden="true">
+        <svg class="parallax__layer" data-parallax="0.15" data-period="240" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+          <defs>
+            <pattern id="pl-rings" width="240" height="96" patternUnits="userSpaceOnUse">
+              <path d="M150 20a28 28 0 1 1-20 8" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
+            </pattern>
+          </defs>
+          <rect width="2400" height="96" fill="url(#pl-rings)" />
+        </svg>
+        <svg class="parallax__layer" data-parallax="0.3" data-period="320" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+          <defs>
+            <pattern id="pl-moons" width="320" height="96" patternUnits="userSpaceOnUse">
+              <path d="M60 62a22 22 0 1 0 22-30a16 16 0 1 1-22 30z" fill="none" stroke="#F2F2F2" stroke-width="1.75" stroke-linejoin="round" />
+            </pattern>
+          </defs>
+          <rect width="2400" height="96" fill="url(#pl-moons)" />
+        </svg>
+        <svg class="parallax__layer" data-parallax="0.5" data-period="200" viewBox="0 0 2400 96" preserveAspectRatio="xMinYMid slice">
+          <defs>
+            <pattern id="pl-waves" width="200" height="96" patternUnits="userSpaceOnUse">
+              <path d="M0 80q25-14 50 0t50 0t50 0t50 0" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
+            </pattern>
+          </defs>
+          <rect width="2400" height="96" fill="url(#pl-waves)" />
+        </svg>
+      </div>
+
+      <div class="site-header__inner">
+        <a class="brand" href="#inicio" aria-label="Paletrês, voltar ao início">
+          <img src="./favicon.svg" alt="" width="40" height="40" />
+          <span class="brand__name">Paletrês</span>
+        </a>
+
+        <button class="btn btn--ghost menu-toggle" type="button" aria-expanded="false" aria-controls="menu-secoes" data-action="toggle-menu">
+          <span data-icon="menu"></span><span>Seções</span>
+        </button>
+
+        <nav class="site-nav" id="menu-secoes" aria-label="Seções da página">
+          <ul>
+            <li><a href="#paleta">Paleta</a></li>
+            <li><a href="#comparacoes">Contraste</a></li>
+            <li><a href="#harmonias">Harmonias</a></li>
+            <li><a href="#pratica">Na prática</a></li>
+            <li><a href="#tons">Tons</a></li>
+            <li><a href="#daltonismo">Daltonismo</a></li>
+            <li><a href="#exportar">Exportar</a></li>
+            <li><a href="#aprenda">Aprenda</a></li>
+            <li class="site-nav__extra">
+              <a class="btn btn--ghost btn--sm" href="https://prazocerto.me" target="_blank" rel="noopener noreferrer">
+                <span>Visitar Prazo Certo</span><span class="visually-hidden"> (abre em nova aba)</span><span data-icon="external"></span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-component="theme-toggle" aria-pressed="false">
+          <span data-icon="moon"></span><span class="visually-hidden">Tema escuro</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <!-- ===================== INÍCIO ===================== -->
+      <section id="inicio" class="hero zone-roxo" aria-labelledby="hero-title">
+        <div class="container hero__grid">
+          <div class="hero__text">
+            <p class="eyebrow">3 cores · 6 comparações</p>
+            <h1 id="hero-title" class="hero__title">Paletrês</h1>
+            <p class="hero__lead">Escolha 3 cores e descubra, na hora, se elas combinam e se dá para ler um texto em cima da outra.</p>
+            <ol class="steps">
+              <li><span class="steps__n">1</span> Escolha 3 cores</li>
+              <li><span class="steps__n">2</span> Veja se dá para ler</li>
+              <li><span class="steps__n">3</span> Teste e exporte</li>
+            </ol>
+            <a class="btn btn--primary btn--lg" href="#paleta">Montar minha paleta</a>
+          </div>
+          <div class="hero__art" data-component="hero-art" role="img" aria-label="Sua paleta atual"></div>
+        </div>
+      </section>
+
+      <!-- ===================== PALETA ===================== -->
+      <section id="paleta" class="section" aria-labelledby="paleta-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Passo 1</p>
+            <h2 id="paleta-title">Escolha suas 3 cores</h2>
+            <p class="section__lead">Clique no quadrado para escolher uma cor, digite o código HEX ou comece por uma paleta pronta.
+              <button class="info-btn" type="button" data-info="hex">O que é HEX?</button></p>
+            <div class="info-panel" id="info-hex" hidden>HEX é o "nome" de uma cor em código: 6 letras e números depois do #. Ex.: <code>#230023</code> é o roxo da Prazo Certo. Você não precisa decorar: é só clicar no quadrado e escolher.</div>
+          </header>
+
+          <div class="presets" data-component="presets"></div>
+
+          <div class="toolbar" data-component="history" role="toolbar" aria-label="Ações da paleta"></div>
+
+          <div class="slots" data-component="slots"></div>
+
+          <div class="hsb card zone-roxo" data-component="hsb"></div>
+        </div>
+      </section>
+
+      <!-- ===================== COMPARAÇÕES ===================== -->
+      <section id="comparacoes" class="section section--alt" aria-labelledby="comparacoes-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Passo 2</p>
+            <h2 id="comparacoes-title">Dá para ler? As 6 combinações</h2>
+            <p class="section__lead">Cada card mostra uma cor como texto sobre outra como fundo. Leia o veredito primeiro; os números ficam logo abaixo.
+              <button class="info-btn" type="button" data-info="wcag">O que é WCAG?</button>
+              <button class="info-btn" type="button" data-info="apca">E APCA?</button></p>
+            <div class="info-panel" id="info-wcag" hidden><strong>WCAG</strong> é a regra internacional de acessibilidade na web. Ela mede o contraste de 1:1 (nada) a 21:1 (preto no branco). <strong>AA</strong> é o mínimo recomendado (4,5:1 para textos). <strong>AAA</strong> é o nível mais exigente (7:1).</div>
+            <div class="info-panel" id="info-apca" hidden><strong>APCA</strong> é o método que deve entrar no futuro WCAG 3. Ele considera a direção: texto escuro no fundo claro é diferente de texto claro no fundo escuro. Por isso os 6 cards têm valores APCA diferentes. Aqui ele é só uma referência.</div>
+          </header>
+          <div data-component="comparisons"></div>
+        </div>
+      </section>
+
+      <!-- ===================== HARMONIAS ===================== -->
+      <section id="harmonias" class="section" aria-labelledby="harmonias-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Sem ideia? Gere uma paleta</p>
+            <h2 id="harmonias-title">Harmonias do círculo cromático</h2>
+            <p class="section__lead">Escolha um estilo, ajuste o tom base na roda e clique em <strong>Gerar paleta</strong>. Ligue a garantia para a paleta já sair legível.
+              <button class="info-btn" type="button" data-info="harmonia">O que é harmonia?</button></p>
+            <div class="info-panel" id="info-harmonia" hidden>Harmonia é uma "receita" para escolher cores que combinam, usando a posição delas no círculo cromático (o círculo com todas as cores do arco-íris).</div>
+          </header>
+          <div class="harmony" data-component="harmony"></div>
+        </div>
+      </section>
+
+      <!-- ===================== NA PRÁTICA ===================== -->
+      <section id="pratica" class="section section--alt" aria-labelledby="pratica-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Passo 3</p>
+            <h2 id="pratica-title">Teste na prática</h2>
+            <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10 (ou a proporção áurea e Fibonacci). Depois, aplique as cores numa foto.
+              <button class="info-btn" type="button" data-info="603010">O que é 60-30-10?</button></p>
+            <div class="info-panel" id="info-603010" hidden>Uma regra simples de decoração e design: <strong>60%</strong> da tela com a cor principal (o fundo), <strong>30%</strong> com a cor de apoio (cards, barras) e <strong>10%</strong> com a cor de destaque (botões e links).</div>
+          </header>
+          <div data-component="mockups"></div>
+          <div class="grading card" data-component="grading"></div>
+        </div>
+      </section>
+
+      <!-- ===================== TINTS E SHADES ===================== -->
+      <section id="tons" class="section" aria-labelledby="tons-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Variações</p>
+            <h2 id="tons-title">Tints e shades</h2>
+            <p class="section__lead">Versões mais claras (tints, misturadas com branco) e mais escuras (shades, misturadas com preto) de cada cor, de 10% em 10%.</p>
+          </header>
+          <div data-component="tints"></div>
+        </div>
+      </section>
+
+      <!-- ===================== DALTONISMO ===================== -->
+      <section id="daltonismo" class="section section--alt" aria-labelledby="daltonismo-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Para todo mundo</p>
+            <h2 id="daltonismo-title">Como pessoas com daltonismo veem</h2>
+            <p class="section__lead">Cerca de 1 em cada 12 homens tem algum tipo de daltonismo. Veja a sua paleta pelos olhos delas e o pior contraste em cada caso.</p>
+          </header>
+          <div data-component="vision"></div>
+        </div>
+      </section>
+
+      <!-- ===================== EXPORTAR ===================== -->
+      <section id="exportar" class="section" aria-labelledby="exportar-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Leve com você</p>
+            <h2 id="exportar-title">Exportar e compartilhar</h2>
+            <p class="section__lead">Baixe a imagem da paleta, copie o código para o seu site ou mande o link para alguém.</p>
+          </header>
+          <div data-component="export"></div>
+        </div>
+      </section>
+
+      <!-- ===================== APRENDA ===================== -->
+      <section id="aprenda" class="section section--alt" aria-labelledby="aprenda-title">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow">Para entender</p>
+            <h2 id="aprenda-title">Aprenda em 2 minutos</h2>
+          </header>
+          <div class="learn">
+            <article class="learn__item card zone-roxo">
+              <h3>Contraste e WCAG</h3>
+              <p>Contraste é a diferença de claridade entre o texto e o fundo. A WCAG mede isso de 1:1 a 21:1. Para um parágrafo, o mínimo é <strong>4,5:1</strong> (nível AA). Títulos grandes pedem <strong>3:1</strong>. O nível AAA pede <strong>7:1</strong>.</p>
+              <p>Botões, ícones e bordas também precisam de <strong>3:1</strong> contra o que está em volta.</p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Por que 6 comparações?</h3>
+              <p>Com 3 cores (A, B e C) existem 3 pares: AB, AC e BC. Cada par pode ser "texto sobre fundo" nas duas direções: A sobre B e B sobre A. Isso dá 6 combinações.</p>
+              <p>No WCAG as duas direções dão o mesmo número. No <strong>APCA</strong>, não: texto claro no escuro costuma precisar de mais contraste.</p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Harmonias clássicas</h3>
+              <ul>
+                <li><strong>Análogo:</strong> vizinhas no círculo. Calmo.</li>
+                <li><strong>Complementar:</strong> opostas (180°). Destaque forte.</li>
+                <li><strong>Complementar dividido:</strong> as vizinhas da oposta.</li>
+                <li><strong>Tríade:</strong> 3 cores a 120°. Alegre.</li>
+                <li><strong>Quadrado:</strong> 4 cores a 90° (aqui usamos 3).</li>
+                <li><strong>Composto:</strong> uma vizinha e uma oposta.</li>
+                <li><strong>Tons e monocromático:</strong> uma cor só, mais clara ou mais escura.</li>
+              </ul>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Proporção áurea</h3>
+              <p>O número de ouro, <strong>φ ≈ 1,618</strong>, aparece em girassóis, conchas e na arte. O <strong>ângulo áureo</strong> (≈ 137,5°) divide o círculo nessa proporção: é como as sementes do girassol se espalham.</p>
+              <p>No Paletrês, cada cor gira 137,5° e fica 1,618 vez mais escura que a anterior. Na prática, a proporção áurea também divide a tela: 62%, 24% e 14%.</p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Sequência de Fibonacci</h3>
+              <p>1, 1, 2, 3, 5, 8, 13, 21… Cada número é a soma dos dois anteriores. Dividindo um termo pelo seguinte (13 ÷ 21), o resultado se aproxima de 0,618, o inverso do número de ouro.</p>
+              <p>O Paletrês sorteia 3 termos seguidos (ex.: 8, 13, 21). O ângulo entre as cores é 360° × 13 ÷ 21 ≈ 222,9°, e o brilho segue 21/21, 13/21 e 8/21 (100%, 62% e 38%). Quanto maiores os termos, mais perto do ângulo áureo.</p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Dicas rápidas</h3>
+              <ul>
+                <li>Use a cor mais clara ou a mais escura no fundo.</li>
+                <li>Guarde a cor mais viva para botões e destaques (os 10%).</li>
+                <li>Nunca dependa só da cor para dar um aviso: escreva também.</li>
+                <li>Teste no simulador de daltonismo antes de publicar.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== RODAPÉ ===================== -->
+    <footer class="site-footer zone-roxo">
+      <div class="container site-footer__grid">
+        <div>
+          <img class="site-footer__logo" src="./logo-cinza-roxo.svg" alt="Prazo Certo" width="192" height="108" loading="lazy" />
+        </div>
+        <nav aria-label="Contatos">
+          <h2 class="site-footer__title">Contatos</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://prazocerto.me" target="_blank" rel="noopener noreferrer">prazocerto.me<span class="visually-hidden"> (abre em nova aba)</span></a></li>
+            <li><a href="https://linkedin.com/in/marioluciofjr" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (abre em nova aba)</span></a></li>
+            <li><a href="https://github.com/marioluciofjr" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (abre em nova aba)</span></a></li>
+            <li><a href="https://behance.net/prazocerto" target="_blank" rel="noopener noreferrer">Behance<span class="visually-hidden"> (abre em nova aba)</span></a></li>
+          </ul>
+        </nav>
+        <p class="site-footer__credit">Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.</p>
+      </div>
+    </footer>
+
+    <div class="toast" data-component="toast" role="status" aria-live="polite"></div>
+    <noscript><p class="noscript">O Paletrês precisa de JavaScript ligado para calcular as cores.</p></noscript>
+  </body>
+</html>

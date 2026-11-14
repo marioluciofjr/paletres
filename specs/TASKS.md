@@ -12,7 +12,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T04 | `Color` e `ColorConverter` | RF-01, RF-02 | Claude | ✅ |
 | T05 | `Wcag2Contrast`, `ApcaContrast`, `ContrastEvaluator`, `PaletteComparator`, `Palette`, `ReadableTextPicker` | RF-03, RF-04, RF-17 | Claude | ✅ |
 | T06 | 11 harmonias, `HarmonyRegistry`, `RandomSource`, `NumberFormat` | RF-05 | Claude | ✅ |
-| T07 | `ContrastGuard`, `TintShadeGenerator`, `ColorBlindSimulator`, `UsageProportion`, `PlainVerdict`, `RoleAdvisor`, `PresetCatalog` | RF-06, RF-07, RF-08, RF-09, RF-19, RF-20, RF-23, RF-24 | Claude | ⏳ |
+| T07 | `ContrastGuard`, `TintShadeGenerator`, `ColorBlindSimulator`, `UsageProportion`, `PlainVerdict`, `RoleAdvisor`, `PresetCatalog`, `GradientMap` | RF-06…RF-09, RF-18…RF-20, RF-23, RF-24 | Claude | ✅ |
 | T08 | Exportadores e `UrlStateCodec` | RF-10, RF-11 | Claude | ⏳ |
 | T09 | `PaletteStore` (com histórico para desfazer/refazer) e `EventBus` | RF-01…RF-11, RF-21 | Claude | ⏳ |
 | T10 | Estilos, layout one page, `ParallaxHeader`, `ThemeToggle`, botão Prazo Certo e crédito no rodapé | RF-13, RF-14, RF-15, RF-16, RNF-02, RNF-07 | Claude | ⏳ |
@@ -27,7 +27,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 
 ## Próximo passo
 
-T07 — guard, tints, daltonismo, proporção, veredito, papéis e paletas prontas.
+T08 — exportadores e link compartilhável.
 
 ## Backlog (fora da v1)
 

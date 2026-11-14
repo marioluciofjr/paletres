@@ -38,7 +38,7 @@
 | `domain/contrast` | `ContrastStrategy`, `Wcag2Contrast`, `ApcaContrast`, `ContrastEvaluator`, `PaletteComparator` | Calcular contraste e montar as 6 comparações. |
 | `domain/palette` | `Palette` | Guardar as 3 cores e trocar uma delas sem mutação. |
 | `domain/harmony` | `HarmonyStrategy` e 11 subclasses, `HarmonyRegistry` | Gerar 3 cores a partir de uma matiz base. |
-| `domain/guard` | `ContrastGuard` | Ajustar o brilho até atingir AA ou AAA. |
+| `domain/guard` | `ContrastGuard` | Ajustar o brilho (e, no limite, a saturação) por varredura até o par principal de texto atingir AA ou AAA e o destaque ter ≥ 3:1. |
 | `domain/tints` | `TintShadeGenerator` | Gerar tons claros e escuros. |
 | `domain/vision` | `ColorBlindSimulator` | Simular tipos de daltonismo. |
 | `domain/export` | `CssVarsExporter`, `JsonExporter`, `PngExporter` | Converter a paleta num formato de saída. |
@@ -80,6 +80,8 @@
 | ADR-05 | Matrizes de Machado (2009) com severidade 1,0 | Brettel (1997) | Uma matriz 3×3 por tipo; simples e bem aceita. |
 | ADR-06 | Tints e shades por mistura em RGB | Mistura em OKLab | Mesmo resultado do maketintsandshades.com, que é a referência pedida. |
 | ADR-07 | Estado na URL (hash) | Query string | O hash não recarrega a página e funciona no GitHub Pages. |
+| ADR-08 | Garantia AA/AAA só no par principal + destaque ≥ 3:1 | Exigir os 3 pares | Com 3 cores, os 3 pares em AA é matematicamente quase impossível. |
+| ADR-09 | Razão exibida com 2 casas, arredondada para baixo | 1 casa, arredondamento comum | Evita mostrar "4,50:1" para um par de 4,499:1, que não passa em AA. |
 
 ## 6. Concessões aceitas
 

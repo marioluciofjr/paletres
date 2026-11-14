@@ -36,7 +36,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-05 | Geração de paleta por harmonia: análogo, complementar, complementar dividido, tríade, quadrado, composto, tons, monocromático, proporção áurea, Fibonacci e âncora de contraste. Inclui roda cromática com marcadores. | Must |
 | RF-06 | Seletor de garantia **Livre / Garantir AA / Garantir AAA**. Ajusta só o brilho e mantém a matiz. Avisa em texto quando não consegue. | Must |
 | RF-07 | Prévia da proporção de uso: 60-30-10, áurea (61,8/23,6/14,6) e Fibonacci (8:5:3). | Should |
-| RF-08 | Tints e shades: 10 tons mais claros e 10 mais escuros de cada cor, de 10 em 10%. Um clique copia o HEX ou aplica o tom à paleta. | Should |
+| RF-08 | Tints e shades: 9 tons mais claros e 9 mais escuros de cada cor, de 10% a 90%. Um clique copia o HEX ou aplica o tom à paleta. | Should |
 | RF-09 | Simulador de daltonismo: protanopia, deuteranopia, tritanopia e acromatopsia. | Should |
 | RF-10 | Copiar cada HEX e exportar a paleta como variáveis CSS, JSON ou PNG. | Must |
 | RF-11 | Link compartilhável: as 3 cores ficam na URL (`#rrggbb-rrggbb-rrggbb`). | Must |

@@ -8,10 +8,14 @@ export class NumberFormat {
     return value.toFixed(digits).replace('.', ',');
   }
 
-  /** Razão de contraste WCAG. Ex.: ratio(17.09) → "17,1:1". Arredonda para baixo para não "aprovar" por arredondamento. */
+  /**
+   * Razão de contraste WCAG com 2 casas. Ex.: ratio(17.094) → "17,09:1".
+   * Arredonda PARA BAIXO: 4,499 vira "4,49:1" e não "4,50:1", para não parecer que passou em AA.
+   * (O 1e-9 corrige imprecisões do ponto flutuante, como 17.09 * 100 = 1708,9999…)
+   */
   static ratio(value) {
-    const floored = Math.floor(value * 10) / 10;
-    return `${NumberFormat.decimal(floored, 1)}:1`;
+    const floored = Math.floor(value * 100 + 1e-9) / 100;
+    return `${NumberFormat.decimal(floored, 2)}:1`;
   }
 
   /** Porcentagem inteira. Ex.: percent(61.8) → "62%". */

@@ -4,7 +4,7 @@
 
 | Requisito | Tarefa | Código | Testes | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| RF-01 Entrada HEX | T04, T11 | `domain/color/Color.js`, `ui/HexInputPanel.js` | `unit/color.test.js` | ✅ |
+| RF-01 Entrada HEX | T04, T11 | `domain/color/Color.js`, `ui/ColorSlots.js` | `unit/color.test.js` | ✅ |
 | RF-02 Ajuste HSB | T04, T11 | `domain/color/ColorConverter.js`, `ui/HsbSliderPanel.js` | `unit/color.test.js` | ✅ |
 | RF-03 6 comparações WCAG | T05, T11 | `domain/contrast/*`, `ui/ComparisonGrid.js` | `unit/contrast.test.js`, `contract/contrast.contract.test.js` | ✅ |
 | RF-04 APCA | T05 | `domain/contrast/ApcaContrast.js` | `contract/contrast.contract.test.js` | ✅ |
@@ -23,7 +23,7 @@
 | RF-19 Paletas prontas | T07, T11 | `domain/palette/PresetCatalog.js`, `ui/PresetBar.js` | `unit/presets.test.js` | ✅ |
 | RF-20 Consertar contraste | T07, T11 | `domain/guard/ContrastGuard.js`, `ui/ComparisonGrid.js` | `unit/guard.test.js` | ✅ |
 | RF-21 Desfazer/refazer | T09 | `app/PaletteStore.js` | `integration/store.test.js` | ✅ |
-| RF-22 Seletor visual de cor | T11 | `ui/HexInputPanel.js` | `integration/ui.test.js` | ⏳ |
+| RF-22 Seletor visual de cor | T11 | `ui/ColorSlots.js` | `integration/ui.test.js` | ✅ |
 | RF-23 Veredito simples + "O que é isso?" | T07, T11 | `domain/contrast/PlainVerdict.js`, `ui/InfoTip.js` | `unit/verdict.test.js` | ✅ |
 | RF-24 Sugestão de papéis | T07, T12b | `domain/proportion/RoleAdvisor.js` | `unit/proportion.test.js` | ✅ |
 | RF-15 Botão Prazo Certo (nova aba) | T10 | `index.html` (menu) | `e2e/site.spec.js` | ✅ |

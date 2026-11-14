@@ -16,7 +16,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T08 | Exportadores (CSS, JSON, `PngLayout`), `UrlStateCodec`, `ClipboardService`, `PreferenceStorage` | RF-10, RF-11, RF-13 | Claude | ✅ |
 | T09 | `PaletteStore` (com histórico para desfazer/refazer) e `EventBus` | RF-01…RF-11, RF-21 | Claude | ✅ |
 | T10 | Estilos, layout one page, `ParallaxHeader`, `ThemeToggle`, botão Prazo Certo e crédito no rodapé | RF-13, RF-14, RF-15, RF-16, RNF-02, RNF-07 | Claude | ✅ |
-| T11 | `HexInputPanel` (com seletor visual), `PresetBar`, `HsbSliderPanel`, `ComparisonGrid` (veredito simples, "Consertar contraste") e `InfoTip` | RF-01…RF-04, RF-19…RF-23, RNF-09 | Claude | ✅ |
+| T11 | `ColorSlots` (com seletor visual), `PresetBar`, `HsbSliderPanel`, `ComparisonGrid` (veredito simples, "Consertar contraste") e `InfoTip` | RF-01…RF-04, RF-19…RF-23, RNF-09 | Claude | ✅ |
 | T12 | `ColorWheel`, `HarmonyPanel`, `TintShadeTable`, `ColorBlindPreview`, `ExportPanel` (+ `CanvasPngRenderer`, `FileDownloader`) | RF-05…RF-11 | Claude | ✅ |
 | T12b | `UsageMockupPanel` (site e app) e `ColorGradingPanel` | RF-07, RF-17, RF-18, RF-24 | Claude | ✅ |
 | T13 | Seção "Aprenda" e revisão gramatical | RF-12 | Claude | ✅ |

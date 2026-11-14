@@ -62,7 +62,7 @@
 
 ## 4. Fluxo principal
 
-1. A pessoa digita um HEX no `HexInputPanel`.
+1. A pessoa digita um HEX no `ColorSlots`.
 2. O painel valida com `Color.fromHex()`. Se for inválido, mostra o erro em texto e não muda o estado.
 3. O painel chama `store.setColor(index, color)`.
 4. O `PaletteStore` cria uma nova `Palette`, grava o hash da URL via `UrlStateCodec` e emite `palette:changed`.

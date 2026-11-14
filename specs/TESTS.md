@@ -15,7 +15,7 @@ Nenhuma classe de `src/` entra no repositório sem pelo menos um teste que a exe
 | Pasta | Ferramenta | O que valida | Exemplo |
 | :--- | :--- | :--- | :--- |
 | `tests/unit` | Vitest (node) | Uma classe isolada, sem DOM. | `Color.fromHex('#abc')` vira `#AABBCC`. |
-| `tests/integration` | Vitest + jsdom | Várias classes juntas, inclusive componentes de UI num DOM simulado. | Digitar no `HexInputPanel` atualiza o `ComparisonGrid`. |
+| `tests/integration` | Vitest + jsdom | Várias classes juntas, inclusive componentes de UI num DOM simulado. | Digitar no `ColorSlots` atualiza o `ComparisonGrid`. |
 | `tests/contract` | Vitest (node) | Formatos e valores de referência que não podem mudar. | Preto/branco = 21:1; formato do hash `#rrggbb-rrggbb-rrggbb`; chaves do JSON exportado. |
 | `tests/e2e` | Playwright + axe-core | O site real no Chromium. | Gerar Fibonacci com "Garantir AAA" e conferir os selos; varredura axe nos dois temas. |
 | `tests/regression` | Vitest (node) | Resultados congelados com semente fixa. | As 11 harmonias com a semente 42 geram sempre os mesmos HEX. |

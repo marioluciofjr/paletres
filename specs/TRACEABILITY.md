@@ -13,8 +13,8 @@
 | RF-07 Proporção de uso | T07 | `domain/proportion/UsageProportion.js` | `unit/proportion.test.js` | 🔄 domínio ✅ |
 | RF-08 Tints e shades | T07, T12 | `domain/tints/TintShadeGenerator.js`, `ui/TintShadeTable.js` | `unit/tints.test.js` | 🔄 domínio ✅ |
 | RF-09 Daltonismo | T07, T12 | `domain/vision/ColorBlindSimulator.js`, `ui/ColorBlindPreview.js` | `unit/vision.test.js` | 🔄 domínio ✅ |
-| RF-10 Exportar e copiar | T08, T12 | `domain/export/*`, `infra/ClipboardService.js`, `ui/ExportPanel.js` | `unit/export.test.js`, `contract/export.contract.test.js` | ⏳ |
-| RF-11 Link compartilhável | T08 | `infra/UrlStateCodec.js` | `contract/url.contract.test.js` | ⏳ |
+| RF-10 Exportar e copiar | T08, T12 | `domain/export/*`, `infra/ClipboardService.js`, `ui/ExportPanel.js` | `unit/export.test.js`, `contract/export.contract.test.js` | 🔄 domínio ✅ |
+| RF-11 Link compartilhável | T08 | `infra/UrlStateCodec.js` | `contract/url.contract.test.js` | 🔄 codec ✅ |
 | RF-12 Seções explicativas | T13 | `index.html` (`#aprenda`) | e2e | ⏳ |
 | RF-13 Tema claro/escuro | T10 | `ui/ThemeToggle.js`, `styles/tokens.css` | e2e | ⏳ |
 | RF-14 Menu com parallax | T10 | `ui/ParallaxHeader.js` | e2e | ⏳ |

@@ -13,7 +13,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T05 | `Wcag2Contrast`, `ApcaContrast`, `ContrastEvaluator`, `PaletteComparator`, `Palette`, `ReadableTextPicker` | RF-03, RF-04, RF-17 | Claude | ✅ |
 | T06 | 11 harmonias, `HarmonyRegistry`, `RandomSource`, `NumberFormat` | RF-05 | Claude | ✅ |
 | T07 | `ContrastGuard`, `TintShadeGenerator`, `ColorBlindSimulator`, `UsageProportion`, `PlainVerdict`, `RoleAdvisor`, `PresetCatalog`, `GradientMap` | RF-06…RF-09, RF-18…RF-20, RF-23, RF-24 | Claude | ✅ |
-| T08 | Exportadores e `UrlStateCodec` | RF-10, RF-11 | Claude | ⏳ |
+| T08 | Exportadores (CSS, JSON, `PngLayout`), `UrlStateCodec`, `ClipboardService`, `PreferenceStorage` | RF-10, RF-11, RF-13 | Claude | ✅ |
 | T09 | `PaletteStore` (com histórico para desfazer/refazer) e `EventBus` | RF-01…RF-11, RF-21 | Claude | ⏳ |
 | T10 | Estilos, layout one page, `ParallaxHeader`, `ThemeToggle`, botão Prazo Certo e crédito no rodapé | RF-13, RF-14, RF-15, RF-16, RNF-02, RNF-07 | Claude | ⏳ |
 | T11 | `HexInputPanel` (com seletor visual), `PresetBar`, `HsbSliderPanel`, `ComparisonGrid` (veredito simples, "Consertar contraste") e `InfoTip` | RF-01…RF-04, RF-19…RF-23, RNF-09 | Claude | ⏳ |
@@ -27,7 +27,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 
 ## Próximo passo
 
-T08 — exportadores e link compartilhável.
+T09 — `PaletteStore` e `EventBus`.
 
 ## Backlog (fora da v1)
 

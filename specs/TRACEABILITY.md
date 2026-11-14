@@ -4,8 +4,8 @@
 
 | Requisito | Tarefa | Código | Testes | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| RF-01 Entrada HEX | T04, T11 | `domain/color/Color.js`, `ui/HexInputPanel.js` | `unit/color.test.js` | ⏳ |
-| RF-02 Ajuste HSB | T04, T11 | `domain/color/ColorConverter.js`, `ui/HsbSliderPanel.js` | `unit/color.test.js` | ⏳ |
+| RF-01 Entrada HEX | T04, T11 | `domain/color/Color.js`, `ui/HexInputPanel.js` | `unit/color.test.js` | 🔄 domínio ✅ |
+| RF-02 Ajuste HSB | T04, T11 | `domain/color/ColorConverter.js`, `ui/HsbSliderPanel.js` | `unit/color.test.js` | 🔄 domínio ✅ |
 | RF-03 6 comparações WCAG | T05, T11 | `domain/contrast/*`, `ui/ComparisonGrid.js` | `unit/contrast.test.js`, `contract/contrast.contract.test.js` | ⏳ |
 | RF-04 APCA | T05 | `domain/contrast/ApcaContrast.js` | `contract/contrast.contract.test.js` | ⏳ |
 | RF-05 Harmonias | T06, T12 | `domain/harmony/*`, `ui/HarmonyPicker.js`, `ui/ColorWheel.js` | `unit/harmony.test.js` | ⏳ |
@@ -18,6 +18,8 @@
 | RF-12 Seções explicativas | T13 | `index.html` (`#aprenda`) | e2e | ⏳ |
 | RF-13 Tema claro/escuro | T10 | `ui/ThemeToggle.js`, `styles/tokens.css` | e2e | ⏳ |
 | RF-14 Menu com parallax | T10 | `ui/ParallaxHeader.js` | e2e | ⏳ |
+| RF-17 Mockups 60-30-10 | T07, T12b | `domain/proportion/UsageProportion.js`, `domain/contrast/ReadableTextPicker.js`, `ui/UsageMockupPanel.js` | `unit/proportion.test.js`, `unit/readable.test.js` | ⏳ |
+| RF-18 Color grading | T12b | `domain/grading/GradientMap.js`, `ui/ColorGradingPanel.js` | `unit/grading.test.js` | ⏳ |
 | RF-15 Botão Prazo Certo (nova aba) | T10 | `index.html` (menu) | `e2e/site.spec.js` | ⏳ |
 | RF-16 Crédito no rodapé | T10 | `index.html` (rodapé) | `e2e/site.spec.js` | ⏳ |
 | RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` | ⏳ |

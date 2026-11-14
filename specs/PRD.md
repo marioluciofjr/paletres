@@ -43,6 +43,8 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-13 | Tema claro e escuro da interface, com a escolha lembrada no navegador. | Should |
 | RF-14 | Menu fixo com efeito parallax, que para quando o sistema pede menos movimento. | Must |
 | RF-15 | Botão "Visitar Prazo Certo" no menu, que abre https://prazocerto.me numa nova aba e avisa disso em texto para leitores de tela. | Must |
+| RF-17 | Mockups de **site web** e de **app mobile** pintados com a paleta numa proporção de uso (60-30-10, áurea ou Fibonacci). A pessoa escolhe qual cor é a dominante, a secundária e o destaque. O texto de cada superfície usa a cor da paleta com mais contraste, e o mockup avisa quando nenhuma passa em AA. | Must |
+| RF-18 | Color grading: a pessoa envia uma imagem (JPG, PNG ou WebP, até 15 MB) e vê a imagem recolorida com a paleta por *gradient map* (sombras → cor mais escura, meios-tons → cor do meio, luzes → cor mais clara). Tem slider de intensidade (0–100%), comparação antes/depois e download em PNG. A imagem é processada só no navegador. | Must |
 | RF-16 | Rodapé com o crédito: "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto." | Must |
 
 ## 5. Requisitos não funcionais
@@ -62,7 +64,8 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 
 - Paletas com mais de 3 cores.
 - Contas de usuário, nuvem ou banco de dados.
-- Importar cores de imagens.
+- Extrair a paleta de uma imagem (o color grading faz o caminho inverso: aplica a paleta na imagem).
+- Enviar imagens a servidores: o color grading é 100% local.
 - Selo oficial APCA: o APCA ainda é um rascunho do WCAG 3, por isso entra só como referência.
 - Publicação no GitHub, que acontece depois, a pedido do Mário.
 

@@ -20,8 +20,8 @@ Sem branco, preto, opacidade, degradê ou sombra na interface.
 
 As cores digitadas pela pessoa usuária são arbitrárias. Para que elas não "vazem" e não se confundam com a marca, **toda amostra ou prévia com cor do usuário fica dentro de uma moldura preta `#000000` de 2px**, com cantos de 8px.
 
-- A exceção vale **só** para amostras, prévias das 6 comparações, células de tints e shades, faixas do simulador de daltonismo, faixa de proporção e marcadores da roda cromática.
-- Texto da interface nunca fica sobre uma cor do usuário. A única exceção é o texto de **prévia** dentro do card de comparação, que é justamente o objeto do teste.
+- A exceção vale **só** para amostras, prévias das 6 comparações, células de tints e shades, faixas do simulador de daltonismo, faixa de proporção, marcadores da roda cromática, **mockups de site e app** e a **imagem do color grading**.
+- Texto da interface nunca fica sobre uma cor do usuário. As exceções são os textos de **prévia** (no card de comparação e dentro dos mockups), que são justamente o objeto do teste.
 - Aprovada pelo Mário em 13/11/2026.
 
 ## 2. Tipografia
@@ -45,11 +45,12 @@ Ordem das seções, todas com âncora no menu:
 2. **Paleta** (`#paleta`): 3 slots de cor (amostra, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
 3. **Comparações** (`#comparacoes`): 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile) e um resumo com o pior par.
 4. **Harmonias** (`#harmonias`): roda cromática, seletor de harmonia, seletor de garantia (Livre/AA/AAA), botão "Gerar paleta" e a faixa de proporção de uso.
-5. **Tints e shades** (`#tons`): uma linha de 21 células por cor (10 claros, a original, 10 escuros).
-6. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
-7. **Exportar** (`#exportar`): CSS, JSON, PNG e o link compartilhável.
-8. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, APCA, harmonias, proporção áurea e Fibonacci.
-9. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto."
+5. **Teste na prática** (`#pratica`): seletor de proporção (60-30-10, áurea, Fibonacci), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: área de upload (arrastar ou escolher arquivo), imagem antes/depois com divisor arrastável, slider de intensidade e botão "Baixar PNG".
+6. **Tints e shades** (`#tons`): uma linha de 21 células por cor (10 claros, a original, 10 escuros).
+7. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
+8. **Exportar** (`#exportar`): CSS, JSON, PNG e o link compartilhável.
+9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, APCA, harmonias, proporção áurea e Fibonacci.
+10. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto."
 
 ### 3.1 Botão "Visitar Prazo Certo"
 
@@ -95,6 +96,18 @@ Grupo de `radio` estilizados como chips, com nome e ícone de cada harmonia.
 
 ### ColorWheel
 SVG de 280px com o disco de matizes (na moldura preta) e 3 marcadores circulares. O marcador base pode ser arrastado com o mouse ou movido pelas setas (±1°, ou ±15° com Shift). Tem `role="slider"`, `aria-valuenow` e `aria-valuetext` com a matiz.
+
+### UsageMockup (site e app)
+- É uma prévia, então fica na moldura preta. Usa `role="img"` e um `aria-label` que descreve os papéis ("Mockup de site: fundo #F2F2F2, cards #230023, botões #42FFFF").
+- Papéis: **dominante** = fundo da página ou tela (60%); **secundária** = cabeçalho, cards e barras (30%); **destaque** = botões, links e ícones ativos (10%). As áreas são calculadas para respeitar a proporção escolhida.
+- O texto de cada superfície usa a cor da paleta com maior contraste WCAG contra ela. Uma legenda fora do mockup mostra a razão de cada par usado e, se algum ficar abaixo de 4,5:1, mostra "Atenção: texto abaixo de AA".
+
+### ColorGradingPanel
+- Upload por `<input type="file" accept="image/png,image/jpeg,image/webp">` com rótulo visível. Também aceita arrastar e soltar, e o arquivo pode ser escolhido pelo teclado.
+- A imagem é reduzida para no máximo 1600px no lado maior antes do processamento.
+- Antes e depois: divisor arrastável com `role="slider"` e operável por setas.
+- Slider "Intensidade" (0–100%, padrão 100%) e botão "Baixar PNG".
+- Mensagens de erro em texto (formato ou tamanho inválido) num `role="alert"`.
 
 ### Toast
 Mensagem curta ("HEX copiado") num `role="status"`, fundo roxo e texto cinza, por 2 segundos.

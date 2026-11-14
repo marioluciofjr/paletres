@@ -42,7 +42,9 @@
 | `domain/tints` | `TintShadeGenerator` | Gerar tons claros e escuros. |
 | `domain/vision` | `ColorBlindSimulator` | Simular tipos de daltonismo. |
 | `domain/export` | `CssVarsExporter`, `JsonExporter`, `PngExporter` | Converter a paleta num formato de saída. |
-| `domain/proportion` | `UsageProportion` | Calcular as proporções de uso (60-30-10, áurea, Fibonacci). |
+| `domain/proportion` | `UsageProportion` | Calcular as proporções de uso (60-30-10, áurea, Fibonacci) e atribuir papéis (dominante, secundária, destaque). |
+| `domain/contrast` | `ReadableTextPicker` | Escolher, entre as cores da paleta, a de maior contraste para o texto de uma superfície. |
+| `domain/grading` | `GradientMap` | Recolorir pixels (`Uint8ClampedArray` RGBA) mapeando a luminância às 3 cores, com intensidade. Não conhece o `<canvas>`. |
 | `infra` | `UrlStateCodec`, `ClipboardService`, `RandomSource`, `PreferenceStorage` | Falar com o navegador (URL, área de transferência, localStorage) e gerar números aleatórios. |
 | `app` | `PaletteStore`, `EventBus` | Guardar o estado e avisar quem está inscrito. |
 | `ui` | um componente por seção | Desenhar e escutar o DOM. |

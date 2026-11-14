@@ -19,15 +19,15 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T11 | `HexInputPanel` (com seletor visual), `PresetBar`, `HsbSliderPanel`, `ComparisonGrid` (veredito simples, "Consertar contraste") e `InfoTip` | RF-01…RF-04, RF-19…RF-23, RNF-09 | Claude | ✅ |
 | T12 | `ColorWheel`, `HarmonyPanel`, `TintShadeTable`, `ColorBlindPreview`, `ExportPanel` (+ `CanvasPngRenderer`, `FileDownloader`) | RF-05…RF-11 | Claude | ✅ |
 | T12b | `UsageMockupPanel` (site e app) e `ColorGradingPanel` | RF-07, RF-17, RF-18, RF-24 | Claude | ✅ |
-| T13 | Seção "Aprenda" e revisão gramatical | RF-12 | Claude | ⏳ |
-| T14 | Testes e2e e varredura axe | RNF-01 | Claude | ⏳ |
-| T15 | Testes de regressão com semente fixa | RF-05 | Claude | ⏳ |
+| T13 | Seção "Aprenda" e revisão gramatical | RF-12 | Claude | ✅ |
+| T14 | Testes e2e e varredura axe (21 testes) | RNF-01 | Claude | ✅ |
+| T15 | Testes de regressão com semente fixa (24 snapshots) | RF-05 | Claude | ✅ |
 | T16 | Auditorias (a11y-web, UX, motion) e correções | RNF-01, RNF-07 | Claude | ⏳ |
 | T17 | Build final e README pronto para o GitHub | RNF-03 | Claude | ⏳ |
 
 ## Próximo passo
 
-T13 — revisão gramatical da seção Aprenda; depois T14 (e2e).
+T16 — auditorias (a11y-web, UX, acessibilidade, motion e casos extremos).
 
 ## Backlog (fora da v1)
 

@@ -1,0 +1,277 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Regressão das harmonias (semente 42) > analogo 1`] = `
+{
+  "hexes": [
+    "#2EE6C7",
+    "#2EA8E6",
+    "#2E4CE6",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > ancora-contraste 1`] = `
+{
+  "hexes": [
+    "#081E29",
+    "#E9F2F7",
+    "#DE682C",
+  ],
+  "note": "O destaque foi ajustado para ter pelo menos 3:1 contra a cor escura e a clara.",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > complementar 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#536873",
+    "#E66B2E",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > complementar-dividido 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#E62E4D",
+    "#E6C72E",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > composto 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#2E4CE6",
+    "#E66B2E",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > fibonacci 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#898E1C",
+    "#471157",
+  ],
+  "note": "Termos 8, 13 e 21: ângulo de 222,9° e brilho em 100%, 62% e 38%.",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > monocromatico 1`] = `
+{
+  "hexes": [
+    "#CEE8F5",
+    "#2EA8E6",
+    "#032638",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > proporcao-aurea 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#8E1C47",
+    "#175812",
+  ],
+  "note": "Ângulo áureo de 137,5° e brilho dividido por 1,618 a cada cor.",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > quadrado 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#C72EE6",
+    "#4DE62E",
+  ],
+  "note": "O vértice de 180° ficou de fora.",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > tons 1`] = `
+{
+  "hexes": [
+    "#30B2F2",
+    "#1F7099",
+    "#0D2F40",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão das harmonias (semente 42) > triade 1`] = `
+{
+  "hexes": [
+    "#2EA8E6",
+    "#E62EA8",
+    "#A8E62E",
+  ],
+  "note": "",
+}
+`;
+
+exports[`Regressão do ContrastGuard > #2E7D32 #66BB6A #A5D6A7 em AA e AAA 1`] = `
+[
+  [
+    "#2E7D32",
+    "#78DC7D",
+    "#C4FFC7",
+  ],
+  [
+    "#256528",
+    "#67BC6B",
+    "#FDFFFD",
+  ],
+]
+`;
+
+exports[`Regressão do ContrastGuard > #3366CC #6699FF #99BBFF em AA e AAA 1`] = `
+[
+  [
+    "#3366CC",
+    "#A6C4FF",
+    "#E3ECFF",
+  ],
+  [
+    "#2B55AB",
+    "#80AAFF",
+    "#FFFFFF",
+  ],
+]
+`;
+
+exports[`Regressão do ContrastGuard > #777777 #808080 #888888 em AA e AAA 1`] = `
+[
+  [
+    "#777777",
+    "#2E2E2E",
+    "#060606",
+  ],
+  [
+    "#969696",
+    "#494949",
+    "#020202",
+  ],
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > azul-corporativo 1`] = `
+[
+  "AB 12.48 AAA Lc 90.53",
+  "BA 12.48 AAA Lc -92.46",
+  "AC 4.28 Reprovado Lc 37.74",
+  "CA 4.28 Reprovado Lc -36.51",
+  "BC 2.91 Reprovado Lc -55.22",
+  "CB 2.91 Reprovado Lc 50.81",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > cafe 1`] = `
+[
+  "AB 11.72 AAA Lc 89.2",
+  "BA 11.72 AAA Lc -91.14",
+  "AC 4.24 Reprovado Lc 38.73",
+  "CA 4.24 Reprovado Lc -37.61",
+  "BC 2.76 Reprovado Lc -52.8",
+  "CB 2.76 Reprovado Lc 48.49",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > citrico 1`] = `
+[
+  "AB 13.97 AAA Lc 98.55",
+  "BA 13.97 AAA Lc -101.15",
+  "AC 7.87 AAA Lc 64.72",
+  "CA 7.87 AAA Lc -64.48",
+  "BC 1.78 Reprovado Lc -35.5",
+  "CB 1.78 Reprovado Lc 31.66",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > floresta 1`] = `
+[
+  "AB 11.43 AAA Lc 92.3",
+  "BA 11.43 AAA Lc -95.12",
+  "AC 4.93 AA Lc 46.74",
+  "CA 4.93 AA Lc -46.28",
+  "BC 2.32 Reprovado Lc -48",
+  "CB 2.32 Reprovado Lc 43.53",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > lavanda 1`] = `
+[
+  "AB 13.9 AAA Lc 94.73",
+  "BA 13.9 AAA Lc -96.67",
+  "AC 4.62 AA Lc 39.39",
+  "CA 4.62 AA Lc -37.9",
+  "BC 3.01 Reprovado Lc -58.04",
+  "CB 3.01 Reprovado Lc 53.36",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > noite-urbana 1`] = `
+[
+  "AB 14.96 AAA Lc 93.05",
+  "BA 14.96 AAA Lc -94.11",
+  "AC 5.9 AA Lc 46.78",
+  "CA 5.9 AA Lc -44.9",
+  "BC 2.54 Reprovado Lc -48.45",
+  "CB 2.54 Reprovado Lc 44.27",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > oceano 1`] = `
+[
+  "AB 13.77 AAA Lc 94.5",
+  "BA 13.77 AAA Lc -96.46",
+  "AC 5.27 AA Lc 45.06",
+  "CA 5.27 AA Lc -43.71",
+  "BC 2.61 Reprovado Lc -51.97",
+  "CB 2.61 Reprovado Lc 47.45",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > por-do-sol 1`] = `
+[
+  "AB 14.45 AAA Lc 96.89",
+  "BA 14.45 AAA Lc -98.93",
+  "AC 5.18 AA Lc 44.3",
+  "CA 5.18 AA Lc -42.82",
+  "BC 2.79 Reprovado Lc -55.35",
+  "CB 2.79 Reprovado Lc 50.59",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > prazo-certo 1`] = `
+[
+  "AB 17.12 AAA Lc 97.23",
+  "BA 17.12 AAA Lc -98.54",
+  "AC 15.5 AAA Lc 91.27",
+  "CA 15.5 AAA Lc -92.02",
+  "BC 1.1 Reprovado Lc 0",
+  "CB 1.1 Reprovado Lc 0",
+]
+`;
+
+exports[`Regressão do contraste das paletas prontas > terracota 1`] = `
+[
+  "AB 13.73 AAA Lc 95.35",
+  "BA 13.73 AAA Lc -97.48",
+  "AC 4.31 Reprovado Lc 37.88",
+  "CA 4.31 Reprovado Lc -36.45",
+  "BC 3.18 Reprovado Lc -60.3",
+  "CB 3.18 Reprovado Lc 55.5",
+]
+`;

@@ -8,7 +8,7 @@
 | RF-02 Ajuste HSB | T04, T11 | `domain/color/ColorConverter.js`, `ui/HsbSliderPanel.js` | `unit/color.test.js` | 🔄 domínio ✅ |
 | RF-03 6 comparações WCAG | T05, T11 | `domain/contrast/*`, `ui/ComparisonGrid.js` | `unit/contrast.test.js`, `contract/contrast.contract.test.js` | 🔄 domínio ✅ |
 | RF-04 APCA | T05 | `domain/contrast/ApcaContrast.js` | `contract/contrast.contract.test.js` | ✅ |
-| RF-05 Harmonias | T06, T12 | `domain/harmony/*`, `ui/HarmonyPicker.js`, `ui/ColorWheel.js` | `unit/harmony.test.js` | ⏳ |
+| RF-05 Harmonias | T06, T12 | `domain/harmony/*`, `ui/HarmonyPicker.js`, `ui/ColorWheel.js` | `unit/harmony.test.js` | 🔄 domínio ✅ |
 | RF-06 Garantia AA/AAA | T07 | `domain/guard/ContrastGuard.js` | `unit/guard.test.js` | ⏳ |
 | RF-07 Proporção de uso | T07 | `domain/proportion/UsageProportion.js` | `unit/proportion.test.js` | ⏳ |
 | RF-08 Tints e shades | T07, T12 | `domain/tints/TintShadeGenerator.js`, `ui/TintShadeTable.js` | `unit/tints.test.js` | ⏳ |

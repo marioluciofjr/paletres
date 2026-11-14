@@ -22,7 +22,7 @@
 | RF-18 Color grading | T12b | `domain/grading/GradientMap.js`, `ui/ColorGradingPanel.js` | `unit/grading.test.js` | 🔄 domínio ✅ |
 | RF-19 Paletas prontas | T07, T11 | `domain/palette/PresetCatalog.js`, `ui/PresetBar.js` | `unit/presets.test.js` | 🔄 domínio ✅ |
 | RF-20 Consertar contraste | T07, T11 | `domain/guard/ContrastGuard.js`, `ui/ComparisonGrid.js` | `unit/guard.test.js` | 🔄 domínio ✅ |
-| RF-21 Desfazer/refazer | T09 | `app/PaletteStore.js` | `integration/store.test.js` | ⏳ |
+| RF-21 Desfazer/refazer | T09 | `app/PaletteStore.js` | `integration/store.test.js` | 🔄 estado ✅ |
 | RF-22 Seletor visual de cor | T11 | `ui/HexInputPanel.js` | `integration/ui.test.js` | ⏳ |
 | RF-23 Veredito simples + "O que é isso?" | T07, T11 | `domain/contrast/PlainVerdict.js`, `ui/InfoTip.js` | `unit/verdict.test.js` | 🔄 domínio ✅ |
 | RF-24 Sugestão de papéis | T07, T12b | `domain/proportion/RoleAdvisor.js` | `unit/proportion.test.js` | 🔄 domínio ✅ |

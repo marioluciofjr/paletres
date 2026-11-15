@@ -26,6 +26,7 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 - O parallax saiu de trás do menu e ficou só nas 3 bolas do início.
 - Os mockups usam só a regra 60-30-10.
 - Logotipo da Prazo Certo maior no rodapé.
+- O site abre sempre no tema claro. O escuro só aparece se a pessoa escolher no botão de tema.
 - Licença trocada de MIT para **Apache 2.0**, com o arquivo `NOTICE`.
 
 ### Removido

@@ -12,10 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Kreon:wght@600;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
     <script>
       // Aplica o tema antes de desenhar a página, para não "piscar" no tema errado.
+      // O padrão é SEMPRE o claro (o escuro assusta quem não está acostumado). O escuro só
+      // aparece se a pessoa escolher no botão de tema; a escolha fica salva no navegador.
       (function () {
         try {
-          var saved = localStorage.getItem('paletres:tema');
-          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = localStorage.getItem('paletres:tema') === 'dark';
           document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         } catch (e) { /* sem armazenamento: fica no claro */ }
       })();

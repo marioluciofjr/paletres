@@ -10,10 +10,12 @@ import AxeBuilder from '@axe-core/playwright';
 const USER_COLOR_PREVIEWS = ['.cmp__preview', '.msite', '.mapp', '.hero__art', '.share-bar', '.stage'];
 // Paleta conhecida por link: o site já abre liberado (sem o portão do RF-25).
 const BRAND = '/?p=230023-f2f2f2-42ffff';
+// O site abre sempre no claro; o escuro vem da escolha salva pelo botão de tema.
+const useTheme = (page, theme) => page.addInitScript((t) => localStorage.setItem('paletres:tema', t), theme);
 
 for (const [theme, url, when] of [['light', BRAND, 'com paleta'], ['dark', BRAND, 'com paleta'], ['light', '/', 'antes de gerar'], ['dark', '/', 'antes de gerar']]) {
   test(`sem violações sérias ou críticas no tema ${theme}, ${when}`, async ({ page }) => {
-    await page.emulateMedia({ colorScheme: theme });
+    await useTheme(page, theme);
     await page.goto(url);
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']);
@@ -59,7 +61,7 @@ const outlineOf = (locator) => locator.evaluate((el) => {
 
 for (const theme of ['light', 'dark']) {
   test(`tints e shades: o foco muda o contorno (tema ${theme})`, async ({ page }) => {
-    await page.emulateMedia({ colorScheme: theme });
+    await useTheme(page, theme);
     await page.goto(BRAND);
     for (const cell of [page.locator('.tint-cell').first(), page.locator('.tint-cell').nth(9)]) {
       const before = await outlineOf(cell);

@@ -264,6 +264,12 @@ test.describe('Conteúdo, marca, tema e menu', () => {
     await expect(page.locator('#aprenda')).toContainText('Color grading no cinema');
   });
 
+  test('abre sempre no tema claro, mesmo com o sistema no modo escuro (RF-13)', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  });
+
   test('tema escuro é lembrado (RF-13)', async ({ page }) => {
     await page.goto('/');
     await page.locator('.theme-toggle').click();

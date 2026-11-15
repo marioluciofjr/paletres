@@ -12,8 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Kreon:wght@600;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
     <script>
       // Aplica o tema antes de desenhar a página, para não "piscar" no tema errado.
-      // O padrão é SEMPRE o claro (o escuro assusta quem não está acostumado). O escuro só
-      // aparece se a pessoa escolher no botão de tema; a escolha fica salva no navegador.
+      // O padrão é SEMPRE o claro: o tema no modo dark pode causar estranheza em quem não
+      // tem costume, se abrir logo de cara. O escuro só aparece se a pessoa escolher no botão de tema; a escolha fica salva no navegador.
       (function () {
         try {
           var dark = localStorage.getItem('paletres:tema') === 'dark';

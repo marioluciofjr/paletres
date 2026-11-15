@@ -44,7 +44,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-10 | Copiar cada HEX e exportar a paleta como variáveis CSS, JSON ou PNG. | Must |
 | RF-11 | Link compartilhável: as 3 cores ficam na URL (`?p=rrggbb-rrggbb-rrggbb`; o formato antigo com `#` continua sendo lido). | Must |
 | RF-12 | Seções explicativas sobre WCAG, as 3 comparações, cores em imagens com IA generativa, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e **color grading no cinema** (v1.1.0). | Should |
-| RF-13 | Tema claro e escuro da interface, com a escolha lembrada no navegador. **O padrão é sempre o claro**, mesmo com o sistema no modo escuro (pedido do Mário depois do deploy: o escuro assusta quem não está acostumado). | Should |
+| RF-13 | Tema claro e escuro da interface, com a escolha lembrada no navegador. **O padrão é sempre o claro**, mesmo com o sistema no modo escuro (pedido do Mário depois do deploy: o tema no modo dark pode causar estranheza em quem não tem costume, se abrir logo de cara). | Should |
 | RF-14 | Menu fixo, **sem desenhos atrás** (v1.1.0). O parallax fica nas 3 bolas do início, que sobem em velocidades diferentes na rolagem e param quando o sistema pede menos movimento. | Must |
 | RF-15 | Botão "Visitar Prazo Certo" no menu, que abre https://prazocerto.me numa nova aba e avisa disso em texto para leitores de tela. | Must |
 | RF-17 | Mockups de **site web** e de **app mobile** pintados com a paleta pela regra 60-30-10. A pessoa escolhe qual cor é a dominante, a secundária e o destaque. O texto de cada superfície usa a cor da paleta com mais contraste, e o mockup avisa quando nenhuma passa em AA. | Must |

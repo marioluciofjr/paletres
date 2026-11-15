@@ -70,4 +70,5 @@ Os valores de contrato do APCA saíram na v1.1.0, junto com o APCA (ADR-10).
 | Modo zonas e legenda do color grading | `unit/grading.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` |
 | Início sem paleta | `integration/store.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` e axe "antes de gerar" nos 2 temas |
 | Rascunho das harmonias | `integration/store.test.js` (8 testes), `integration/ui.test.js`, `e2e/site.spec.js` |
-| Sobre, CTA, Clawd, fontes oficiais e ordem dos passos | `e2e/site.spec.js` |
+| 3 comparações (uma por par, 2 prévias, 1 valor) | `unit/contrast.test.js`, `unit/verdict.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` |
+| Sobre, CTA, Clawd ao lado dos contatos, card de IA, fontes oficiais e ordem dos passos | `e2e/site.spec.js` |

@@ -154,12 +154,18 @@ describe('HsbSliderPanel', () => {
 describe('ComparisonGrid', () => {
   beforeEach(() => new ComparisonGrid({ root, store, bus }).mount());
 
-  it('mostra 6 cards na ordem certa com veredito em linguagem simples (RF-03, RF-23)', () => {
+  it('mostra 3 cards (um por par) com veredito em linguagem simples (RF-03, RF-23)', () => {
     const cards = root.querySelectorAll('.cmp');
-    expect(cards).toHaveLength(6);
-    expect(cards[0].querySelector('h3').textContent).toBe('Texto A sobre fundo B');
+    expect(cards).toHaveLength(3);
+    expect(cards[0].querySelector('h3').textContent).toBe('Cores A e B');
     expect(cards[0].textContent).toContain('Excelente');
-    expect(cards[4].textContent).toContain('Não use para texto');
+    expect(cards[2].textContent).toContain('Não use para texto');
+  });
+
+  it('cada card tem as 2 prévias (uma cor sobre a outra e o inverso) e um só valor WCAG', () => {
+    const card = root.querySelectorAll('.cmp')[0];
+    expect(card.querySelectorAll('.cmp__preview')).toHaveLength(2);
+    expect(card.querySelectorAll('.cmp__ratio')).toHaveLength(1);
   });
 
   it('mostra a razão e os selos por extenso, só com WCAG (RF-04)', () => {
@@ -176,7 +182,7 @@ describe('ComparisonGrid', () => {
   });
 
   it('o resumo conta as combinações boas', () => {
-    expect(root.textContent).toContain('Sua paleta tem 4 de 6 combinações boas para texto.');
+    expect(root.textContent).toContain('Sua paleta tem 2 de 3 combinações boas para texto.');
   });
 
   it('"Consertar contraste" melhora a paleta e explica (RF-20)', () => {

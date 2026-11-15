@@ -4,7 +4,7 @@
 
 ## Contexto em uma frase
 
-Site estático (Vite + JavaScript com classes) que compara 3 cores em 6 combinações de contraste e gera paletas por harmonia. O visual segue a marca Prazo Certo.
+Site estático (Vite + JavaScript com classes) que compara 3 cores em 3 combinações de contraste (uma por par) e gera paletas por harmonia. O visual segue a marca Prazo Certo.
 
 ## Comandos
 

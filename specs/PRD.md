@@ -15,7 +15,7 @@ Os geradores de harmonia, como o Adobe Color, criam paletas bonitas, mas não di
 O **Paletrês** é um site estático de uma página (one page). Ele:
 
 1. abre vazio e pede que a pessoa clique em **Gerar paleta** (ou abre direto pela paleta de um link compartilhado);
-2. mostra na hora as **6 comparações** entre elas (3 pares × 2 direções: texto A sobre fundo B e texto B sobre fundo A);
+2. mostra na hora as **3 comparações** entre elas, uma por par (AB, AC e BC). Cada card mostra as duas prévias do par (A sobre B e B sobre A), mas um só valor, porque a WCAG dá o mesmo número nos dois sentidos (v1.1.0);
 3. dá a cada comparação o selo **WCAG 2.2** (AA, AAA ou Reprovado) e um veredito em linguagem simples;
 4. deixa ajustar **Matiz, Saturação e Brilho** (HSB) de cada cor;
 5. gera paletas por **11 harmonias**, inclusive proporção áurea, Fibonacci e âncora de contraste, com a opção de **garantir AA ou AAA**, num rascunho que não apaga a paleta da pessoa;
@@ -34,7 +34,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | :--- | :--- | :--- |
 | RF-01 | Entrada das 3 cores em HEX. Aceita `#rgb`, `#rrggbb`, com ou sem `#`, em maiúsculas ou minúsculas. | Must |
 | RF-02 | Ajuste de Matiz (0–360°), Saturação (0–100%) e Brilho (0–100%) da cor selecionada, com reflexo imediato no HEX. | Must |
-| RF-03 | 6 comparações ordenadas (A/B, B/A, A/C, C/A, B/C, C/B) com a razão WCAG 2.2 e os selos de texto normal, texto grande e componentes de interface. | Must |
+| RF-03 | **3 comparações** (v1.1.0), uma por par, na ordem AB, AC, BC. Cada card tem as 2 prévias do par (X sobre Y e Y sobre X), uma única razão WCAG 2.2 e os selos de texto normal, texto grande e componentes de interface. | Must |
 | ~~RF-04~~ | **Removido na v1.1.0.** O valor APCA (Lc) saiu: na prática, a diferença entre as direções não ajudava a decidir, e o WCAG 2.2 é a norma oficial. Ver ADR-10. | — |
 | RF-05 | Geração de paleta por harmonia: análogo, complementar, complementar dividido, tríade, quadrado, composto, tons, monocromático, proporção áurea, Fibonacci e âncora de contraste. Inclui roda cromática com marcadores. | Must |
 | RF-06 | Seletor de garantia **Livre / Garantir AA / Garantir AAA**. Ajusta só o brilho e mantém a matiz. Avisa em texto quando não consegue. | Must |
@@ -43,7 +43,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-09 | Simulador de daltonismo: protanopia, deuteranopia, tritanopia e acromatopsia. | Should |
 | RF-10 | Copiar cada HEX e exportar a paleta como variáveis CSS, JSON ou PNG. | Must |
 | RF-11 | Link compartilhável: as 3 cores ficam na URL (`?p=rrggbb-rrggbb-rrggbb`; o formato antigo com `#` continua sendo lido). | Must |
-| RF-12 | Seções explicativas sobre WCAG, as 6 comparações, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e **color grading no cinema** (v1.1.0). | Should |
+| RF-12 | Seções explicativas sobre WCAG, as 3 comparações, cores em imagens com IA generativa, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e **color grading no cinema** (v1.1.0). | Should |
 | RF-13 | Tema claro e escuro da interface, com a escolha lembrada no navegador. | Should |
 | RF-14 | Menu fixo, **sem desenhos atrás** (v1.1.0). O parallax fica nas 3 bolas do início, que sobem em velocidades diferentes na rolagem e param quando o sistema pede menos movimento. | Must |
 | RF-15 | Botão "Visitar Prazo Certo" no menu, que abre https://prazocerto.me numa nova aba e avisa disso em texto para leitores de tela. | Must |
@@ -55,12 +55,13 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-22 | **Seletor visual de cor** (`input type="color"`) ao lado de cada campo HEX. | Must |
 | RF-23 | **Veredito em linguagem simples** em cada comparação ("Excelente", "Bom", "Só para títulos grandes", "Não use para texto") e botões "O que é isso?" que explicam cada termo técnico ali mesmo. | Must |
 | RF-24 | **Sugestão de papéis**: o app indica qual cor usar no fundo, no texto e nos botões e já aplica essa sugestão nos mockups (a pessoa pode trocar). | Must |
-| RF-16 | Rodapé com o crédito: "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto." **v1.1.0:** quem "fala" o crédito é o mascote **Clawd**, na cor laranja original, num balão de fala de HQ. O logotipo da Prazo Certo fica maior (320px). | Must |
+| RF-16 | Rodapé com o crédito: "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto." **v1.1.0:** quem "fala" o crédito é o mascote **Clawd**, na cor laranja original, num balão de fala de HQ. O Clawd fica **ao lado dos contatos** (embaixo só no celular). O logotipo da Prazo Certo fica maior (320px). | Must |
 | RF-25 | **Início sem paleta** (v1.1.0): sem link compartilhado, o site abre vazio. Os passos e os extras ficam escondidos até a pessoa clicar em **Gerar paleta**, que sorteia uma harmonia com contraste AA garantido e leva ao Passo 1. Links do menu para seções escondidas levam ao aviso. | Must |
 | RF-26 | **Harmonias em rascunho** (v1.1.0): a seção mostra 3 etapas numeradas (tipo de harmonia → contraste → gerar). A paleta gerada aparece ao lado da paleta atual e só a substitui no clique em "Usar esta paleta" (com Desfazer). Tints e shades avisam que clicar só copia o código. | Must |
 | RF-27 | **Sobre** (v1.1.0): item no menu e seção que conta a origem da ideia (comparar 3 cores na WCAG; um "Megazord" de recursos para designers e não designers). | Must |
 | RF-28 | **CTA da Prazo Certo** (v1.1.0) antes do rodapé: "Se você gostou dessa página e quer entender mais sobre letramento em IA generativa, acesse prazocerto.me agora mesmo!", com botão que abre o site em nova aba. | Must |
 | RF-29 | **Fontes oficiais** (v1.1.0): cada explicação traz o link de uma fonte oficial (W3C, MDN, Adobe, NEI, MathWorld, OEIS, ASC, Blackmagic Design). **Links da Wikipédia são proibidos.** | Must |
+| RF-31 | **Cores em imagens com IA generativa** (v1.1.0): card em "Aprenda" sobre como a cor muda a mensagem de uma imagem gerada por IA, com dica de prompt e link de **Psicologia das Cores** (Elliot e Maier, *Annual Review of Psychology*, 2014). | Must |
 | RF-30 | **Passos seguidos** (v1.1.0): a ordem da página é Passo 1 (Escolha) → 2 (Confira) → 3 (Teste) → 4 (Exporte) e só depois os extras (Daltonismo, Harmonias, Tons), cada um com uma etiqueta que diz se usa a paleta atual ou cria outra. | Must |
 
 ## 5. Requisitos não funcionais
@@ -94,7 +95,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 
 ## 8. Métricas de sucesso
 
-- As 6 comparações aparecem em menos de 1 segundo depois de digitar o terceiro HEX.
+- As 3 comparações aparecem em menos de 1 segundo depois de digitar o terceiro HEX.
 - Os testes de contrato passam com os valores de referência (preto e branco = 21:1; roxo e cinza da Prazo Certo = 17,1:1).
 - O axe-core não acha violações sérias ou críticas nos temas claro e escuro.
 - Com "Garantir AAA" ligado, toda paleta gerada tem um par de texto com 7:1 ou mais, ou mostra o aviso.
@@ -111,4 +112,4 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 
 ## 10. Mudanças da v1.1.0
 
-Pedido do Mário em `ajustes.md` (16 itens). Resumo: menu sem desenhos; 15 paletas do Color Hunt; início sem paleta com o botão "Gerar paleta"; fontes oficiais sem Wikipédia; explicação de color grading no cinema e legenda das 3 cores na foto; mockups só com 60-30-10; Clawd no crédito; sem APCA; harmonias em 3 etapas e em rascunho; passos 1 a 4 seguidos; logotipo maior; seção Sobre; CTA da Prazo Certo.
+Pedido do Mário em `ajustes.md` (16 itens). Resumo: 3 comparações em vez de 6 (sem repetir o mesmo número); menu sem desenhos; 15 paletas do Color Hunt; início sem paleta com o botão "Gerar paleta"; fontes oficiais sem Wikipédia; explicação de color grading no cinema e legenda das 3 cores na foto; mockups só com 60-30-10; Clawd no crédito; sem APCA; harmonias em 3 etapas e em rascunho; passos 1 a 4 seguidos; logotipo maior; seção Sobre; CTA da Prazo Certo; card sobre cores em imagens com IA generativa; Clawd ao lado dos contatos.

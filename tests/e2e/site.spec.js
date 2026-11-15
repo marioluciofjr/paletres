@@ -26,7 +26,7 @@ test.describe('Início sem paleta (RF-25)', () => {
     await page.locator('.hero [data-action="start"]').click();
     await expect(page.locator('#ferramenta')).toBeVisible();
     await expect(page.locator('#comecar')).toBeHidden();
-    await expect(page.locator('.cmp')).toHaveCount(6);
+    await expect(page.locator('.cmp')).toHaveCount(3);
     await expect(page).toHaveURL(/\?p=[0-9a-f]{6}-[0-9a-f]{6}-[0-9a-f]{6}/);
     await expect(page.locator('#paleta-title')).toBeFocused();
     await expect(page.getByRole('link', { name: 'Ver minha paleta' })).toBeVisible();
@@ -41,18 +41,20 @@ test.describe('Início sem paleta (RF-25)', () => {
 });
 
 test.describe('Fluxo principal', () => {
-  test('mostra as 6 comparações, só com WCAG (RF-03)', async ({ page }) => {
+  test('mostra 3 comparações (uma por par), cada uma com 2 prévias e 1 valor, só com WCAG (RF-03)', async ({ page }) => {
     await page.goto(BRAND);
-    await expect(page.locator('.cmp')).toHaveCount(6);
+    await expect(page.locator('.cmp')).toHaveCount(3);
     await expect(page.locator('.cmp').first()).toContainText('17,11:1');
     await expect(page.locator('.cmp').first()).toContainText('Excelente');
+    await expect(page.locator('.cmp').first().locator('.cmp__preview')).toHaveCount(2);
+    await expect(page.locator('.cmp').first().locator('.cmp__ratio')).toHaveCount(1);
     await expect(page.locator('#comparacoes')).not.toContainText('APCA');
   });
 
   test('digitar um HEX atualiza cards e URL (RF-01, RF-11)', async ({ page }) => {
     await page.goto(BRAND);
     await hexInputs(page).nth(1).fill('#000000');
-    await expect(page.locator('.cmp').first()).toContainText('Texto A sobre fundo B');
+    await expect(page.locator('.cmp').first()).toContainText('Cores A e B');
     await expect(page).toHaveURL(/\?p=230023-000000-42ffff/);
   });
 
@@ -100,7 +102,7 @@ test.describe('Harmonias em rascunho (RF-05, RF-06, RF-26)', () => {
     await expect(hexInputs(page).nth(0)).toHaveValue('#230023');
     await page.getByRole('button', { name: 'Usar esta paleta' }).click();
     await expect(hexInputs(page).nth(0)).not.toHaveValue('#230023');
-    const firstTwo = page.locator('.cmp').filter({ hasText: /Texto [BC] sobre fundo A/ });
+    const firstTwo = page.locator('.cmp').filter({ hasText: /Cores A e [BC]/ });
     await expect(firstTwo.filter({ hasText: 'Texto normal: AAA' }).first()).toBeVisible();
   });
 
@@ -188,6 +190,22 @@ test.describe('Conteúdo, marca, tema e menu', () => {
     await expect(cta).toContainText('Se você gostou dessa página e quer entender mais sobre letramento em IA generativa, acesse prazocerto.me agora mesmo!');
     await expect(cta.locator('a')).toHaveAttribute('href', 'https://prazocerto.me');
     await expect(cta.locator('a')).toHaveAttribute('target', '_blank');
+  });
+
+  test('card de cores em imagens com IA generativa, com link de Psicologia das Cores (RF-31)', async ({ page }) => {
+    await page.goto('/');
+    const card = page.locator('#aprenda .learn__item', { hasText: 'Cores em imagens com IA generativa' });
+    await expect(card).toBeVisible();
+    await expect(card.getByRole('link', { name: /Psicologia das Cores/ })).toHaveAttribute('href', /annualreviews\.org/);
+  });
+
+  test('o Clawd fica ao lado dos contatos no computador (RF-16)', async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    await page.goto('/');
+    const contacts = await page.locator('footer nav').boundingBox();
+    const clawd = await page.locator('.clawd').boundingBox();
+    expect(clawd.x).toBeGreaterThan(contacts.x + contacts.width - 1);
+    expect(clawd.y).toBeLessThan(contacts.y + contacts.height);
   });
 
   test('"Sobre" está no menu e explica a ideia (RF-27)', async ({ page }) => {

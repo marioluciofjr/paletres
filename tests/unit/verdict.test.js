@@ -26,8 +26,8 @@ describe('PlainVerdict.summary', () => {
   it('conta as combinações boas para texto', () => {
     const comparisons = new PaletteComparator().compare(Palette.default());
     const s = verdict.summary(comparisons);
-    expect(s.goodCount).toBe(4);
-    expect(s.text).toBe('Sua paleta tem 4 de 6 combinações boas para texto.');
+    expect(s.goodCount).toBe(2);
+    expect(s.text).toBe('Sua paleta tem 2 de 3 combinações boas para texto.');
   });
 });
 

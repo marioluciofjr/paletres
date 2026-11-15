@@ -6,7 +6,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | RF-01 Entrada HEX | T04, T11 | `domain/color/Color.js`, `ui/ColorSlots.js` | `unit/color.test.js` | ✅ |
 | RF-02 Ajuste HSB | T04, T11 | `domain/color/ColorConverter.js`, `ui/HsbSliderPanel.js` | `unit/color.test.js` | ✅ |
-| RF-03 6 comparações WCAG | T05, T11 | `domain/contrast/*`, `ui/ComparisonGrid.js` | `unit/contrast.test.js`, `contract/contrast.contract.test.js` | ✅ |
+| RF-03 3 comparações WCAG (uma por par) | T05, T11, T30 | `domain/contrast/*`, `ui/ComparisonGrid.js` | `unit/contrast.test.js`, `unit/verdict.test.js`, `contract/contrast.contract.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` | ✅ |
 | ~~RF-04 APCA~~ | T19 | removido na v1.1.0 (ADR-10) | `unit/contrast.test.js` e `e2e/site.spec.js` conferem que não há APCA | ✅ |
 | RF-05 Harmonias | T06, T12, T23 | `domain/harmony/*`, `app/PaletteGenerator.js`, `ui/HarmonyPanel.js`, `ui/ColorWheel.js` | `unit/harmony.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` | ✅ |
 | RF-06 Garantia AA/AAA | T07 | `domain/guard/ContrastGuard.js` | `unit/guard.test.js` | ✅ |
@@ -33,11 +33,12 @@
 | RF-27 Sobre | T25 | `index.html` (`#sobre`) | `e2e/site.spec.js` | ✅ |
 | RF-28 CTA Prazo Certo | T25 | `index.html` (`.cta`), `styles/tokens.css` (`.zone-ciano`) | `e2e/site.spec.js` | ✅ |
 | RF-29 Fontes oficiais | T26 | `index.html` (`.sources`, `.info-panel__source`) | `e2e/site.spec.js` | ✅ |
+| RF-31 Cores em imagens com IA | T30 | `index.html` (`#aprenda`) | `e2e/site.spec.js` | ✅ |
 | RF-30 Passos 1 a 4 seguidos | T25 | `index.html` | `e2e/site.spec.js` | ✅ |
 | RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` + 2 ciclos de auditoria | ✅ |
 | RNF-02 Identidade Prazo Certo | T10, T16 | `styles/*` | auditor UX (2 ciclos, aprovado) | ✅ |
 | RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` + `vite preview` | ✅ |
 | RNF-04 OOP e camadas | todas | `src/**` | revisão de código + lint | ✅ |
-| RNF-06 TDD | todas | — | `tests/**` (197 Vitest + 38 Playwright na v1.1.0) | ✅ |
+| RNF-06 TDD | todas | — | `tests/**` (199 Vitest + 40 Playwright na v1.1.0) | ✅ |
 | RNF-09 Didático para não designers | T11–T13, T16 | `ui/*`, textos | e2e + auditor UX (aprovado) | ✅ |
 | RNF-07 Movimento reduzido | T10, T24 | `ui/ParallaxScene.js` | `e2e/site.spec.js` | ✅ |

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Paletrês — 3 cores, 6 comparações de contraste</title>
-    <meta name="description" content="Gere uma paleta de 3 cores e descubra se dá para ler. Compare as 6 combinações pela WCAG 2.2, teste em mockups e fotos, gere harmonias e exporte." />
+    <title>Paletrês — 3 cores, 3 comparações de contraste</title>
+    <meta name="description" content="Gere uma paleta de 3 cores e descubra se dá para ler. Compare as 3 combinações pela WCAG 2.2, teste em mockups e fotos, gere harmonias e exporte." />
     <meta name="theme-color" content="#230023" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -67,7 +67,7 @@
       <section id="inicio" class="hero zone-roxo" aria-labelledby="hero-title" data-component="hero">
         <div class="container hero__grid">
           <div class="hero__text">
-            <p class="eyebrow">3 cores · 6 comparações</p>
+            <p class="eyebrow">3 cores · 3 comparações</p>
             <h1 id="hero-title" class="hero__title">Paletrês</h1>
             <p class="hero__lead">Gere 3 cores e descubra, na hora, se elas combinam e se dá para ler um texto de uma cor em cima da outra.</p>
             <ol class="steps">
@@ -127,8 +127,8 @@
           <div class="container">
             <header class="section__head">
               <p class="eyebrow">Passo 2 de 4 · Confira</p>
-              <h2 id="comparacoes-title">Dá para ler? As 6 combinações</h2>
-              <p class="section__lead">Cada card mostra uma cor como texto sobre outra como fundo. Leia o veredito primeiro; os números ficam logo abaixo.
+              <h2 id="comparacoes-title">Dá para ler? As 3 combinações</h2>
+              <p class="section__lead">Cada card é um par de cores. As duas prévias mostram uma cor escrita sobre a outra e o inverso. O contraste é o mesmo nos dois sentidos, então aparece um número só. Leia o veredito primeiro; os números ficam logo abaixo.
                 <button class="info-btn" type="button" data-info="wcag">O que é WCAG?</button></p>
               <div class="info-panel" id="info-wcag" hidden><strong>WCAG</strong> é a regra internacional de acessibilidade na web, publicada pelo W3C. Ela mede o contraste de 1:1 (nada) a 21:1 (preto no branco). <strong>AA</strong> é o mínimo recomendado (4,5:1 para textos). <strong>AAA</strong> é o nível mais exigente (7:1).
                 <span class="info-panel__source">Fonte oficial: <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">W3C, critério 1.4.3 da WCAG 2.2<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
@@ -211,7 +211,7 @@
         <div class="container">
           <header class="section__head">
             <p class="eyebrow">Para entender</p>
-            <h2 id="aprenda-title">Aprenda em 5 minutos</h2>
+            <h2 id="aprenda-title">Aprenda em poucos minutos</h2>
             <p class="section__lead">Cada explicação traz o link da fonte oficial, para você conferir e se aprofundar.</p>
           </header>
           <div class="learn">
@@ -226,9 +226,9 @@
                 <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer">critério 1.4.11 (componentes)<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
-              <h3>Por que 6 comparações?</h3>
-              <p>Com 3 cores (A, B e C) existem 3 pares: AB, AC e BC. Cada par pode ser "texto sobre fundo" nas duas direções: A sobre B e B sobre A. Isso dá 6 combinações.</p>
-              <p>Na WCAG, as duas direções dão o mesmo número. Mesmo assim, vale ver as duas: texto escuro no fundo claro não parece igual a texto claro no fundo escuro.</p>
+              <h3>Por que 3 comparações?</h3>
+              <p>Com 3 cores (A, B e C) existem 3 pares: AB, AC e BC. Cada par pode ser "texto sobre fundo" nas duas direções, A sobre B e B sobre A, mas a WCAG dá <strong>o mesmo número</strong> nos dois sentidos. Por isso são 3 comparações, e não 6.</p>
+              <p>Mesmo assim, o card mostra as duas prévias: texto escuro no fundo claro não parece igual a texto claro no fundo escuro.</p>
               <p class="sources">Fonte oficial: <a href="https://www.w3.org/WAI/WCAG22/Techniques/general/G18" target="_blank" rel="noopener noreferrer">W3C, técnica G18 (como calcular o contraste)<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
@@ -290,6 +290,15 @@
                 <a href="https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/color-blindness" target="_blank" rel="noopener noreferrer">National Eye Institute<span class="visually-hidden"> (abre em nova aba)</span></a> ·
                 <a href="https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html" target="_blank" rel="noopener noreferrer">artigo da UFRGS<span class="visually-hidden"> (abre em nova aba)</span></a> ·
                 <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener noreferrer">W3C, critério 1.4.1<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Cores em imagens com IA generativa</h3>
+              <p>Quando você pede uma imagem a uma IA generativa, a cor é uma das escolhas que mais mudam a mensagem. A mesma cena em tons quentes, como laranja e dourado, costuma passar aconchego. Em azuis frios, calma ou distância. Com cores vivas e muito contraste, energia.</p>
+              <p>A <strong>psicologia das cores</strong> estuda esse efeito: a cor carrega significado e pode influenciar emoções e comportamentos, sempre dependendo do contexto e da cultura.</p>
+              <p><strong>Dica:</strong> descreva a paleta no prompt, com o nome ou o HEX das cores. Ex.: "paleta em azul-petróleo, creme e laranja, luz suave de fim de tarde". Assim as imagens ficam com a mesma identidade do seu site.</p>
+              <p class="sources">Fontes:
+                <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-010213-115035" target="_blank" rel="noopener noreferrer">Psicologia das Cores (Elliot e Maier, Annual Review of Psychology)<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.adobe.com/products/firefly/ai-generated-examples/image-prompts.html" target="_blank" rel="noopener noreferrer">Adobe Firefly, como descrever cores no prompt<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo learn__item--wide">
               <h3>Color grading no cinema</h3>

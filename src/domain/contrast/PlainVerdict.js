@@ -25,7 +25,7 @@ export class PlainVerdict {
     return { tone, title, text, icon };
   }
 
-  /** Resumo da paleta inteira, a partir das 6 comparações. */
+  /** Resumo da paleta inteira, a partir das 3 comparações (uma por par). */
   summary(comparisons) {
     const goodCount = comparisons.filter((c) => c.ratio >= Thresholds.normalText.AA).length;
     const total = comparisons.length;

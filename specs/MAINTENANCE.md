@@ -37,7 +37,7 @@ Ajustes a mudanças externas.
 
 | Sintoma | Causa provável | Ação |
 | :--- | :--- | :--- |
-| As 6 comparações não aparecem | Erro de JavaScript | Abra o console (F12). O `main.js` mostra uma mensagem em texto se a inicialização falhar. |
+| As 3 comparações não aparecem | Erro de JavaScript | Abra o console (F12). O `main.js` mostra uma mensagem em texto se a inicialização falhar. |
 | Link compartilhado abre outra paleta | Hash inválido | O `UrlStateCodec` ignora hashes inválidos e usa a paleta padrão. |
 | "Copiar" não funciona | Página sem HTTPS ou sem permissão | O `ClipboardService` usa um campo de texto oculto como fallback e avisa. |
 | Parallax trava | Rolagem pesada | O `ParallaxScene` já atualiza no máximo 1 vez por quadro; confira se nada além das 3 bolas usa `--parallax-y`. |

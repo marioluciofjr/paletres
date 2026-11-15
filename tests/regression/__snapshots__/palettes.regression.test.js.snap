@@ -169,164 +169,119 @@ exports[`Regressão do ContrastGuard > #777777 #808080 #888888 em AA e AAA 1`] =
 exports[`Regressão do contraste das paletas prontas > ameixa 1`] = `
 [
   "AB 13.8 AAA",
-  "BA 13.8 AAA",
   "AC 2.28 Reprovado",
-  "CA 2.28 Reprovado",
   "BC 6.06 AA",
-  "CB 6.06 AA",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > azul-eletrico 1`] = `
 [
   "AB 9.96 AAA",
-  "BA 9.96 AAA",
   "AC 3.44 Reprovado",
-  "CA 3.44 Reprovado",
   "BC 2.9 Reprovado",
-  "CB 2.9 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > cafe-floresta 1`] = `
 [
   "AB 13.76 AAA",
-  "BA 13.76 AAA",
   "AC 3.07 Reprovado",
-  "CA 3.07 Reprovado",
   "BC 4.49 Reprovado",
-  "CB 4.49 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > campo-dourado 1`] = `
 [
   "AB 11.75 AAA",
-  "BA 11.75 AAA",
   "AC 8.45 AAA",
-  "CA 8.45 AAA",
   "BC 1.39 Reprovado",
-  "CB 1.39 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > cereja-sol 1`] = `
 [
   "AB 8.1 AAA",
-  "BA 8.1 AAA",
   "AC 4.65 AA",
-  "CA 4.65 AA",
   "BC 1.74 Reprovado",
-  "CB 1.74 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > lavanda-noturna 1`] = `
 [
   "AB 16.24 AAA",
-  "BA 16.24 AAA",
   "AC 9.12 AAA",
-  "CA 9.12 AAA",
   "BC 1.78 Reprovado",
-  "CB 1.78 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > mar-profundo 1`] = `
 [
   "AB 8.31 AAA",
-  "BA 8.31 AAA",
   "AC 1.7 Reprovado",
-  "CA 1.7 Reprovado",
   "BC 4.89 AA",
-  "CB 4.89 AA",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > menta 1`] = `
 [
   "AB 13.15 AAA",
-  "BA 13.15 AAA",
   "AC 9.47 AAA",
-  "CA 9.47 AAA",
   "BC 1.39 Reprovado",
-  "CB 1.39 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > musgo-areia 1`] = `
 [
   "AB 10.74 AAA",
-  "BA 10.74 AAA",
   "AC 6.01 AA",
-  "CA 6.01 AA",
   "BC 1.79 Reprovado",
-  "CB 1.79 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > oliva 1`] = `
 [
   "AB 8.58 AAA",
-  "BA 8.58 AAA",
   "AC 3.54 Reprovado",
-  "CA 3.54 Reprovado",
   "BC 2.42 Reprovado",
-  "CB 2.42 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > pessego-marinho 1`] = `
 [
   "AB 6.95 AA",
-  "BA 6.95 AA",
   "AC 4.64 AA",
-  "CA 4.64 AA",
   "BC 1.5 Reprovado",
-  "CB 1.5 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > petroleo 1`] = `
 [
   "AB 15.07 AAA",
-  "BA 15.07 AAA",
   "AC 3.62 Reprovado",
-  "CA 3.62 Reprovado",
   "BC 4.16 Reprovado",
-  "CB 4.16 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > uva-agua 1`] = `
 [
   "AB 8.02 AAA",
-  "BA 8.02 AAA",
   "AC 1.54 Reprovado",
-  "CA 1.54 Reprovado",
   "BC 5.23 AA",
-  "CB 5.23 AA",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > vinho-rose 1`] = `
 [
   "AB 7.83 AAA",
-  "BA 7.83 AAA",
   "AC 4.44 Reprovado",
-  "CA 4.44 Reprovado",
   "BC 1.77 Reprovado",
-  "CB 1.77 Reprovado",
 ]
 `;
 
 exports[`Regressão do contraste das paletas prontas > vulcao 1`] = `
 [
   "AB 10.32 AAA",
-  "BA 10.32 AAA",
   "AC 4.68 AA",
-  "CA 4.68 AA",
   "BC 2.21 Reprovado",
-  "CB 2.21 Reprovado",
 ]
 `;

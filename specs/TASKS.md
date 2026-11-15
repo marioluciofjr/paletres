@@ -39,12 +39,13 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T25 | Nova ordem (passos 1 a 4 seguidos + extras com etiqueta), Sobre, CTA, Clawd e logotipo maior | RF-16, RF-27, RF-28, RF-30 | Claude | ✅ |
 | T26 | Fontes oficiais em todas as explicações (sem Wikipédia) e card de color grading no cinema | RF-12, RF-29 | Claude | ✅ |
 | T27 | Testes da v1.1.0 (unit, integration, e2e) e specs atualizadas | RNF-06 | Claude | ✅ |
-| T28 | Licença Apache-2.0, versão 1.1.0 e arquivos de repositório profissional | RNF-03 | Claude | 🔄 |
+| T30 | 3 comparações (uma por par, 2 prévias), card de cores em imagens com IA e Clawd ao lado dos contatos (2ª leva do `ajustes.md`) | RF-03, RF-16, RF-31, ADR-14 | Claude | ✅ |
+| T28 | Licença Apache-2.0 (LICENSE + NOTICE), versão 1.1.0, CHANGELOG e README de portfólio | RNF-03 | Claude | ✅ |
 | T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade, UX, motion e casos extremos) | RNF-01, RNF-09 | Claude | ⏳ |
 
 ## Próximo passo
 
-v1.1.0 implementada (T18–T27). Faltam a licença Apache-2.0 e os arquivos do repositório (T28) e as auditorias (T29). Depois: teste manual do Mário e, com o aval dele, publicação no GitHub.
+v1.1.0 implementada (T18–T28 e T30). Falta a auditoria final (T29). Depois: teste manual do Mário e, com o aval dele, publicação no GitHub.
 
 ## Backlog (fora da v1)
 

@@ -1,4 +1,4 @@
-// Testes unitários: níveis WCAG, paleta e as 6 comparações (RF-03, RF-04, RF-17).
+// Testes unitários: níveis WCAG, paleta e as 3 comparações (RF-03, RF-17).
 import { describe, it, expect } from 'vitest';
 import { Color } from '../../src/domain/color/Color.js';
 import { Palette } from '../../src/domain/palette/Palette.js';
@@ -58,9 +58,17 @@ describe('Palette', () => {
 describe('PaletteComparator', () => {
   const comparator = new PaletteComparator();
 
-  it('gera 6 comparações na ordem A/B, B/A, A/C, C/A, B/C, C/B', () => {
-    const pairs = comparator.compare(brand()).map((c) => `${c.text.label}/${c.background.label}`);
-    expect(pairs).toEqual(['A/B', 'B/A', 'A/C', 'C/A', 'B/C', 'C/B']);
+  // v1.1.0: na WCAG, "A sobre B" e "B sobre A" dão o mesmo número. Então são 3 comparações (pares).
+  it('gera 3 comparações, uma por par, na ordem AB, AC, BC', () => {
+    const pairs = comparator.compare(brand()).map((c) => `${c.first.label}${c.second.label}`);
+    expect(pairs).toEqual(['AB', 'AC', 'BC']);
+    expect(comparator.compare(brand()).map((c) => c.id)).toEqual(['AB', 'AC', 'BC']);
+  });
+
+  it('cada par guarda as duas cores, para mostrar as duas prévias', () => {
+    const [ab] = comparator.compare(brand());
+    expect(ab.first.color.hex).toBe('#230023');
+    expect(ab.second.color.hex).toBe('#F2F2F2');
   });
 
   it('cada comparação tem razão e níveis WCAG (sem APCA desde a v1.1.0)', () => {
@@ -72,7 +80,7 @@ describe('PaletteComparator', () => {
 
   it('worst aponta o par de menor contraste (cinza/ciano)', () => {
     const worst = comparator.worst(brand());
-    expect([worst.text.label, worst.background.label].sort()).toEqual(['B', 'C']);
+    expect([worst.first.label, worst.second.label]).toEqual(['B', 'C']);
     expect(worst.levels.normalText).toBe(Level.FAIL);
   });
 });

@@ -1,8 +1,11 @@
 /**
- * ComparisonGrid — o resumo da paleta e os 6 cards de contraste (RF-03, RF-04, RF-20, RF-23).
+ * ComparisonGrid — o resumo da paleta e os 3 cards de contraste, um por par (RF-03, RF-20, RF-23).
+ *
+ * v1.1.0: na WCAG, "A sobre B" e "B sobre A" têm o mesmo número. Então cada par vira UM card,
+ * com as duas prévias lado a lado (porque a aparência muda) e um só valor.
  *
  * Ordem de leitura de cada card (pensada para quem não é designer):
- *  1. a prévia (texto de verdade sobre o fundo de verdade);
+ *  1. as 2 prévias (texto de verdade sobre o fundo de verdade, nos dois sentidos);
  *  2. o veredito em linguagem simples;
  *  3. os números: razão WCAG e selos por extenso.
  * Uma região "aria-live" anuncia o pior par para leitores de tela, com uma pausa
@@ -97,7 +100,7 @@ export class ComparisonGrid {
     this.#summary.textContent = summary.text;
     this.#worst.textContent = repeated
       ? 'Atenção: a paleta tem cores repetidas. Troque pelo menos uma para comparar de verdade.'
-      : `Combinação mais fraca: ${worst.text.label} sobre ${worst.background.label} (${NumberFormat.ratio(worst.ratio)}). ${worstVerdict.title}.`;
+      : `Combinação mais fraca: cores ${worst.first.label} e ${worst.second.label} (${NumberFormat.ratio(worst.ratio)}). ${worstVerdict.title}.`;
     Dom.replace(this.#grid, comparisons.map((c) => this.#card(c)));
     // Ao carregar a página e durante o "Consertar" (o aviso da correção já fala), ficamos em silêncio.
     if (this.#mounted && !this.#showMessage) {
@@ -109,16 +112,9 @@ export class ComparisonGrid {
 
   #card(c) {
     const v = this.#verdict.of(c.ratio);
-    const t = c.text.label;
-    const b = c.background.label;
-    const preview = Dom.el('div', {
-      class: 'cmp__preview frame',
-      style: { background: c.background.color.hex, color: c.text.color.hex },
-      'aria-label': `Exemplo: texto ${c.text.color.hex} sobre fundo ${c.background.color.hex}`,
-      role: 'img',
-    }, [
-      Dom.el('span', { class: 'cmp__aa', 'aria-hidden': 'true', text: 'Aa' }),
-      Dom.el('p', { class: 'cmp__sample', 'aria-hidden': 'true', text: 'Um texto de exemplo para ler.' }),
+    const previews = Dom.el('div', { class: 'cmp__previews' }, [
+      this.#preview(c.first, c.second),
+      this.#preview(c.second, c.first),
     ]);
     const badges = Dom.el('ul', { class: 'badges', 'aria-label': 'Níveis WCAG' }, CRITERIA.map(([key, name]) => {
       const level = c.levels[key];
@@ -126,8 +122,8 @@ export class ComparisonGrid {
         [Icons.svg(BADGE_ICON[level]), `${name}: ${level}`]);
     }));
     return Dom.el('li', { class: 'cmp card zone-roxo' }, [
-      Dom.el('h3', { class: 'cmp__title', text: `Texto ${t} sobre fundo ${b}` }),
-      preview,
+      Dom.el('h3', { class: 'cmp__title', text: `Cores ${c.first.label} e ${c.second.label}` }),
+      previews,
       Dom.el('div', { class: 'cmp__verdict' }, [
         Icons.svg(v.icon),
         Dom.el('span', { class: 'cmp__verdict-title', text: v.title }),
@@ -138,6 +134,22 @@ export class ComparisonGrid {
         Dom.el('small', { text: 'Razão de contraste WCAG 2.2' }),
       ]),
       badges,
+    ]);
+  }
+
+  /** Uma prévia: a cor "text" escrita sobre a cor "background". A legenda fica fora da cor. */
+  #preview(text, background) {
+    return Dom.el('figure', { class: 'cmp__fig' }, [
+      Dom.el('div', {
+        class: 'cmp__preview frame',
+        style: { background: background.color.hex, color: text.color.hex },
+        'aria-label': `Exemplo: texto ${text.label} (${text.color.hex}) sobre fundo ${background.label} (${background.color.hex})`,
+        role: 'img',
+      }, [
+        Dom.el('span', { class: 'cmp__aa', 'aria-hidden': 'true', text: 'Aa' }),
+        Dom.el('p', { class: 'cmp__sample', 'aria-hidden': 'true', text: 'Texto de exemplo.' }),
+      ]),
+      Dom.el('figcaption', { class: 'cmp__caption', 'aria-hidden': 'true', text: `${text.label} sobre ${background.label}` }),
     ]);
   }
 

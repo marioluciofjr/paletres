@@ -1,10 +1,10 @@
 {
   "name": "paletres",
-  "version": "0.1.0",
-  "description": "Paletrês: compare 3 cores em 6 combinações de contraste (WCAG 2.2 e APCA) e gere paletas por harmonias, proporção áurea e Fibonacci.",
+  "version": "1.1.0",
+  "description": "Paletrês: gere 3 cores e confira as 6 combinações de contraste pela WCAG 2.2, teste em mockups e fotos, gere harmonias (inclusive proporção áurea e Fibonacci) e exporte.",
   "type": "module",
   "private": true,
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Mário Lúcio (Prazo Certo)",
   "scripts": {
     "dev": "vite",

@@ -22,7 +22,7 @@ Sem branco, preto, opacidade, degradê ou sombra na interface.
 
 As cores digitadas pela pessoa usuária são arbitrárias. Para que elas não "vazem" e não se confundam com a marca, **toda amostra ou prévia com cor do usuário fica dentro de uma moldura preta `#000000` de 2px**, com cantos de 8px.
 
-- A exceção vale **só** para amostras, prévias das 6 comparações, células de tints e shades, faixas do simulador de daltonismo, faixa de proporção, marcadores da roda cromática, **mockups de site e app** e a **imagem do color grading**.
+- A exceção vale **só** para amostras, prévias das 3 comparações, células de tints e shades, faixas do simulador de daltonismo, faixa de proporção, marcadores da roda cromática, **mockups de site e app** e a **imagem do color grading**.
 - Texto da interface nunca fica sobre uma cor do usuário. As exceções são os textos de **prévia** (no card de comparação e dentro dos mockups), que são justamente o objeto do teste.
 - Aprovada pelo Mário em 13/11/2026.
 - Nas áreas roxas (cards, cabeçalho, hero) e no tema escuro, a moldura preta ganha um **anel cinza de 3px por fora**. Sem ele, uma cor do usuário igual ou parecida com o roxo sumiria (preto sobre roxo dá 1,1:1).
@@ -66,20 +66,20 @@ Ordem da v1.1.0 (os passos 1 a 4 ficam seguidos, para não quebrar a linha de ra
 2. **Portão** (`#comecar`, só antes de gerar): 3 círculos tracejados, "Sua paleta ainda está vazia" e o botão "Gerar paleta". A ferramenta (`#ferramenta`) fica escondida até o clique.
 3. **Passo 1 de 4 · Escolha** (`#paleta`), **Passo 2 de 4 · Confira** (`#comparacoes`), **Passo 3 de 4 · Teste** (`#pratica`) e **Passo 4 de 4 · Exporte** (`#exportar`).
 4. **Extras**, cada um com uma etiqueta antes do título: **Daltonismo** ("Usa a sua paleta atual"), **Harmonias** ("Cria uma paleta nova") e **Tints e shades** ("Variações da sua paleta").
-5. **Aprenda** (`#aprenda`), com a fonte oficial no fim de cada card; **Sobre** (`#sobre`); a faixa ciano do **CTA da Prazo Certo**; e o **Rodapé** (logo de 320px, contatos e o Clawd com o balão do crédito).
+5. **Aprenda** (`#aprenda`), com a fonte oficial no fim de cada card (inclui "Cores em imagens com IA generativa", com o link de Psicologia das Cores); **Sobre** (`#sobre`); a faixa ciano do **CTA da Prazo Certo**; e o **Rodapé** em 3 colunas: logo de 320px, contatos e o Clawd com o balão do crédito (no tablet, a logo fica em cima; no celular, tudo empilhado).
 
 Detalhe de cada seção (ordem antiga da v1.0.0 mantida abaixo como referência de conteúdo):
 
 1. **Início** (`#inicio`): ver acima.
 2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões Desfazer, Refazer e "Sortear paleta", os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
-3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 combinações boas para texto"), o botão "Consertar contraste" e os 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile).
+3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 de 3 combinações boas para texto"), o botão "Consertar contraste" e os **3 cards** (um por par) em 3 colunas no computador e 1 coluna no tablet e no celular.
 4. **Harmonias** (`#harmonias`): roda cromática do rascunho e **3 etapas numeradas**: (1) tipo de harmonia em 3 grupos, (2) contraste da paleta nova (Livre/AA/AAA), (3) "Gerar paleta nova", com a paleta atual e o rascunho lado a lado e os botões "Usar esta paleta" e "Descartar a paleta nova".
 5. **Tints e shades** (`#tons`): uma linha de 19 células por cor (9 claros de 90% a 10%, a original e 9 escuros de 10% a 90%). Paramos em 90% porque 100% seria branco ou preto puro.
 6. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
 7. **Teste na prática** (`#pratica`): regra 60-30-10 (v1.1.0: sem seletor de proporção), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: uma frase sobre o cinema, a área de upload (arrastar ou escolher arquivo), a escolha "Resultado final / Onde entra cada cor", a **legenda das 3 cores**, a imagem antes/depois com divisor arrastável, o slider de intensidade e o botão "Baixar PNG".
 8. **Exportar** (`#exportar`): CSS, JSON, PNG e o link compartilhável.
-9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, as 6 comparações, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e color grading no cinema (card largo). Cada card termina com "Fontes oficiais" (nunca Wikipédia).
-10. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.", dito pelo Clawd num balão de HQ (v1.1.0).
+9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, as 3 comparações, cores em imagens com IA generativa, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e color grading no cinema (card largo). Cada card termina com "Fontes oficiais" (nunca Wikipédia).
+10. **Rodapé**: logo, contatos e, **ao lado dos contatos**, o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.", dito pelo Clawd num balão de HQ (v1.1.0).
 
 ### 3.1 Botão "Visitar Prazo Certo"
 
@@ -110,9 +110,9 @@ Card roxo com SwatchFrame, rótulo ("Cor 1 — A"), campo HEX, botão copiar (gh
 `input type="range"` nativo com rótulo visível, valor numérico ao lado e `aria-valuetext` ("Matiz 280 graus"). Atrás do trilho vai uma faixa com o gradiente real da cor (é uma prévia, por isso fica na moldura preta).
 
 ### ComparisonCard
-- Cabeçalho: "Texto A sobre fundo B".
-- Prévia na moldura preta: o fundo é a cor B, com "Aa" grande e uma frase curta na cor A.
-- Valor: razão WCAG em Kreon 40px ciano, como "17,1:1".
+- v1.1.0: um card por **par**. Cabeçalho: "Cores A e B".
+- Duas prévias lado a lado na moldura preta: "A sobre B" e "B sobre A", cada uma com "Aa" grande e uma frase curta, e a legenda **fora** da cor.
+- Valor: **uma** razão WCAG em Kreon 40px ciano, como "17,11:1" (é a mesma nos dois sentidos).
 - Selos (componente Badge): Texto normal, Texto grande e Componentes, cada um com **AAA**, **AA** ou **Reprovado** escrito por extenso e um ícone (check, check duplo, x). Nunca só cor.
 - (v1.1.0: a linha APCA saiu; ver ADR-10.)
 

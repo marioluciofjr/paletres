@@ -804,15 +804,10 @@
   list-style: none;
 }
 
+/* 3 cards (um por par): 3 colunas no computador e 1 coluna abaixo disso (sem card órfão). */
 @media (max-width: 1024px) {
   .cmp-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 680px) {
-  .cmp-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -827,9 +822,28 @@
   font-size: 1.125rem;
 }
 
+/* As 2 prévias do par, lado a lado: X sobre Y e Y sobre X. */
+.cmp__previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.cmp__fig {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  min-width: 0;
+}
+
+.cmp__caption {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
 .cmp__preview {
-  padding: var(--space-4) var(--space-6);
-  min-height: 132px;
+  padding: var(--space-3) var(--space-4);
+  min-height: 112px;
 }
 
 .cmp__aa {
@@ -2013,12 +2027,24 @@
   line-height: 1.3;
 }
 
-/* ---------- Rodapé: logo maior e o Clawd ---------- */
+/* ---------- Rodapé: logo maior e o Clawd ao lado dos contatos ---------- */
 .site-footer__grid {
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
 }
 
-/* Celular: logo, contatos e o Clawd empilhados (a logo usa a largura toda). */
+/* Tablet: a logo ocupa a linha de cima; contatos e Clawd ficam lado a lado embaixo. */
+@media (max-width: 1024px) {
+  .site-footer__grid {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .site-footer__grid > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Celular: tudo empilhado (a logo usa a largura toda). */
 @media (max-width: 560px) {
   .site-footer__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -2026,7 +2052,6 @@
 }
 
 .clawd {
-  grid-column: 1 / -1;
   display: flex;
   align-items: flex-end;
   gap: var(--space-6);

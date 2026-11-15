@@ -35,7 +35,7 @@
 | Módulo | Classe(s) | Responsabilidade única |
 | :--- | :--- | :--- |
 | `domain/color` | `Color`, `ColorConverter` | Representar uma cor imutável e converter HEX ↔ RGB ↔ HSB. |
-| `domain/contrast` | `ContrastStrategy`, `Wcag2Contrast`, `ContrastEvaluator`, `PaletteComparator` | Calcular o contraste WCAG 2.2 e montar as 6 comparações. |
+| `domain/contrast` | `ContrastStrategy`, `Wcag2Contrast`, `ContrastEvaluator`, `PaletteComparator` | Calcular o contraste WCAG 2.2 e montar as 3 comparações (uma por par: `first`, `second`, `ratio`, `levels`). |
 | `domain/palette` | `Palette`, `PresetCatalog` | Guardar as 3 cores e trocar uma delas sem mutação; catálogo das 15 paletas prontas do Color Hunt. |
 | `domain/harmony` | `HarmonyStrategy` e 11 subclasses, `HarmonyRegistry` | Gerar 3 cores a partir de uma matiz base. |
 | `domain/guard` | `ContrastGuard` | Ajustar o brilho (e, no limite, a saturação) por varredura até o par principal de texto atingir AA ou AAA e o destaque ter ≥ 3:1. |
@@ -70,7 +70,7 @@
 3. O painel chama `store.setColor(index, color)`.
 4. O `PaletteStore` cria uma nova `Palette`, grava o hash da URL via `UrlStateCodec` e emite `palette:changed`.
 5. `ComparisonGrid`, `HsbSliderPanel`, `TintShadeTable`, `ColorBlindPreview`, `ExportPanel` e o rascunho das harmonias (quando não há rascunho pendente) re-renderizam.
-6. O `ComparisonGrid` usa o `PaletteComparator` para obter as 6 comparações e anuncia o pior caso na região `aria-live`.
+6. O `ComparisonGrid` usa o `PaletteComparator` para obter as 3 comparações e anuncia o pior par na região `aria-live`.
 
 ## 5. Decisões técnicas (ADRs resumidos)
 
@@ -88,10 +88,11 @@
 | ADR-10 | Só WCAG 2.2 (APCA removido na v1.1.0) | Manter o APCA como referência | O Mário testou e não viu diferença útil para decidir. Menos números = interface mais simples para quem não é designer. O `ContrastStrategy` continua, para um método futuro. |
 | ADR-11 | Portão no início (`started` na store + `[data-gate]` no HTML) | Paleta padrão visível | Pedido do Mário: a pessoa precisa clicar em "Gerar paleta". A paleta padrão continua só por dentro, como valor técnico. `start()` não grava passo de desfazer. |
 | ADR-12 | Rascunho separado para as harmonias (`HarmonyWorkbench`) | Gerar direto na paleta da pessoa | Evita a sensação de "perdi tudo". A roda cromática recebe um modelo com a mesma interface da store (baixo acoplamento). |
+| ADR-14 | 3 comparações (uma por par), com 2 prévias por card | 6 cards, um por direção | Pedido do Mário: a WCAG dá o mesmo número nos dois sentidos, então 6 cards repetiam valores. As 2 prévias ficam porque a aparência muda. |
 | ADR-13 | Parallax por variável CSS (`--parallax-y`) e `translate` por bola | `transform` direto em cada elemento | As bolas são redesenhadas a cada paleta; a variável fica no contêiner e o efeito não se perde. |
 
 ## 6. Concessões aceitas
 
 - A roda cromática é um SVG com cores em HSB, não um disco perceptual (OKLCH). Isso combina com o Adobe Color, mas a distribuição visual de matizes não é uniforme.
-- As 6 comparações mostram o mesmo número WCAG nos dois sentidos de cada par; as 6 prévias continuam porque a aparência muda.
+- Cada par mostra um só número WCAG; as 2 prévias do card continuam porque a aparência muda (ADR-14).
 - O PNG exportado usa o `<canvas>` do navegador. No Vitest, o `PngExporter` é testado só pela geração do layout, não pelos pixels.

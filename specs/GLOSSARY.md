@@ -26,7 +26,7 @@
 | **Texto grande** | 24px ou mais, ou 18,66px (14pt) ou mais em negrito. |
 | **Componentes de interface** | Bordas de campos, ícones e partes de gráficos (critério 1.4.11, mínimo 3:1). |
 | **APCA** | *Accessible Perceptual Contrast Algorithm*, método candidato ao futuro WCAG 3. Esteve no Paletrês até a v1.0.0 e saiu na v1.1.0 (ADR-10). |
-| **Comparação ordenada** | Um par com papéis definidos: uma cor é o texto e a outra é o fundo. 3 cores geram 6 comparações. |
+| **Comparação (par)** | Duas cores da paleta comparadas pela WCAG. 3 cores geram 3 pares (AB, AC, BC). A ordem não muda o número, então cada par é uma comparação só, com 2 prévias. |
 
 ## Harmonias
 
@@ -53,6 +53,7 @@
 | **ARIA** | Atributos HTML que explicam a leitores de tela o que um elemento é e faz. |
 | **aria-live** | Região da página que o leitor de tela anuncia sozinho quando muda. |
 | **prefers-reduced-motion** | Preferência do sistema operacional para reduzir animações. |
+| **Psicologia das cores** | Área que estuda como a cor carrega significado e influencia emoções e comportamentos, sempre conforme o contexto. Referência: Elliot e Maier (2014). |
 | **Parallax** | Efeito em que camadas se movem em velocidades diferentes na rolagem, dando profundidade. No Paletrês, as 3 bolas do início. |
 | **Color grading** | No cinema, a etapa da pós-produção em que o colorista ajusta as cores de cada cena para criar um clima. No Paletrês, é feito por mapa de gradiente. |
 | **Mapa de gradiente (gradient map)** | Técnica que troca a cor de cada pixel conforme a claridade dele: sombras, meios-tons e luzes recebem cores escolhidas. |

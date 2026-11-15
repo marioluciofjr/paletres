@@ -1,0 +1,27 @@
+Paletrês
+Copyright 2026 Mário Lúcio (Prazo Certo)
+
+Este produto é distribuído sob a Licença Apache, Versão 2.0 (ver o arquivo LICENSE).
+
+Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do
+modelo Opus 5.5 no esforço Alto.
+
+Marcas e personagens de terceiros
+---------------------------------
+A licença Apache 2.0 cobre o código-fonte. Ela não dá permissão de uso de
+marcas (seção 6 da licença). Em especial:
+
+- O nome "Prazo Certo", o logotipo (public/logo-cinza-roxo.svg) e o símbolo
+  (public/favicon.svg) são marcas de Mário Lúcio. Se você fizer um fork,
+  troque esses arquivos e o nome pela sua própria identidade.
+- O Clawd, desenhado em pixel art no rodapé, é o mascote do Claude Code, da
+  Anthropic. Ele aparece só como crédito à ferramenta usada na cocriação.
+
+Créditos de conteúdo
+--------------------
+- As 15 paletas prontas foram escolhidas no Color Hunt (https://colorhunt.co).
+  Cada uma traz o link da paleta original no código (src/domain/palette/PresetCatalog.js).
+- O simulador de daltonismo usa as matrizes publicadas por Machado, Oliveira e
+  Fernandes (2009), "A Physiologically-based Model for Simulation of Color
+  Vision Deficiency", IEEE TVCG.
+- As fórmulas de contraste seguem a WCAG 2.2, do W3C.

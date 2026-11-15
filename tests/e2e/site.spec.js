@@ -32,6 +32,16 @@ test.describe('Início sem paleta (RF-25)', () => {
     await expect(page.getByRole('link', { name: 'Ver minha paleta' })).toBeVisible();
   });
 
+  test('depois de gerar, "Pular para a ferramenta" leva o foco ao título do Passo 1 (a11y-web M2)', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.hero [data-action="start"]').click();
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.locator('#inicio').click({ position: { x: 5, y: 5 } });
+    await page.locator('[data-component="skip-link"]').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#paleta-title')).toBeFocused();
+  });
+
   test('passos em ordem: 1, 2, 3 e 4 seguidos, e os extras depois', async ({ page }) => {
     await page.goto(BRAND);
     const eyebrows = await page.locator('#ferramenta .section__head .eyebrow').allTextContents();
@@ -160,6 +170,15 @@ test.describe('Teste na prática', () => {
     await expect(page.locator('[data-action="download-graded"]')).toHaveAttribute('aria-disabled', 'false');
     await page.locator('#pratica label.chip', { hasText: 'Onde entra cada cor' }).click();
     await expect(page.locator('.stage')).toHaveAttribute('aria-label', /mapa das 3 zonas/);
+  });
+
+  test('no modo zonas, o slider de intensidade fica desativado e explica por quê (a11y-web M1)', async ({ page }) => {
+    await page.goto(BRAND);
+    const slider = page.getByLabel('Intensidade das cores da paleta');
+    await expect(slider).toBeEnabled();
+    await page.locator('#pratica label.chip', { hasText: 'Onde entra cada cor' }).click();
+    await expect(slider).toBeDisabled();
+    await expect(page.locator('#pratica')).toContainText('as 3 cores entram sempre a 100%');
   });
 
   test('arquivo de formato errado mostra erro em texto (RF-18)', async ({ page }) => {

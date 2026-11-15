@@ -49,6 +49,8 @@ export class HarmonyPanel {
   #apply;
   #discard;
   #generateBtn;
+  #fromDraft = false;
+  #descTimer = null; // o aviso atual veio da geração do rascunho?
 
   constructor({ root, store, bench, bus }) {
     this.#root = root;
@@ -157,22 +159,34 @@ export class HarmonyPanel {
 
   #onApply() {
     if (!this.#bench.apply()) {
-      this.#callout.textContent = 'Ainda não há paleta nova. Clique em "Gerar paleta nova" primeiro.';
+      this.#say('Ainda não há paleta nova. Clique em "Gerar paleta nova" primeiro.');
       return;
     }
-    this.#callout.classList.remove('callout--warning');
-    this.#callout.textContent = this.#store.state.message.text;
+    this.#say(this.#store.state.message.text);
   }
 
   #onDiscard() {
     if (!this.#bench.state.pending) {
-      this.#callout.classList.remove('callout--warning');
-      this.#callout.textContent = 'Não há paleta nova para descartar.';
+      this.#say('Não há paleta nova para descartar.');
       return;
     }
     this.#bench.discard();
-    this.#callout.classList.remove('callout--warning');
-    this.#callout.textContent = 'Paleta nova descartada. A sua paleta continua a mesma.';
+    this.#say('Paleta nova descartada. A sua paleta continua a mesma.');
+  }
+
+  /**
+   * Escreve no aviso (região de status). Se o texto for igual ao anterior, o leitor de tela
+   * não anunciaria de novo: por isso esvaziamos e escrevemos no quadro seguinte (auditoria A11Y-05).
+   */
+  #say(text, kind = 'info') {
+    this.#fromDraft = false;
+    this.#callout.classList.toggle('callout--warning', kind === 'warning');
+    if (this.#callout.textContent !== text) {
+      this.#callout.textContent = text;
+      return;
+    }
+    this.#callout.textContent = '';
+    requestAnimationFrame(() => { this.#callout.textContent = text; });
   }
 
   // ---------- desenho ----------
@@ -184,8 +198,12 @@ export class HarmonyPanel {
     }
     const h = this.#store.harmonies.get(harmonyId);
     const text = `Escolhida: ${h.name}. ${h.description}`;
-    // Só reescreve (e o leitor de tela só anuncia) quando a harmonia mudou de fato.
-    if (this.#desc.textContent !== text) this.#desc.textContent = text;
+    // Só reescreve (e o leitor de tela só anuncia) quando a harmonia mudou de fato, e com uma
+    // pausa: andar com as setas pelos rádios não dispara um anúncio a cada opção (a11y-web B1).
+    clearTimeout(this.#descTimer);
+    if (this.#desc.textContent === text) return;
+    if (!this.#desc.textContent) this.#desc.textContent = text;
+    else this.#descTimer = setTimeout(() => { this.#desc.textContent = text; }, 600);
   }
 
   #renderDraft() {
@@ -200,8 +218,12 @@ export class HarmonyPanel {
     this.#generateBtn.classList.toggle('btn--ghost', pending);
     // A mensagem da geração (só quando há rascunho novo) vai para a região de status.
     if (pending && message.text && this.#callout.textContent !== message.text) {
-      this.#callout.textContent = message.text;
-      this.#callout.classList.toggle('callout--warning', message.kind === 'warning');
+      this.#say(message.text, message.kind);
+      this.#fromDraft = true;
+    } else if (!pending && this.#fromDraft) {
+      // O rascunho deixou de existir (ex.: a paleta da pessoa ficou igual): o aviso da geração sai (A11Y-06).
+      this.#callout.textContent = '';
+      this.#fromDraft = false;
     }
   }
 

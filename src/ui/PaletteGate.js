@@ -44,7 +44,7 @@ export class PaletteGate {
       el.hidden = el.dataset.gate === 'locked' ? started : !started;
     }
     const skip = this.#doc.querySelector('[data-component="skip-link"]');
-    if (skip) skip.setAttribute('href', started ? '#paleta' : '#comecar');
+    if (skip) skip.setAttribute('href', started ? '#paleta-title' : '#comecar');
   }
 
   #onStarted() {

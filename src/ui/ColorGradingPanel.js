@@ -58,6 +58,7 @@ export class ColorGradingPanel {
   #status;
   #fileName;
   #intensity;
+  #intensityHint;
   #split;
   #download;
   #mode = GradientMap.Mode.SMOOTH;
@@ -81,6 +82,7 @@ export class ColorGradingPanel {
   mount() {
     const fileId = Dom.uid('foto');
     const intensityId = Dom.uid('intensidade');
+    const intensityHintId = Dom.uid('intensidade-dica');
     const splitId = Dom.uid('divisor');
     this.#fileName = Dom.el('p', { class: 'dropzone__file-name', text: 'Nenhuma foto escolhida.' });
     const file = Dom.el('input', {
@@ -102,7 +104,7 @@ export class ColorGradingPanel {
     this.#error = Dom.el('p', { class: 'field__error', role: 'alert' });
     this.#status = Dom.el('p', { class: 'grading__status', role: 'status' });
     this.#intensity = Dom.el('input', {
-      id: intensityId, type: 'range', class: 'range', min: '0', max: '100', value: '100', 'aria-valuetext': '100 por cento',
+      id: intensityId, type: 'range', class: 'range', min: '0', max: '100', value: '100', 'aria-valuetext': '100 por cento', 'aria-describedby': intensityHintId,
       on: { input: (e) => { e.target.setAttribute('aria-valuetext', `${e.target.value} por cento`); this.#schedule(); } },
     });
     this.#split = Dom.el('input', {
@@ -129,7 +131,11 @@ export class ColorGradingPanel {
       this.#error,
       this.#status,
       view,
-      Dom.el('div', { class: 'field' }, [Dom.el('label', { class: 'field__label', for: intensityId, text: 'Intensidade das cores da paleta' }), this.#intensity]),
+      Dom.el('div', { class: 'field' }, [
+        Dom.el('label', { class: 'field__label', for: intensityId, text: 'Intensidade das cores da paleta' }),
+        this.#intensity,
+        this.#intensityHint = Dom.el('p', { id: intensityHintId, class: 'field__label', hidden: true, text: 'No modo "Onde entra cada cor", as 3 cores entram sempre a 100%.' }),
+      ]),
       Dom.el('div', { class: 'field' }, [Dom.el('label', { class: 'field__label', for: splitId, text: 'Comparar antes e depois' }), this.#split]),
       this.#download,
       Dom.el('p', { class: 'field__label', text: 'A foto é processada no seu navegador e não é enviada para nenhum servidor.' }),
@@ -339,6 +345,9 @@ export class ColorGradingPanel {
   /** Troca entre o resultado final e o mapa das 3 zonas. */
   #setMode(mode) {
     this.#mode = mode;
+    const zones = mode === GradientMap.Mode.ZONES;
+    this.#intensity.disabled = zones;
+    this.#intensityHint.hidden = !zones;
     this.#renderLegend();
     this.#schedule();
   }
@@ -379,12 +388,12 @@ export class ColorGradingPanel {
 
   #applyFull() {
     if (!this.#full) return;
-    const { map, k } = this.#map();
+    const { map, k } = this.#map(); // k é a intensidade aplicada de verdade (no modo zonas, sempre 1)
     const { data, out } = this.#full;
     map.apply(data.data, k, out);
     this.#after.getContext('2d').putImageData(new ImageData(out, data.width, data.height), 0, 0);
     const view = this.#mode === GradientMap.Mode.ZONES ? 'mapa das 3 zonas' : 'resultado final';
-    this.#stage.setAttribute('aria-label', `${this.#subject.charAt(0).toUpperCase()}${this.#subject.slice(1)}, recolorida com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, ${view}, intensidade ${this.#intensity.value}%`);
+    this.#stage.setAttribute('aria-label', `${this.#subject.charAt(0).toUpperCase()}${this.#subject.slice(1)}, recolorida com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, ${view}, intensidade ${Math.round(k * 100)}%`);
   }
 
   /**

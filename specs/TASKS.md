@@ -41,11 +41,11 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T27 | Testes da v1.1.0 (unit, integration, e2e) e specs atualizadas | RNF-06 | Claude | ✅ |
 | T30 | 3 comparações (uma por par, 2 prévias), card de cores em imagens com IA e Clawd ao lado dos contatos (2ª leva do `ajustes.md`) | RF-03, RF-16, RF-31, ADR-14 | Claude | ✅ |
 | T28 | Licença Apache-2.0 (LICENSE + NOTICE), versão 1.1.0, CHANGELOG e README de portfólio | RNF-03 | Claude | ✅ |
-| T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade, UX, motion e casos extremos) | RNF-01, RNF-09 | Claude | ⏳ |
+| T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade em 2 ciclos, UX, motion e casos extremos) e correções | RNF-01, RNF-09 | Claude | ✅ |
 
 ## Próximo passo
 
-v1.1.0 implementada (T18–T28 e T30). Falta a auditoria final (T29). Depois: teste manual do Mário e, com o aval dele, publicação no GitHub.
+v1.1.0 concluída (T18–T30), com todas as auditorias aprovadas. Próximo passo: teste manual do Mário e, com o aval dele, publicação no GitHub. Depois: teste manual do Mário e, com o aval dele, publicação no GitHub.
 
 ## Backlog (fora da v1)
 

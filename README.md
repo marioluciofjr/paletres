@@ -5,7 +5,7 @@
 ![Versão 1.1.0](https://img.shields.io/badge/vers%C3%A3o-1.1.0-230023)
 ![Licença Apache 2.0](https://img.shields.io/badge/licen%C3%A7a-Apache%202.0-230023)
 ![WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
-![Testes: 199 Vitest e 40 Playwright](https://img.shields.io/badge/testes-199%20Vitest%20%2B%2040%20Playwright-230023)
+![Testes: 204 Vitest e 42 Playwright](https://img.shields.io/badge/testes-204%20Vitest%20%2B%2042%20Playwright-230023)
 
 ## Por que o Paletrês existe
 

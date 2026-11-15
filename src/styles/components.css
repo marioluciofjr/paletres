@@ -1136,7 +1136,7 @@
 
 @media (max-width: 960px) {
   .mockups {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1846,8 +1846,9 @@
 .form-step__n {
   display: inline-grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 var(--space-1);
   border-radius: 50%;
   background: var(--accent);
   color: var(--on-accent);
@@ -2026,6 +2027,8 @@
 
 .cta__text {
   margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
   line-height: 1.3;
 }

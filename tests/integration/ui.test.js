@@ -257,7 +257,7 @@ describe('PaletteGate e HeroArt (RF-25: o site abre sem paleta)', () => {
     expect(document.querySelector('[data-gate="locked"]').hidden).toBe(true);
     expect(document.querySelectorAll('.hero-dot--empty')).toHaveLength(0);
     expect(document.querySelectorAll('.hero-dot')).toHaveLength(3);
-    expect(document.querySelector('[data-component="skip-link"]').getAttribute('href')).toBe('#paleta');
+    expect(document.querySelector('[data-component="skip-link"]').getAttribute('href')).toBe('#paleta-title');
     expect(document.activeElement.id).toBe('paleta-title');
     expect(toast.messages.at(-1)).toMatch(/Pronto/);
   });

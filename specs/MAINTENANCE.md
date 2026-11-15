@@ -21,6 +21,7 @@ Ajustes a mudanças externas.
 
 - **WCAG 3:** quando virar recomendação oficial, reavaliar a volta de um segundo método de contraste (uma nova `ContrastStrategy`; ver ADR-10).
 - **Fontes oficiais (RF-29):** a cada versão, abra os links das seções "Aprenda" e "O que é isso?". Troque qualquer link quebrado por outra fonte oficial. Wikipédia não vale. As páginas da Adobe bloqueiam robôs (erro 403), então confira essas à mão.
+- **Pendências conhecidas da v1.1.0 (baixas ou médias, sem impacto alto):** link com HEX de 8 dígitos (alfa) ou pontuação colada derruba a paleta inteira; o modo zonas usa cortes fixos de claridade (foto muito clara ou escura mostra menos de 3 zonas); abrir `/#secao` antes de gerar não mostra o aviso do portão; com cores repetidas, as 2 prévias do par ficam iguais (o resumo avisa em texto). Relatórios em `tmp/a11y_reports/` (fora do git).
 - **Paletas prontas:** se o Mário trocar alguma, mantenha 15, com crédito ao Color Hunt e sem as cores da marca (o teste `unit/presets.test.js` confere).
 - **Dependências:** a cada trimestre, rode `npm outdated` e atualize Vite, Vitest e Playwright, com `npm test` e `npm run test:e2e` verdes.
 - **Navegadores:** confira o parallax das bolas do início, a propriedade CSS `translate` e o `<canvas>` (PNG) no Safari e no Firefox a cada versão grande.

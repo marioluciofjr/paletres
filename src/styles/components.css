@@ -1837,24 +1837,10 @@
   list-style: none;
 }
 
+/* Etapa sem número ao lado (feedback do Mário): o título "Etapa N de 3" já diz a ordem. */
 .form-step {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
-  gap: var(--space-4);
-}
-
-.form-step__n {
-  display: inline-grid;
-  place-items: center;
-  min-width: 40px;
-  min-height: 40px;
-  padding: 0 var(--space-1);
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .form-step__body {

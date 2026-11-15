@@ -213,6 +213,32 @@ describe('PaletteStore — início bloqueado', () => {
     expect(store.canUndo).toBe(true);
   });
 
+  it('reset() volta ao zero: sem paleta, sem histórico e avisa (feedback do Mário)', () => {
+    const bus = new EventBus();
+    const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });
+    const got = [];
+    bus.on(StoreEvent.RESET, () => got.push('reset'));
+    store.start();
+    store.setColor(0, Color.fromHex('#123456'));
+    expect(store.canUndo).toBe(true);
+    store.reset();
+    expect(store.state.started).toBe(false);
+    expect(store.canUndo).toBe(false);
+    expect(store.canRedo).toBe(false);
+    expect(got).toEqual(['reset']);
+    store.start();
+    expect(store.state.started).toBe(true);
+  });
+
+  it('reset() antes de começar não faz nada', () => {
+    const bus = new EventBus();
+    const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });
+    const got = [];
+    bus.on(StoreEvent.RESET, () => got.push('reset'));
+    store.reset();
+    expect(got).toEqual([]);
+  });
+
   it('start() chamado de novo não faz nada', () => {
     const store = PaletteStore.create({ bus: new EventBus(), rng: RandomSource.seeded(7) });
     store.start();
@@ -315,6 +341,12 @@ describe('HarmonyWorkbench (rascunho das harmonias)', () => {
     bench.generate();
     bench.apply();
     expect(bench.state.message.text).toBe('');
+  });
+
+  it('reset() descarta o rascunho pendente', () => {
+    bench.generate();
+    store.reset();
+    expect(bench.state.pending).toBe(false);
   });
 
   it('aplicar sem nada pendente avisa e não muda nada', () => {

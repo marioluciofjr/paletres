@@ -41,6 +41,15 @@ export class HarmonyWorkbench {
       }
       this.#emit();
     });
+    this.#bus.on(StoreEvent.RESET, () => this.#onReset());
+  }
+
+  /** Chamado no "Começar do zero": o rascunho some junto com a paleta. */
+  #onReset() {
+    this.#pending = false;
+    this.#palette = this.#store.state.palette;
+    this.#message = { kind: 'info', text: '' };
+    this.#emit();
   }
 
   /** Compara pelo HEX: em cinzas, mudar a matiz muda o HSB mas não a cor que se vê. */

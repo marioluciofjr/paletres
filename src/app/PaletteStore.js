@@ -23,6 +23,7 @@ export const StoreEvent = Object.freeze({
   HISTORY: 'history:changed',
   MESSAGE: 'message:changed',
   STARTED: 'app:started',
+  RESET: 'app:reset',
 });
 
 const HISTORY_LIMIT = 60;
@@ -199,6 +200,25 @@ export class PaletteStore {
       : `Pronto! Gerei uma paleta ${harmony.name.toLowerCase()} com texto legível (AA). Agora ajuste as cores do seu jeito.`;
     this.setPalette(palette, { record: false, message: { kind: message.kind === 'warning' ? 'warning' : 'success', text } });
     this.#bus.emit(StoreEvent.STARTED, this.state);
+  }
+
+  /**
+   * "Começar do zero": apaga a paleta e o histórico e volta ao estado do primeiro acesso
+   * (os círculos com "?"). Antes de começar, não faz nada.
+   */
+  reset() {
+    if (!this.#started) return;
+    this.#started = false;
+    this.#past = [];
+    this.#future = [];
+    this.#selectedIndex = 0;
+    this.#rolesAuto = true;
+    this.#palette = Palette.default();
+    this.#roles = this.#advisor.suggest(this.#palette).roles;
+    this.#bus.emit(StoreEvent.HISTORY, this.#historyState());
+    this.#bus.emit(StoreEvent.PALETTE, this.state);
+    this.#setMessage({ kind: 'info', text: 'Tudo limpo. Clique em "Gerar paleta" para começar de novo.' });
+    this.#bus.emit(StoreEvent.RESET, this.state);
   }
 
   /**

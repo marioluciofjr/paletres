@@ -66,7 +66,9 @@ class PaletresApp {
     const bench = HarmonyWorkbench.create({ store, bus });
 
     // Toda mudança de paleta vai para a URL: o link está sempre pronto para compartilhar.
-    bus.on(StoreEvent.PALETTE, ({ palette }) => codec.write(palette));
+    // (Só depois de começar: antes de "Gerar paleta", e depois de "Começar do zero", o endereço fica limpo.)
+    bus.on(StoreEvent.PALETTE, ({ palette, started }) => { if (started) codec.write(palette); });
+    bus.on(StoreEvent.RESET, () => codec.clear());
     // Link no formato antigo (#rrggbb-rrggbb-rrggbb) colado na mesma aba: aplicamos.
     // Âncoras do menu (#tons) também disparam este evento e são ignoradas.
     this.#win.addEventListener('hashchange', () => {

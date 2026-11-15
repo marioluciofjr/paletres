@@ -22,6 +22,7 @@ export class HeroArt {
   mount() {
     this.#bus.on(StoreEvent.PALETTE, () => this.#render());
     this.#bus.on(StoreEvent.STARTED, () => this.#render());
+    this.#bus.on(StoreEvent.RESET, () => this.#render());
     this.#render();
   }
 

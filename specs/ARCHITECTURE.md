@@ -89,6 +89,7 @@
 | ADR-11 | Portão no início (`started` na store + `[data-gate]` no HTML) | Paleta padrão visível | Pedido do Mário: a pessoa precisa clicar em "Gerar paleta". A paleta padrão continua só por dentro, como valor técnico. `start()` não grava passo de desfazer. |
 | ADR-12 | Rascunho separado para as harmonias (`HarmonyWorkbench`) | Gerar direto na paleta da pessoa | Evita a sensação de "perdi tudo". A roda cromática recebe um modelo com a mesma interface da store (baixo acoplamento). |
 | ADR-14 | 3 comparações (uma por par), com 2 prévias por card | 6 cards, um por direção | Pedido do Mário: a WCAG dá o mesmo número nos dois sentidos, então 6 cards repetiam valores. As 2 prévias ficam porque a aparência muda. |
+| ADR-15 | "Começar do zero" com `store.reset()` + evento `app:reset` + `UrlStateCodec.clear()` | Recarregar a página | O endereço com `?p=` reabria a paleta e confundia o primeiro acesso. O reset limpa estado, histórico, rascunho e URL sem recarregar. |
 | ADR-13 | Parallax por variável CSS (`--parallax-y`) e `translate` por bola | `transform` direto em cada elemento | As bolas são redesenhadas a cada paleta; a variável fica no contêiner e o efeito não se perde. |
 
 ## 6. Concessões aceitas

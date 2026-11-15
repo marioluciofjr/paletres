@@ -15,6 +15,12 @@ const fakeWindow = ({ search = '', hash = '' } = {}) => {
 };
 
 describe('UrlStateCodec', () => {
+  it('clear() tira a paleta (?p=) do endereço e mantém a âncora', () => {
+    const w = fakeWindow({ search: '?p=230023-f2f2f2-42ffff', hash: '#paleta' });
+    new UrlStateCodec(w).clear();
+    expect(w.calls.at(-1)).toBe('/paletres/#paleta');
+  });
+
   it('codifica em minúsculas, sem #, separadas por hífen', () => {
     expect(UrlStateCodec.encode(Palette.default())).toBe('230023-f2f2f2-42ffff');
   });

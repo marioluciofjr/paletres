@@ -71,7 +71,7 @@ Ordem da v1.1.0 (os passos 1 a 4 ficam seguidos, para não quebrar a linha de ra
 Detalhe de cada seção (ordem antiga da v1.0.0 mantida abaixo como referência de conteúdo):
 
 1. **Início** (`#inicio`): ver acima.
-2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões Desfazer, Refazer e "Sortear paleta", os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
+2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões "Sortear paleta", Desfazer, Refazer e "Começar do zero" (v1.1.0), os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
 3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 de 3 combinações boas para texto"), o botão "Consertar contraste" e os **3 cards** (um por par) em 3 colunas no computador e 1 coluna no tablet e no celular.
 4. **Harmonias** (`#harmonias`): roda cromática do rascunho e **3 etapas numeradas**: (1) tipo de harmonia em 3 grupos, (2) contraste da paleta nova (Livre/AA/AAA), (3) "Gerar paleta nova", com a paleta atual e o rascunho lado a lado e os botões "Usar esta paleta" e "Descartar a paleta nova".
 5. **Tints e shades** (`#tons`): uma linha de 19 células por cor (9 claros de 90% a 10%, a original e 9 escuros de 10% a 90%). Paramos em 90% porque 100% seria branco ou preto puro.
@@ -120,7 +120,7 @@ Card roxo com SwatchFrame, rótulo ("Cor 1 — A"), campo HEX, botão copiar (gh
 Grupo de `radio` estilizados como chips, com nome e ícone de cada harmonia. v1.1.0: fica dentro da **Etapa 1 de 3**, com a dica "Marque só uma opção, de qualquer um dos 3 grupos".
 
 ### FormStep (v1.1.0)
-Etapa numerada: círculo de 40px com o número (Kreon, `accent`/`on-accent`), título "Etapa N de 3: …" (h3), uma dica curta e o conteúdo. Cada etapa é um `role="group"` rotulado pelo título.
+Etapa: título "Etapa N de 3: …" (h3), uma dica curta e o conteúdo. Cada etapa é um `role="group"` rotulado pelo título. Sem círculo com número ao lado: no feedback em vídeo, o Mário achou o círculo exagerado e redundante com o título.
 
 ### DraftCompare (v1.1.0)
 Duas colunas: "Sua paleta atual (passos 1 a 4)" e "Paleta nova (rascunho)". Cada cor é uma amostra de 56px na moldura preta, com o HEX **embaixo** (nunca sobre a cor). "Usar esta paleta" é o primário; "Descartar a paleta nova" é ghost. Os dois ficam com `aria-disabled` enquanto não há rascunho.

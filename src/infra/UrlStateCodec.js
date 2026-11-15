@@ -64,6 +64,13 @@ export class UrlStateCodec {
     this.#win.history.replaceState(null, '', `?p=${UrlStateCodec.encode(palette)}${keepHash}`);
   }
 
+  /** Tira a paleta (?p=) do endereço, mantendo a âncora do menu (#paleta…), se houver. */
+  clear() {
+    const { hash, pathname } = this.#win.location;
+    const keepHash = hash && !LEGACY_HASH.test(hash) ? hash : '';
+    this.#win.history.replaceState(null, '', `${pathname}${keepHash}`);
+  }
+
   shareUrl(palette) {
     const { origin, pathname } = this.#win.location;
     return `${origin}${pathname}?p=${UrlStateCodec.encode(palette)}`;

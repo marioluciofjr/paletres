@@ -42,6 +42,21 @@ test.describe('Início sem paleta (RF-25)', () => {
     await expect(page.locator('#paleta-title')).toBeFocused();
   });
 
+  test('"Começar do zero" apaga a paleta, limpa o endereço e volta aos "?" (feedback do Mário)', async ({ page }) => {
+    await page.goto(BRAND);
+    await page.getByRole('button', { name: 'Começar do zero' }).click();
+    await expect(page.locator('.hero-dot--empty')).toHaveCount(3);
+    await expect(page.locator('#ferramenta')).toBeHidden();
+    await expect(page.locator('#comecar')).toBeFocused();
+    await expect(page).not.toHaveURL(/\?p=/);
+    await expect(page.locator('.toast')).toContainText('Tudo limpo');
+    // Recarregar continua no zero; gerar de novo funciona.
+    await page.reload();
+    await expect(page.locator('.hero-dot--empty')).toHaveCount(3);
+    await page.locator('.hero [data-action="start"]').click();
+    await expect(page.locator('.cmp')).toHaveCount(3);
+  });
+
   test('passos em ordem: 1, 2, 3 e 4 seguidos, e os extras depois', async ({ page }) => {
     await page.goto(BRAND);
     const eyebrows = await page.locator('#ferramenta .section__head .eyebrow').allTextContents();

@@ -34,11 +34,12 @@
 | RF-28 CTA Prazo Certo | T25 | `index.html` (`.cta`), `styles/tokens.css` (`.zone-ciano`) | `e2e/site.spec.js` | ✅ |
 | RF-29 Fontes oficiais | T26 | `index.html` (`.sources`, `.info-panel__source`) | `e2e/site.spec.js` | ✅ |
 | RF-31 Cores em imagens com IA | T30 | `index.html` (`#aprenda`) | `e2e/site.spec.js` | ✅ |
+| RF-32 Começar do zero | T31 | `app/PaletteStore.js` (`reset`), `infra/UrlStateCodec.js` (`clear`), `ui/HistoryToolbar.js`, `ui/PaletteGate.js` | `integration/store.test.js`, `contract/url.contract.test.js`, `e2e/site.spec.js` | ✅ |
 | RF-30 Passos 1 a 4 seguidos | T25 | `index.html` | `e2e/site.spec.js` | ✅ |
 | RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` + 2 ciclos de auditoria | ✅ |
 | RNF-02 Identidade Prazo Certo | T10, T16 | `styles/*` | auditor UX (2 ciclos, aprovado) | ✅ |
 | RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` + `vite preview` | ✅ |
 | RNF-04 OOP e camadas | todas | `src/**` | revisão de código + lint | ✅ |
-| RNF-06 TDD | todas | — | `tests/**` (204 Vitest + 42 Playwright na v1.1.0) | ✅ |
+| RNF-06 TDD | todas | — | `tests/**` (208 Vitest + 43 Playwright na v1.1.0) | ✅ |
 | RNF-09 Didático para não designers | T11–T13, T16 | `ui/*`, textos | e2e + auditor UX (aprovado) | ✅ |
 | RNF-07 Movimento reduzido | T10, T24 | `ui/ParallaxScene.js` | `e2e/site.spec.js` | ✅ |

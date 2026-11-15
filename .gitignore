@@ -5,3 +5,7 @@ playwright-report/
 tmp/
 *.log
 .DS_Store
+
+# Notas e vídeos de feedback do Mário (pessoais, não vão para o repositório)
+feedback/
+ajustes.md

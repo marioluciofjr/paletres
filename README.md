@@ -5,7 +5,7 @@
 ![Versão 1.1.0](https://img.shields.io/badge/vers%C3%A3o-1.1.0-230023)
 ![Licença Apache 2.0](https://img.shields.io/badge/licen%C3%A7a-Apache%202.0-230023)
 ![WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
-![Testes: 204 Vitest e 42 Playwright](https://img.shields.io/badge/testes-204%20Vitest%20%2B%2042%20Playwright-230023)
+![Testes: 208 Vitest e 43 Playwright](https://img.shields.io/badge/testes-208%20Vitest%20%2B%2043%20Playwright-230023)
 
 ## Por que o Paletrês existe
 
@@ -20,7 +20,7 @@ O Paletrês junta num lugar só essa conta e tudo o que eu via de útil em outro
 | Passo | Recurso |
 | :--- | :--- |
 | Começo | **Gerar paleta:** o Paletrês sorteia 3 cores que combinam e que dão para ler (contraste AA garantido). |
-| 1. Escolha | Campo HEX, seletor visual, sliders de **Matiz, Saturação e Brilho**, **15 paletas prontas** do [Color Hunt](https://colorhunt.co), desfazer e refazer. |
+| 1. Escolha | Campo HEX, seletor visual, sliders de **Matiz, Saturação e Brilho**, **15 paletas prontas** do [Color Hunt](https://colorhunt.co), desfazer, refazer e "Começar do zero". |
 | 2. Confira | As **3 comparações** pela WCAG 2.2 (uma por par, com as duas prévias: uma cor sobre a outra e o inverso), com veredito em linguagem simples ("Bom: pode usar em textos") e o botão **Consertar contraste**. |
 | 3. Teste | **Mockups de site e de app** pela regra 60-30-10, com sugestão de qual cor vai no fundo, nos cards e nos botões, e **color grading** numa foto, com a legenda das 3 cores. |
 | 4. Exporte | PNG, variáveis CSS, JSON e link compartilhável. |

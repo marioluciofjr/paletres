@@ -124,11 +124,10 @@ export class HarmonyPanel {
     ]);
   }
 
-  /** Uma etapa numerada: número grande + título + dica + conteúdo. */
+  /** Uma etapa: título "Etapa N de 3" + dica + conteúdo (sem número grande ao lado, a pedido do Mário). */
   #step(n, title, hint, children) {
     const titleId = Dom.uid(`etapa-${n}`);
     return Dom.el('li', { class: 'form-step' }, [
-      Dom.el('span', { class: 'form-step__n', 'aria-hidden': 'true', text: String(n) }),
       Dom.el('div', { class: 'form-step__body', role: 'group', 'aria-labelledby': titleId }, [
         Dom.el('h3', { class: 'form-step__title', id: titleId, text: `Etapa ${n} de 3: ${title}` }),
         Dom.el('p', { class: 'form-step__hint', text: hint }),

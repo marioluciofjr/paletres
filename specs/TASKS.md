@@ -40,6 +40,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T26 | Fontes oficiais em todas as explicações (sem Wikipédia) e card de color grading no cinema | RF-12, RF-29 | Claude | ✅ |
 | T27 | Testes da v1.1.0 (unit, integration, e2e) e specs atualizadas | RNF-06 | Claude | ✅ |
 | T30 | 3 comparações (uma por par, 2 prévias), card de cores em imagens com IA e Clawd ao lado dos contatos (2ª leva do `ajustes.md`) | RF-03, RF-16, RF-31, ADR-14 | Claude | ✅ |
+| T31 | Feedback em vídeo: "Começar do zero" (`reset`, `clear`) e etapas das harmonias sem o número grande | RF-26, RF-32, ADR-15 | Claude | ✅ |
 | T28 | Licença Apache-2.0 (LICENSE + NOTICE), versão 1.1.0, CHANGELOG e README de portfólio | RNF-03 | Claude | ✅ |
 | T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade em 2 ciclos, UX, motion e casos extremos) e correções | RNF-01, RNF-09 | Claude | ✅ |
 

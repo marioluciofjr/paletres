@@ -1,5 +1,5 @@
 /**
- * HistoryToolbar — Sortear paleta, Desfazer e Refazer (RF-21), com atalhos de teclado:
+ * HistoryToolbar — Sortear paleta, Desfazer, Refazer (RF-21) e Começar do zero, com atalhos de teclado:
  * Ctrl+Z desfaz; Ctrl+Shift+Z ou Ctrl+Y refaz (Cmd no Mac).
  *
  * - "Sortear paleta" vem primeiro: é a ação de um clique mais útil para quem está começando.
@@ -43,7 +43,11 @@ export class HistoryToolbar {
     this.#redo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'redo', 'aria-keyshortcuts': 'Control+Shift+Z', on: { click: redo } },
       [Icons.svg('redo'), 'Refazer']);
 
-    Dom.replace(this.#root, [shuffle, this.#undo, this.#redo]);
+    // "Começar do zero" (pedido do Mário): apaga a paleta e volta aos círculos com "?".
+    const reset = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'reset', on: { click: () => this.#store.reset() } },
+      [Icons.svg('x'), 'Começar do zero']);
+
+    Dom.replace(this.#root, [shuffle, this.#undo, this.#redo, reset]);
     this.#bus.on(StoreEvent.HISTORY, () => this.#render());
     this.#doc.addEventListener('keydown', (e) => this.#onKey(e));
     this.#render();

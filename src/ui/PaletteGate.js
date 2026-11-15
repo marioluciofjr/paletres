@@ -35,6 +35,7 @@ export class PaletteGate {
     // Captura: decide antes do navegador pular para a âncora.
     this.#doc.addEventListener('click', (e) => this.#guardLink(e), true);
     this.#bus.on(StoreEvent.STARTED, () => this.#onStarted());
+    this.#bus.on(StoreEvent.RESET, () => this.#onReset());
     this.#render();
   }
 
@@ -55,6 +56,15 @@ export class PaletteGate {
     const smooth = !this.#win.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.#doc.getElementById('paleta')?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
     title?.focus({ preventScroll: true });
+  }
+
+  /** "Começar do zero": tranca a ferramenta de novo e leva a pessoa ao aviso, com o botão "Gerar paleta". */
+  #onReset() {
+    this.#render();
+    this.#toast.show(this.#store.state.message.text);
+    const gate = this.#doc.getElementById('comecar');
+    gate?.scrollIntoView({ block: 'start' });
+    gate?.focus({ preventScroll: true });
   }
 
   /** Antes de começar, um link para uma seção escondida leva ao aviso do portão. */

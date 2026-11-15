@@ -275,6 +275,8 @@ describe('HarmonyPanel (RF-26: rascunho separado da paleta da pessoa)', () => {
     const titles = [...root.querySelectorAll('.form-step__title')].map((h) => h.textContent);
     expect(titles).toHaveLength(3);
     expect(titles[0]).toMatch(/^Etapa 1 de 3: Escolha o tipo de harmonia/);
+    // Feedback do Mário: sem os números grandes ao lado; o título já diz a etapa.
+    expect(root.querySelectorAll('.form-step__n')).toHaveLength(0);
     expect(titles[1]).toMatch(/^Etapa 2 de 3: Escolha o contraste/);
     expect(titles[2]).toMatch(/^Etapa 3 de 3/);
   });

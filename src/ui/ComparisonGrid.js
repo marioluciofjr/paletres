@@ -4,7 +4,7 @@
  * Ordem de leitura de cada card (pensada para quem não é designer):
  *  1. a prévia (texto de verdade sobre o fundo de verdade);
  *  2. o veredito em linguagem simples;
- *  3. os números: razão WCAG, selos por extenso e APCA.
+ *  3. os números: razão WCAG e selos por extenso.
  * Uma região "aria-live" anuncia o pior par para leitores de tela, com uma pausa
  * (debounce) para não falar a cada movimento de slider.
  */
@@ -138,7 +138,6 @@ export class ComparisonGrid {
         Dom.el('small', { text: 'Razão de contraste WCAG 2.2' }),
       ]),
       badges,
-      Dom.el('p', { class: 'cmp__apca', text: `APCA Lc ${NumberFormat.decimal(c.apca.lc, 1)} · ${c.apca.description}` }),
     ]);
   }
 

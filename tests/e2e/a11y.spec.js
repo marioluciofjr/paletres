@@ -8,11 +8,13 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const USER_COLOR_PREVIEWS = ['.cmp__preview', '.msite', '.mapp', '.hero__art', '.share-bar', '.stage'];
+// Paleta conhecida por link: o site já abre liberado (sem o portão do RF-25).
+const BRAND = '/?p=230023-f2f2f2-42ffff';
 
-for (const theme of ['light', 'dark']) {
-  test(`sem violações sérias ou críticas no tema ${theme}`, async ({ page }) => {
+for (const [theme, url, when] of [['light', BRAND, 'com paleta'], ['dark', BRAND, 'com paleta'], ['light', '/', 'antes de gerar'], ['dark', '/', 'antes de gerar']]) {
+  test(`sem violações sérias ou críticas no tema ${theme}, ${when}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme });
-    await page.goto('/');
+    await page.goto(url);
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']);
     for (const sel of USER_COLOR_PREVIEWS) builder = builder.exclude(sel);
@@ -30,7 +32,7 @@ test('o primeiro Tab leva ao link "Pular para a ferramenta"', async ({ page }) =
 });
 
 test('alvos interativos têm pelo menos 24×24 px (WCAG 2.5.8)', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(BRAND);
   const small = await page.evaluate(() => {
     const out = [];
     for (const el of document.querySelectorAll('button, a[href], input:not([type="hidden"]), select, [role="slider"]')) {
@@ -58,7 +60,7 @@ const outlineOf = (locator) => locator.evaluate((el) => {
 for (const theme of ['light', 'dark']) {
   test(`tints e shades: o foco muda o contorno (tema ${theme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme });
-    await page.goto('/');
+    await page.goto(BRAND);
     for (const cell of [page.locator('.tint-cell').first(), page.locator('.tint-cell').nth(9)]) {
       const before = await outlineOf(cell);
       await cell.focus();
@@ -71,7 +73,7 @@ for (const theme of ['light', 'dark']) {
 }
 
 test('roda cromática: o foco é visível no controle inteiro', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(BRAND);
   const stage = page.locator('.wheel__stage');
   const before = await outlineOf(stage);
   await page.locator('.wheel__svg').focus();
@@ -80,7 +82,7 @@ test('roda cromática: o foco é visível no controle inteiro', async ({ page })
 });
 
 test('regiões vivas não falam a cada passo do slider (no máximo 1 anúncio por região)', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(BRAND);
   await page.waitForTimeout(1200);
   await page.evaluate(() => {
     // Conta quantas vezes cada região muda de texto (um "anúncio" para o leitor de tela).

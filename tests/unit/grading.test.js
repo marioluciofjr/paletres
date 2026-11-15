@@ -45,3 +45,26 @@ describe('GradientMap', () => {
     expect([...src]).toEqual([10, 20, 30, 77]);
   });
 });
+
+// v1.1.0: modo "zonas" mostra, sem mistura, onde entra cada uma das 3 cores.
+describe('GradientMap em modo zonas', () => {
+  const zones = GradientMap.fromPalette(palette, { mode: GradientMap.Mode.ZONES });
+
+  it('sombras, meios-tons e luzes viram exatamente uma das 3 cores', () => {
+    const out = zones.apply(pixels(20, 20, 20, 255, 128, 128, 128, 255, 240, 240, 240, 255), 1);
+    expect([...out.slice(0, 3)]).toEqual([0, 0, 128]); // sombra → cor mais escura
+    expect([...out.slice(4, 7)]).toEqual([255, 0, 0]); // meio-tom → cor do meio
+    expect([...out.slice(8, 11)]).toEqual([255, 255, 0]); // luz → cor mais clara
+  });
+
+  it('divide a claridade em 3 faixas iguais (0–84, 85–169, 170–255)', () => {
+    expect(GradientMap.zoneOf(84)).toBe(0);
+    expect(GradientMap.zoneOf(85)).toBe(1);
+    expect(GradientMap.zoneOf(169)).toBe(1);
+    expect(GradientMap.zoneOf(170)).toBe(2);
+  });
+
+  it('modo desconhecido lança erro', () => {
+    expect(() => GradientMap.fromPalette(palette, { mode: 'x' })).toThrow();
+  });
+});

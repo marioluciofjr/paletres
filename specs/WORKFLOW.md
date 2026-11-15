@@ -15,7 +15,7 @@ Ideia ─► Requisito (PRD) ─► Tarefa (TASKS) ─► Teste vermelho ─► 
 1. Toda mudança nasce de um requisito (RF/RNF) ou de um achado de auditoria.
 2. Uma tarefa por vez. O status muda para 🔄 no início e ✅ no fim.
 3. O commit só acontece com `npm test` verde e as specs atualizadas.
-4. Mensagem de commit no formato `tipo(escopo): descrição` (ex.: `feat(contrast): adiciona APCA`). Tipos: `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, `style`.
+4. Mensagem de commit no formato `tipo(escopo): descrição` (ex.: `feat(harmony): rascunho separado da paleta`). Tipos: `feat`, `fix`, `test`, `docs`, `refactor`, `chore`, `style`.
 5. Ao fim das tarefas de UI, rode o subagente `a11y-web` e os auditores `design-pro:auditor-ux` e `design-pro:auditor-motion`.
 
 ## 3. Implementation Plan
@@ -33,7 +33,7 @@ Ideia ─► Requisito (PRD) ─► Tarefa (TASKS) ─► Teste vermelho ─► 
 
 1. `Color`: `fromHex`, `fromRgb`, `fromHsb`, `hex`, `rgb`, `hsb`, `equals`.
 2. `Wcag2Contrast.ratio()` com os valores de contrato, seguido de `ContrastEvaluator.levels()`.
-3. `ApcaContrast.lc()` com os valores de contrato.
+3. (v1.0.0) `ApcaContrast.lc()`, removido na v1.1.0.
 4. `Palette` e `PaletteComparator.compare()`, que devolve 6 itens na ordem A/B, B/A, A/C, C/A, B/C, C/B.
 5. As harmonias, uma por vez, cada uma com um teste dos desvios de matiz.
 6. `ContrastGuard`, `TintShadeGenerator`, `ColorBlindSimulator`, `UsageProportion`.

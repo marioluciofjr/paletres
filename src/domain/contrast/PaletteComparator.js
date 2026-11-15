@@ -3,13 +3,13 @@
  *
  * Com 3 cores existem 3 pares (AB, AC, BC). Como cada par pode ser "texto sobre fundo"
  * nas duas direções, surgem 6 comparações. No WCAG 2.2 as duas direções têm o mesmo
- * número; no APCA, não. Por isso mostramos as 6.
+ * número, mas a aparência muda (texto escuro no claro não parece igual a claro no escuro).
+ * Por isso mostramos as 6 prévias.
  *
- * As estratégias de contraste chegam pelo construtor (injeção de dependência),
- * o que facilita testar e trocar os métodos.
+ * A estratégia de contraste chega pelo construtor (injeção de dependência),
+ * o que facilita testar e trocar o método.
  */
 import { Wcag2Contrast } from './Wcag2Contrast.js';
-import { ApcaContrast } from './ApcaContrast.js';
 import { ContrastEvaluator } from './ContrastEvaluator.js';
 
 // Ordem fixa: [índice do texto, índice do fundo].
@@ -24,29 +24,22 @@ const ORDER = Object.freeze([
 
 export class PaletteComparator {
   #wcag;
-  #apca;
   #evaluator;
 
-  constructor({ wcag = new Wcag2Contrast(), apca = new ApcaContrast(), evaluator = new ContrastEvaluator() } = {}) {
+  constructor({ wcag = new Wcag2Contrast(), evaluator = new ContrastEvaluator() } = {}) {
     this.#wcag = wcag;
-    this.#apca = apca;
     this.#evaluator = evaluator;
   }
 
   /** Compara um par específico (texto, fundo). */
   compareColors(text, background) {
     const ratio = this.#wcag.measure(text, background);
-    const lc = this.#apca.measure(text, background);
-    return {
-      ratio,
-      levels: this.#evaluator.levels(ratio),
-      apca: { lc, description: this.#apca.describe(lc) },
-    };
+    return { ratio, levels: this.#evaluator.levels(ratio) };
   }
 
   /**
    * @param {import('../palette/Palette.js').Palette} palette
-   * @returns {Array<{id: string, text: {index:number,label:string,color:any}, background: {index:number,label:string,color:any}, ratio:number, levels:object, apca:{lc:number,description:string}}>}
+   * @returns {Array<{id: string, text: {index:number,label:string,color:any}, background: {index:number,label:string,color:any}, ratio:number, levels:object}>}
    */
   compare(palette) {
     return ORDER.map(([t, b]) => {

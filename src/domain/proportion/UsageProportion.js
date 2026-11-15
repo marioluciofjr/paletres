@@ -1,35 +1,23 @@
 /**
  * UsageProportion — quanto de cada cor usar numa tela (dominante, secundária e destaque).
  *
- *  - 60-30-10: a regra clássica de decoração e design.
- *  - Áurea: 1/φ ≈ 61,8%, 1/φ³ ≈ 23,6% e 1/φ⁴ ≈ 14,6%. Curiosidade: essas três frações
- *    somam exatamente 100%, uma propriedade do número de ouro.
- *  - Fibonacci: 8 : 5 : 3 (termos seguidos da sequência), ou seja, 50%, 31,25% e 18,75%.
+ * Desde a v1.1.0 fica só a regra 60-30-10: nos mockups, a proporção áurea (62/24/14) e a
+ * de Fibonacci (50/31/19) quase não mudavam o visual, então confundiam mais do que ajudavam.
+ * A proporção áurea e Fibonacci continuam vivas nas HARMONIAS (a roda cromática).
  */
-const PHI = (1 + Math.sqrt(5)) / 2;
+const RULE_60_30_10 = Object.freeze({
+  id: '60-30-10',
+  name: '60-30-10',
+  shares: Object.freeze([60, 30, 10]),
+  description: 'A regra clássica: 60% de cor principal, 30% de apoio e 10% de destaque.',
+});
 
-const PROPORTIONS = Object.freeze([
-  {
-    id: '60-30-10',
-    name: '60-30-10',
-    shares: [60, 30, 10],
-    description: 'A regra clássica: 60% de cor principal, 30% de apoio e 10% de destaque.',
-  },
-  {
-    id: 'aurea',
-    name: 'Proporção áurea',
-    shares: [100 / PHI, 100 / PHI ** 3, 100 / PHI ** 4],
-    description: 'Divide a tela pelo número de ouro: cerca de 62%, 24% e 14%.',
-  },
-  {
-    id: 'fibonacci',
-    name: 'Fibonacci 8:5:3',
-    shares: [50, 31.25, 18.75],
-    description: 'Usa três números seguidos da sequência de Fibonacci (8, 5 e 3): 50%, 31% e 19%.',
-  },
-]);
+const PROPORTIONS = Object.freeze([RULE_60_30_10]);
 
 export class UsageProportion {
+  /** A proporção usada nos mockups. */
+  static RULE = RULE_60_30_10;
+
   static list() {
     return PROPORTIONS;
   }

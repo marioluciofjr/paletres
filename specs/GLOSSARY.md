@@ -25,8 +25,7 @@
 | **AAA** | Nível mais rigoroso: 7:1 para texto normal e 4,5:1 para texto grande. |
 | **Texto grande** | 24px ou mais, ou 18,66px (14pt) ou mais em negrito. |
 | **Componentes de interface** | Bordas de campos, ícones e partes de gráficos (critério 1.4.11, mínimo 3:1). |
-| **APCA** | *Accessible Perceptual Contrast Algorithm*, método candidato ao futuro WCAG 3. Considera a direção (texto escuro no claro é diferente de texto claro no escuro). |
-| **Lc** | *Lightness contrast*, o valor do APCA, de cerca de −108 a 106. O sinal mostra a polaridade: positivo é texto escuro sobre fundo claro. |
+| **APCA** | *Accessible Perceptual Contrast Algorithm*, método candidato ao futuro WCAG 3. Esteve no Paletrês até a v1.0.0 e saiu na v1.1.0 (ADR-10). |
 | **Comparação ordenada** | Um par com papéis definidos: uma cor é o texto e a outra é o fundo. 3 cores geram 6 comparações. |
 
 ## Harmonias
@@ -54,7 +53,13 @@
 | **ARIA** | Atributos HTML que explicam a leitores de tela o que um elemento é e faz. |
 | **aria-live** | Região da página que o leitor de tela anuncia sozinho quando muda. |
 | **prefers-reduced-motion** | Preferência do sistema operacional para reduzir animações. |
-| **Parallax** | Efeito em que camadas se movem em velocidades diferentes na rolagem, dando profundidade. |
+| **Parallax** | Efeito em que camadas se movem em velocidades diferentes na rolagem, dando profundidade. No Paletrês, as 3 bolas do início. |
+| **Color grading** | No cinema, a etapa da pós-produção em que o colorista ajusta as cores de cada cena para criar um clima. No Paletrês, é feito por mapa de gradiente. |
+| **Mapa de gradiente (gradient map)** | Técnica que troca a cor de cada pixel conforme a claridade dele: sombras, meios-tons e luzes recebem cores escolhidas. |
+| **Rascunho (draft)** | Paleta nova da seção de harmonias, mostrada ao lado da paleta atual. Só vira a paleta da pessoa com "Usar esta paleta". |
+| **Portão (gate)** | Estado inicial do site, antes de "Gerar paleta": os passos ficam escondidos e aparece um aviso. |
+| **Clawd** | Mascote do Claude Code, em pixel art laranja. No rodapé, ele "fala" o crédito do projeto. |
+| **Color Hunt** | Site com paletas feitas por designers (colorhunt.co). É a fonte das 15 paletas prontas. |
 | **TDD** | *Test Driven Development*: escrever o teste antes do código. |
 | **OOP** | Programação orientada a objetos: o código é organizado em classes com responsabilidades claras. |
 | **Value Object** | Objeto imutável definido só pelo valor, como uma cor. |

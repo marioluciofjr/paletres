@@ -19,10 +19,11 @@ Cada recurso novo passa pelo fluxo completo de [WORKFLOW.md](WORKFLOW.md).
 
 Ajustes a mudanças externas.
 
-- **APCA:** se sair uma versão nova das constantes, atualize `ApcaContrast`, os valores de [TESTS.md](TESTS.md) e o ADR-04.
-- **WCAG 3:** quando virar recomendação oficial, reavaliar o selo APCA.
+- **WCAG 3:** quando virar recomendação oficial, reavaliar a volta de um segundo método de contraste (uma nova `ContrastStrategy`; ver ADR-10).
+- **Fontes oficiais (RF-29):** a cada versão, abra os links das seções "Aprenda" e "O que é isso?". Troque qualquer link quebrado por outra fonte oficial. Wikipédia não vale. As páginas da Adobe bloqueiam robôs (erro 403), então confira essas à mão.
+- **Paletas prontas:** se o Mário trocar alguma, mantenha 15, com crédito ao Color Hunt e sem as cores da marca (o teste `unit/presets.test.js` confere).
 - **Dependências:** a cada trimestre, rode `npm outdated` e atualize Vite, Vitest e Playwright, com `npm test` e `npm run test:e2e` verdes.
-- **Navegadores:** confira o parallax e o `<canvas>` (PNG) no Safari e no Firefox a cada versão grande.
+- **Navegadores:** confira o parallax das bolas do início, a propriedade CSS `translate` e o `<canvas>` (PNG) no Safari e no Firefox a cada versão grande.
 - **Marca:** se o DESIGN.md da Prazo Certo mudar, atualize `src/styles/tokens.css` e [DESIGN.md](DESIGN.md).
 
 ## 3. Manutenção preventiva (20%)
@@ -39,5 +40,5 @@ Ajustes a mudanças externas.
 | As 6 comparações não aparecem | Erro de JavaScript | Abra o console (F12). O `main.js` mostra uma mensagem em texto se a inicialização falhar. |
 | Link compartilhado abre outra paleta | Hash inválido | O `UrlStateCodec` ignora hashes inválidos e usa a paleta padrão. |
 | "Copiar" não funciona | Página sem HTTPS ou sem permissão | O `ClipboardService` usa um campo de texto oculto como fallback e avisa. |
-| Parallax trava | Muitas camadas | Desligue o parallax pelo `prefers-reduced-motion` e reduza as camadas. |
+| Parallax trava | Rolagem pesada | O `ParallaxScene` já atualiza no máximo 1 vez por quadro; confira se nada além das 3 bolas usa `--parallax-y`. |
 | Fontes não carregam | Sem internet | As pilhas de fontes recorrem a Georgia e system-ui. |

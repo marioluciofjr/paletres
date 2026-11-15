@@ -1,6 +1,6 @@
 # DESIGN — Paletrês
 
-> Como a interface deve parecer e se comportar. A base é o design system Prazo Certo (`identidade-visual/DESIGN.md`). Aqui ficam só as regras aplicadas ao Paletrês e a exceção aprovada.
+> Como a interface deve parecer e se comportar. A base é o design system Prazo Certo (`identidade-visual/DESIGN.md`). Aqui ficam só as regras aplicadas ao Paletrês e as exceções aprovadas. Versão 1.1.0.
 
 ## 1. Regra de cores da interface
 
@@ -13,6 +13,8 @@ A interface usa só as três cores da marca, nos pares permitidos:
 | Destaques, valores e títulos de impacto | ciano `#42ffff` | roxo |
 | Botão primário (claro) | ciano | roxo |
 | Botão primário (escuro) | roxo | ciano |
+| Faixa do CTA da Prazo Certo (v1.1.0, `.zone-ciano`) | roxo | ciano |
+| Botão do CTA | ciano | roxo |
 
 Sem branco, preto, opacidade, degradê ou sombra na interface.
 
@@ -24,6 +26,11 @@ As cores digitadas pela pessoa usuária são arbitrárias. Para que elas não "v
 - Texto da interface nunca fica sobre uma cor do usuário. As exceções são os textos de **prévia** (no card de comparação e dentro dos mockups), que são justamente o objeto do teste.
 - Aprovada pelo Mário em 13/11/2026.
 - Nas áreas roxas (cards, cabeçalho, hero) e no tema escuro, a moldura preta ganha um **anel cinza de 3px por fora**. Sem ele, uma cor do usuário igual ou parecida com o roxo sumiria (preto sobre roxo dá 1,1:1).
+- v1.1.0: a exceção vale também para as amostras do **rascunho das harmonias** e as barras da **legenda do color grading**.
+
+### 1.1.1 Exceção aprovada: o Clawd laranja (v1.1.0)
+
+Pedido do Mário: o crédito do rodapé é "falado" pelo **Clawd**, o mascote do Claude Code, **na cor laranja original `#D77757`**. O laranja aparece só no desenho do Clawd (pixel art em SVG, `aria-hidden`). O balão de fala segue a marca: fundo cinza, texto roxo em Kreon, cantos de 24px e a "pontinha" feita com bordas, sem sombra.
 
 ### 1.2 Degradês funcionais (decorrentes da auditoria de UX)
 
@@ -31,9 +38,10 @@ Ainda dentro da área de prévia (moldura preta), três elementos usam degradê 
 
 - a **roda cromática** (todas as matizes e o centro sem saturação);
 - os **trilhos dos sliders HSB** (mostram as cores que o slider vai produzir);
-- a **imagem de exemplo** do color grading (é conteúdo, não interface).
+- a **imagem de exemplo** do color grading (é conteúdo, não interface);
+- v1.1.0: as duas barras da **legenda do color grading** (a claridade da foto, do preto ao branco, e a cor que cada trecho recebe).
 
-Fora desses três, a regra "sem degradê" continua valendo.
+Fora desses quatro, a regra "sem degradê" continua valendo.
 
 ## 2. Tipografia
 
@@ -52,16 +60,26 @@ Fora desses três, a regra "sem degradê" continua valendo.
 
 Ordem das seções, todas com âncora no menu:
 
-1. **Início** (`#inicio`): hero com o nome Paletrês, uma frase simples ("Escolha 3 cores e descubra se elas combinam e se dá para ler") e o passo a passo **1. Escolha 3 cores · 2. Veja se dá para ler · 3. Teste e exporte**. O CTA é "Montar minha paleta".
+Ordem da v1.1.0 (os passos 1 a 4 ficam seguidos, para não quebrar a linha de raciocínio):
+
+1. **Início** (`#inicio`): hero com o nome Paletrês, uma frase simples e o passo a passo **1. Escolha · 2. Confira · 3. Teste · 4. Exporte**. O CTA é **"Gerar paleta"**. Depois de gerar, ele vira o link "Ver minha paleta". As 3 bolas têm o parallax (ver §4).
+2. **Portão** (`#comecar`, só antes de gerar): 3 círculos tracejados, "Sua paleta ainda está vazia" e o botão "Gerar paleta". A ferramenta (`#ferramenta`) fica escondida até o clique.
+3. **Passo 1 de 4 · Escolha** (`#paleta`), **Passo 2 de 4 · Confira** (`#comparacoes`), **Passo 3 de 4 · Teste** (`#pratica`) e **Passo 4 de 4 · Exporte** (`#exportar`).
+4. **Extras**, cada um com uma etiqueta antes do título: **Daltonismo** ("Usa a sua paleta atual"), **Harmonias** ("Cria uma paleta nova") e **Tints e shades** ("Variações da sua paleta").
+5. **Aprenda** (`#aprenda`), com a fonte oficial no fim de cada card; **Sobre** (`#sobre`); a faixa ciano do **CTA da Prazo Certo**; e o **Rodapé** (logo de 320px, contatos e o Clawd com o balão do crédito).
+
+Detalhe de cada seção (ordem antiga da v1.0.0 mantida abaixo como referência de conteúdo):
+
+1. **Início** (`#inicio`): ver acima.
 2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões Desfazer, Refazer e "Sortear paleta", os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
 3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 combinações boas para texto"), o botão "Consertar contraste" e os 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile).
-4. **Harmonias** (`#harmonias`): roda cromática, seletor de harmonia, seletor de garantia (Livre/AA/AAA), botão "Gerar paleta" e a faixa de proporção de uso.
+4. **Harmonias** (`#harmonias`): roda cromática do rascunho e **3 etapas numeradas**: (1) tipo de harmonia em 3 grupos, (2) contraste da paleta nova (Livre/AA/AAA), (3) "Gerar paleta nova", com a paleta atual e o rascunho lado a lado e os botões "Usar esta paleta" e "Descartar a paleta nova".
 5. **Tints e shades** (`#tons`): uma linha de 19 células por cor (9 claros de 90% a 10%, a original e 9 escuros de 10% a 90%). Paramos em 90% porque 100% seria branco ou preto puro.
 6. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
-7. **Teste na prática** (`#pratica`): seletor de proporção (60-30-10, áurea, Fibonacci), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: área de upload (arrastar ou escolher arquivo), imagem antes/depois com divisor arrastável, slider de intensidade e botão "Baixar PNG".
+7. **Teste na prática** (`#pratica`): regra 60-30-10 (v1.1.0: sem seletor de proporção), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: uma frase sobre o cinema, a área de upload (arrastar ou escolher arquivo), a escolha "Resultado final / Onde entra cada cor", a **legenda das 3 cores**, a imagem antes/depois com divisor arrastável, o slider de intensidade e o botão "Baixar PNG".
 8. **Exportar** (`#exportar`): CSS, JSON, PNG e o link compartilhável.
-9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, APCA, harmonias, proporção áurea e Fibonacci.
-10. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto."
+9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, as 6 comparações, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e color grading no cinema (card largo). Cada card termina com "Fontes oficiais" (nunca Wikipédia).
+10. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.", dito pelo Clawd num balão de HQ (v1.1.0).
 
 ### 3.1 Botão "Visitar Prazo Certo"
 
@@ -72,13 +90,12 @@ Ordem das seções, todas com âncora no menu:
 
 Grade de 12 colunas, largura máxima de 1200px, respiro de 64px entre seções e 32px entre blocos.
 
-## 4. Menu com parallax
+## 4. Menu e parallax (revisto na v1.1.0)
 
-- Cabeçalho fixo no topo, fundo roxo, com o logo `cinza-roxo`, os links das seções e o botão de tema.
-- Atrás dos links ficam três camadas decorativas (`aria-hidden="true"`): anel aberto em ciano, crescente em cinza e ondas em ciano, todas sobre o roxo.
-- Com a rolagem, cada camada se move numa velocidade (0,15; 0,3; 0,5). Só `transform: translate3d` muda, dentro de `requestAnimationFrame`.
-- O cabeçalho encolhe de 96px para 64px depois de 80px de rolagem.
-- `prefers-reduced-motion: reduce` desliga o parallax e a transição de altura.
+- Cabeçalho fixo no topo, fundo roxo, com o logo `cinza-roxo`, os links das seções (agora com **Sobre**) e o botão de tema.
+- **Sem desenhos atrás do menu.** As três camadas animadas da v1.0.0 saíram porque incomodavam.
+- O parallax fica nas **3 bolas do início**: na rolagem, cada uma sobe numa velocidade (0,08; 0,16; 0,24 px por px rolado). O JS grava a rolagem em `--parallax-y` (uma vez por quadro, só enquanto o início está na tela) e o CSS aplica `translate`.
+- `prefers-reduced-motion: reduce` desliga o parallax.
 - No mobile (< 768px), os links viram um menu "Seções" (botão com `aria-expanded`).
 
 ## 5. Componentes
@@ -97,10 +114,16 @@ Card roxo com SwatchFrame, rótulo ("Cor 1 — A"), campo HEX, botão copiar (gh
 - Prévia na moldura preta: o fundo é a cor B, com "Aa" grande e uma frase curta na cor A.
 - Valor: razão WCAG em Kreon 40px ciano, como "17,1:1".
 - Selos (componente Badge): Texto normal, Texto grande e Componentes, cada um com **AAA**, **AA** ou **Reprovado** escrito por extenso e um ícone (check, check duplo, x). Nunca só cor.
-- Linha APCA: "APCA Lc 104,2 · texto de corpo" e o sinal explicado em texto.
+- (v1.1.0: a linha APCA saiu; ver ADR-10.)
 
 ### HarmonyPicker
-Grupo de `radio` estilizados como chips, com nome e ícone de cada harmonia.
+Grupo de `radio` estilizados como chips, com nome e ícone de cada harmonia. v1.1.0: fica dentro da **Etapa 1 de 3**, com a dica "Marque só uma opção, de qualquer um dos 3 grupos".
+
+### FormStep (v1.1.0)
+Etapa numerada: círculo de 40px com o número (Kreon, `accent`/`on-accent`), título "Etapa N de 3: …" (h3), uma dica curta e o conteúdo. Cada etapa é um `role="group"` rotulado pelo título.
+
+### DraftCompare (v1.1.0)
+Duas colunas: "Sua paleta atual (passos 1 a 4)" e "Paleta nova (rascunho)". Cada cor é uma amostra de 56px na moldura preta, com o HEX **embaixo** (nunca sobre a cor). "Usar esta paleta" é o primário; "Descartar a paleta nova" é ghost. Os dois ficam com `aria-disabled` enquanto não há rascunho.
 
 ### GuardSwitch
 `radiogroup` com três opções: Livre, Garantir AA, Garantir AAA.
@@ -119,6 +142,13 @@ SVG de 280px com o disco de matizes (na moldura preta) e 3 marcadores circulares
 - Antes e depois: divisor arrastável com `role="slider"` e operável por setas.
 - Slider "Intensidade" (0–100%, padrão 100%) e botão "Baixar PNG".
 - Mensagens de erro em texto (formato ou tamanho inválido) num `role="alert"`.
+- v1.1.0: chips "Resultado final (cores misturadas)" e "Onde entra cada cor (3 zonas)" e a legenda "Como as 3 cores entram na foto": barra da claridade, barra da cor recebida e a lista "Sombras / Meios-tons / Luzes recebem a cor X #HEX".
+
+### Gate (v1.1.0)
+Bloco centrado com 3 círculos tracejados de 56px, título "Sua paleta ainda está vazia", frase curta e o botão primário "Gerar paleta". Recebe o foco quando a pessoa clica num link do menu antes de gerar.
+
+### CTA da Prazo Certo (v1.1.0)
+Faixa `.zone-ciano` antes do rodapé: o texto pedido pelo Mário em Kreon (20–28px, roxo) e o botão roxo "Acessar prazocerto.me", que abre em nova aba.
 
 ### Toast
 Mensagem curta ("HEX copiado") num `role="status"`, fundo roxo e texto cinza, por 2 segundos.
@@ -144,18 +174,21 @@ O Paletrês precisa servir também a quem **não é designer**. Regras:
    | ≥ 3 | **Só para títulos grandes**, ícones e bordas. | alerta |
    | < 3 | **Não use para texto:** fica difícil de ler. | x |
 
-   Logo abaixo vêm a razão, os selos AA/AAA e o APCA, para quem quer o detalhe.
-2. **"O que é isso?"** Cada termo técnico (WCAG, APCA, AA, AAA, HEX, Matiz, Saturação, Brilho e o nome de cada harmonia) tem um botão "?" ao lado. Ele abre uma explicação curta ali mesmo (disclosure com `aria-expanded`) e não muda de página.
+   Logo abaixo vêm a razão e os selos AA/AAA, para quem quer o detalhe.
+2. **"O que é isso?"** Cada termo técnico (WCAG, AA, AAA, HEX, Matiz, Saturação, Brilho e o nome de cada harmonia) tem um botão "?" ao lado. Ele abre uma explicação curta ali mesmo (disclosure com `aria-expanded`) e não muda de página.
 3. **Rótulos amigáveis:** "Matiz (o tom da cor)", "Saturação (o quanto é viva)", "Brilho (o quanto é clara)". As harmonias têm uma descrição de efeito ("calma", "vibrante", "elegante").
 4. **Um clique para as tarefas comuns:** paleta pronta, sortear paleta, consertar contraste, copiar HEX, baixar imagem e copiar link.
 5. **Sem medo de errar:** Desfazer e Refazer sempre visíveis.
 6. **Sugestão pronta:** "Use a cor A no fundo, a B no texto e a C nos botões." Ela já vem aplicada nos mockups.
 7. **Visual antes da teoria:** os mockups e o color grading mostram a paleta "de verdade"; a seção Aprenda fica no fim.
+8. **Credibilidade (v1.1.0):** toda explicação traz o link de uma fonte oficial. Wikipédia é proibida.
+9. **Nada se perde (v1.1.0):** ferramentas que criam outra paleta mostram isso numa etiqueta e trabalham num rascunho.
 
 ## 8. Boas práticas de UX aplicadas
 
 - **Lei de Hick:** 11 harmonias em chips agrupados (clássicas, matemáticas e de contraste).
 - **Feedback imediato:** cada tecla no HEX ou movimento de slider atualiza tudo.
 - **Reconhecer em vez de lembrar:** o card mostra o significado do selo ("passa para texto normal").
-- **Um CTA por bloco:** "Gerar paleta" é o único botão primário da seção Harmonias.
+- **Um CTA por bloco:** "Gerar paleta nova" abre a Etapa 3 e "Usar esta paleta" só fica ativo depois de gerar.
+- **Continuidade (v1.1.0):** os passos 1 a 4 ficam seguidos; os extras vêm depois, marcados como extras.
 - **Acessibilidade:** alvos de 44px ou mais, ordem de foco igual à ordem visual e link "Pular para a ferramenta".

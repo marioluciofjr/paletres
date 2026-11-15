@@ -131,22 +131,6 @@
   border-bottom: var(--stroke-control) solid var(--card-border);
 }
 
-.parallax {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.parallax__layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3840px;
-  max-width: none;
-  height: 100%;
-}
-
 .site-header__inner {
   position: relative;
   display: flex;
@@ -157,7 +141,7 @@
   margin-inline: auto;
 }
 
-/* Os blocos de texto têm fundo roxo sólido: as formas do parallax nunca ficam atrás de letras. */
+/* v1.1.0: o parallax saiu de trás do menu e ficou só nas 3 bolas do início (ver ParallaxScene). */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -356,6 +340,34 @@
 
 .hero-dot:first-child {
   margin-left: 0;
+}
+
+/* Parallax: cada bola sobe numa velocidade (--parallax-y vem do JS, em px de rolagem).
+   Usamos "translate" (e não "transform") para não brigar com outras transformações. */
+.hero-dot:nth-child(1) {
+  translate: 0 calc(var(--parallax-y, 0) * -0.08px);
+}
+
+.hero-dot:nth-child(2) {
+  translate: 0 calc(var(--parallax-y, 0) * -0.16px);
+}
+
+.hero-dot:nth-child(3) {
+  translate: 0 calc(var(--parallax-y, 0) * -0.24px);
+}
+
+/* Antes de gerar: círculos tracejados, sem cor (a paleta ainda não existe). */
+.hero-dot--empty {
+  place-items: center;
+  border: var(--stroke-accent) dashed var(--cinza);
+  background: transparent;
+}
+
+.hero-dot__q {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--ciano);
 }
 
 .hero-dot__label {
@@ -909,11 +921,6 @@
   background: transparent;
   border-color: var(--border);
   color: var(--ink);
-}
-
-.cmp__apca {
-  margin: 0;
-  font-size: 0.875rem;
 }
 
 /* ---------- Harmonias ---------- */
@@ -1643,7 +1650,8 @@
 }
 
 .site-footer__logo {
-  width: 192px;
+  width: 320px;
+  max-width: 100%;
   height: auto;
   border-radius: var(--radius-md);
 }
@@ -1670,11 +1678,6 @@
   .site-footer__links a:hover {
     color: var(--ciano);
   }
-}
-
-.site-footer__credit {
-  margin: 0;
-  font-size: 0.9375rem;
 }
 
 /* ---------- Toast ---------- */
@@ -1714,5 +1717,375 @@
 
   .btn:active {
     transform: none;
+  }
+}
+
+/* =====================================================================
+   v1.1.0
+   ===================================================================== */
+
+/* ---------- Portão (antes de gerar a primeira paleta) ---------- */
+.gate__inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.gate__inner .section__lead {
+  max-width: 56ch;
+}
+
+.gate__dots {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.gate__dots span {
+  width: 56px;
+  height: 56px;
+  border: var(--stroke-accent) dashed var(--border);
+  border-radius: 50%;
+}
+
+.gate:focus {
+  outline: none;
+}
+
+.gate:focus-visible {
+  outline: var(--stroke-focus) solid var(--focus-ring);
+  outline-offset: -6px;
+}
+
+/* ---------- Fontes oficiais e créditos ---------- */
+.presets__credit,
+.info-panel__source,
+.source-link {
+  font-size: 0.875rem;
+}
+
+.presets__credit {
+  margin: calc(var(--space-2) * -1) 0 var(--space-6);
+}
+
+.info-panel__source {
+  display: block;
+  margin-top: var(--space-2);
+}
+
+.source-link {
+  display: inline-block;
+  margin-left: var(--space-1);
+  font-weight: 500;
+}
+
+.sources {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--stroke-control) solid var(--border);
+  font-size: 0.875rem;
+}
+
+.sources a {
+  display: inline-block;
+  padding-block: var(--space-1);
+  font-weight: 700;
+}
+
+/* Etiqueta antes do título: diz se a seção usa a sua paleta ou cria outra. */
+.tag-new {
+  display: inline-block;
+  margin-right: var(--space-2);
+  padding: 2px var(--space-2);
+  border: var(--stroke-control) solid var(--border);
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.callout--note {
+  margin-top: var(--space-4);
+}
+
+/* ---------- Harmonias em 3 etapas ---------- */
+.harmony__wheel-title {
+  margin: 0 0 var(--space-3);
+  font-weight: 700;
+}
+
+.form-steps {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.form-step {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.form-step__n {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.form-step__body {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  padding-bottom: var(--space-6);
+  border-bottom: var(--stroke-control) solid var(--border);
+}
+
+/* Num grid, o botão "O que é isso?" esticaria na largura toda: fica do tamanho do texto. */
+.form-step__body > .info-btn {
+  justify-self: start;
+}
+
+.form-step:last-child .form-step__body {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.form-step__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.form-step__hint {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.chip-group--sub legend {
+  font-size: 0.875rem;
+}
+
+/* Rascunho ao lado da paleta atual */
+.draft {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .draft {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.draft__label {
+  margin: 0 0 var(--space-2);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.draft__swatches {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.draft__item {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.draft__swatch {
+  display: block;
+  height: 56px;
+  border-radius: var(--radius-sm);
+}
+
+.draft__hex {
+  font-size: 0.75rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.draft__status {
+  margin: var(--space-2) 0 0;
+  font-size: 0.875rem;
+}
+
+/* ---------- Color grading: legenda das 3 cores ---------- */
+.grading__lead {
+  max-width: 72ch;
+}
+
+.grade-legend {
+  margin-bottom: var(--space-4);
+}
+
+.grade-legend__title {
+  margin: 0 0 var(--space-2);
+  font-weight: 700;
+}
+
+.grade-legend__ramps {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-2) var(--space-3);
+  align-items: center;
+  font-size: 0.8125rem;
+}
+
+.grade-legend__bar {
+  display: block;
+  height: 20px;
+  border-radius: var(--radius-sm);
+}
+
+/* Degradê FUNCIONAL (diagrama da claridade da foto), como a roda cromática: ver DESIGN.md §1.2. */
+.grade-legend__bar--gray {
+  background: linear-gradient(to right, #000000, #ffffff);
+}
+
+.grade-legend__list {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.grade-legend__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ---------- Aprenda: card largo ---------- */
+.learn__item--wide {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Sobre ---------- */
+.sobre__text {
+  max-width: 68ch;
+  font-size: 1.125rem;
+}
+
+.sobre__sign {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.sobre__sign::before {
+  content: '— ';
+}
+
+/* ---------- CTA Prazo Certo (zona ciano: roxo sobre ciano é um par permitido da marca) ---------- */
+.cta {
+  padding-block: var(--space-12);
+}
+
+.cta__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+@media (max-width: 760px) {
+  .cta__inner {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+}
+
+.cta__text {
+  margin: 0;
+  font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  line-height: 1.3;
+}
+
+/* ---------- Rodapé: logo maior e o Clawd ---------- */
+.site-footer__grid {
+  grid-template-columns: auto 1fr;
+}
+
+/* Celular: logo, contatos e o Clawd empilhados (a logo usa a largura toda). */
+@media (max-width: 560px) {
+  .site-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.clawd {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-6);
+  margin: 0;
+}
+
+.clawd__art {
+  flex: none;
+  width: 144px;
+  height: auto;
+}
+
+/* Balão de fala de HQ: caixa com a "pontinha" apontando para o Clawd (feita com bordas, sem sombra). */
+.clawd__bubble {
+  position: relative;
+  max-width: 52ch;
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  border-radius: 24px;
+  background: var(--cinza);
+  color: var(--roxo);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.clawd__bubble::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  bottom: 14px;
+  border-style: solid;
+  border-width: 10px 20px 10px 0;
+  border-color: transparent var(--cinza) transparent transparent;
+}
+
+/* Celular: o balão fica em cima e a pontinha aponta para baixo, para o Clawd. */
+@media (max-width: 560px) {
+  .clawd {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .clawd__bubble {
+    margin-bottom: 0;
+  }
+
+  .clawd__bubble::before {
+    left: 40px;
+    bottom: -18px;
+    border-width: 20px 10px 0 10px;
+    border-color: var(--cinza) transparent transparent transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-dot {
+    translate: none !important;
   }
 }

@@ -13,7 +13,7 @@
 
 ## 2. O que precisa de aprovação do Mário
 
-- Qualquer nova exceção à regra de cores da Prazo Certo. A moldura preta já foi aprovada em 13/11/2026.
+- Qualquer nova exceção à regra de cores da Prazo Certo. A moldura preta foi aprovada em 13/11/2026 e o Clawd laranja no rodapé foi pedido pelo Mário na v1.1.0 (15/11/2026).
 - Mudança de stack (ADR novo em [ARCHITECTURE.md](ARCHITECTURE.md)).
 - Push para o GitHub, publicação no GitHub Pages ou repositório público.
 - Remover um requisito do [PRD.md](PRD.md).
@@ -35,9 +35,9 @@
 
 - Issues e pull requests em português do Brasil.
 - Todo PR precisa de teste, de specs atualizadas e de `npm test` verde.
-- Licença MIT.
+- Licença Apache 2.0 (v1.1.0; antes era MIT).
 
 ## 6. Versionamento
 
-- SemVer: `MAJOR.MINOR.PATCH`. A v1 pública será `1.0.0`; antes disso, `0.x`.
+- SemVer: `MAJOR.MINOR.PATCH`. A versão atual é `1.1.0`. As mudanças de cada versão ficam no `CHANGELOG.md` da raiz.
 - Commits no padrão Conventional Commits (ver [WORKFLOW.md](WORKFLOW.md)).

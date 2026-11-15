@@ -25,9 +25,26 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T16 | Auditorias em 2 ciclos (a11y-web, acessibilidade, UX, motion e casos extremos) e correções | RNF-01, RNF-07, RNF-09 | Claude | ✅ |
 | T17 | Build final (`dist/`, ~36 KB gzip) conferido no `vite preview` e README pronto para o GitHub | RNF-03 | Claude | ✅ |
 
+### v1.1.0 (ajustes do Mário em `ajustes.md`)
+
+| # | Tarefa | Requisitos | Responsável | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| T18 | 15 paletas do Color Hunt (sem as cores da marca) e crédito ao site | RF-19 | Claude | ✅ |
+| T19 | Remover o APCA (domínio, UI, testes e textos) | RF-04, ADR-10 | Claude | ✅ |
+| T20 | Mockups só com 60-30-10 (`UsageProportion.RULE`) | RF-07, RF-17 | Claude | ✅ |
+| T21 | `GradientMap` com modo zonas + legenda das 3 cores no color grading | RF-18 | Claude | ✅ |
+| T22 | `PaletteGenerator` (extraído da store), `start()` e o portão `PaletteGate` ("Gerar paleta") | RF-25, ADR-11 | Claude | ✅ |
+| T23 | `HarmonyWorkbench` (rascunho) + `HarmonyPanel` em 3 etapas + `ColorWheel` com modelo injetado | RF-05, RF-06, RF-26, ADR-12 | Claude | ✅ |
+| T24 | Menu sem desenhos: `SiteMenu` + `ParallaxScene` nas 3 bolas do início | RF-14, RNF-07, ADR-13 | Claude | ✅ |
+| T25 | Nova ordem (passos 1 a 4 seguidos + extras com etiqueta), Sobre, CTA, Clawd e logotipo maior | RF-16, RF-27, RF-28, RF-30 | Claude | ✅ |
+| T26 | Fontes oficiais em todas as explicações (sem Wikipédia) e card de color grading no cinema | RF-12, RF-29 | Claude | ✅ |
+| T27 | Testes da v1.1.0 (unit, integration, e2e) e specs atualizadas | RNF-06 | Claude | ✅ |
+| T28 | Licença Apache-2.0, versão 1.1.0 e arquivos de repositório profissional | RNF-03 | Claude | 🔄 |
+| T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade, UX, motion e casos extremos) | RNF-01, RNF-09 | Claude | ⏳ |
+
 ## Próximo passo
 
-Todas as tarefas da v1 concluídas. Próximo passo: teste manual do Mário e, com o aval dele, publicação no GitHub Pages.
+v1.1.0 implementada (T18–T27). Faltam a licença Apache-2.0 e os arquivos do repositório (T28) e as auditorias (T29). Depois: teste manual do Mário e, com o aval dele, publicação no GitHub.
 
 ## Backlog (fora da v1)
 

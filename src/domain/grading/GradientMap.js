@@ -5,28 +5,54 @@
  *  - sombras (pixels escuros)   → cor mais escura da paleta;
  *  - meios-tons                 → cor do meio;
  *  - luzes (pixels claros)      → cor mais clara.
- * Entre as paradas, as cores se misturam suavemente.
+ * Dois modos:
+ *  - SMOOTH ("suave"): entre as paradas, as cores se misturam suavemente (o resultado final);
+ *  - ZONES ("zonas"): sem mistura, cada pixel vira exatamente uma das 3 cores. Serve para
+ *    MOSTRAR onde cada cor entrou na foto (v1.1.0).
  *
  * Trabalha com o array de pixels RGBA (Uint8ClampedArray) do <canvas>, mas não conhece
  * o <canvas>: assim dá para testar sem navegador. Para ser rápido, pré-calcula uma
  * tabela (LUT) com as 256 claridades possíveis.
  */
+const Mode = Object.freeze({ SMOOTH: 'smooth', ZONES: 'zones' });
+
 export class GradientMap {
+  static Mode = Mode;
+
   #stops;
   #lut;
 
-  /** @param {import('../color/Color.js').Color[]} stops cores da mais escura para a mais clara */
-  constructor(stops) {
+  /**
+   * @param {import('../color/Color.js').Color[]} stops cores da mais escura para a mais clara
+   * @param {{ mode?: 'smooth'|'zones' }} [options]
+   */
+  constructor(stops, { mode = Mode.SMOOTH } = {}) {
+    if (!Object.values(Mode).includes(mode)) throw new Error(`Modo de gradient map inválido: ${mode}`);
     this.#stops = Object.freeze([...stops]);
-    this.#lut = GradientMap.#buildLut(this.#stops);
+    this.#lut = mode === Mode.ZONES ? GradientMap.#buildZoneLut(this.#stops) : GradientMap.#buildLut(this.#stops);
   }
 
-  static fromPalette(palette) {
-    return new GradientMap(palette.sortedByLuminance());
+  static fromPalette(palette, options) {
+    return new GradientMap(palette.sortedByLuminance(), options);
   }
 
   get stops() {
     return this.#stops;
+  }
+
+  /** Em qual das 3 faixas de claridade (0 sombras, 1 meios-tons, 2 luzes) cai um valor de 0 a 255. */
+  static zoneOf(y) {
+    return Math.min(2, Math.floor(y / 85));
+  }
+
+  /** Tabela "em degraus": cada claridade recebe a cor inteira da sua faixa, sem mistura. */
+  static #buildZoneLut(stops) {
+    const lut = new Uint8ClampedArray(256 * 3);
+    for (let i = 0; i < 256; i++) {
+      const { r, g, b } = stops[Math.min(stops.length - 1, GradientMap.zoneOf(i))].rgb;
+      lut.set([r, g, b], i * 3);
+    }
+    return lut;
   }
 
   /** Tabela 256 × RGB: para cada claridade (0–255), a cor mapeada. */

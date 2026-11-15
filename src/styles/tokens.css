@@ -50,6 +50,21 @@
   color: var(--cinza);
 }
 
+/*
+ * Zona ciano (v1.1.0): só a faixa do CTA da Prazo Certo. Roxo sobre ciano é um par permitido.
+ * O botão fica roxo com texto ciano (ciano sobre roxo, também permitido).
+ */
+.zone-ciano {
+  --surface: var(--ciano);
+  --ink: var(--roxo);
+  --border: var(--roxo);
+  --accent: var(--roxo);
+  --on-accent: var(--ciano);
+  --focus-ring: var(--roxo);
+  background: var(--ciano);
+  color: var(--roxo);
+}
+
 :root {
   --space-1: 4px;
   --space-2: 8px;

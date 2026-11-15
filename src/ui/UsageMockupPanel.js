@@ -7,6 +7,9 @@
  *  - destaque (≈ 10%): botões, links ativos e o botão flutuante.
  * O texto de cada superfície usa a cor da paleta que dá mais contraste com ela, e a
  * legenda avisa quando nenhuma cor passa em AA. Assim o mockup mostra a acessibilidade real.
+ *
+ * v1.1.0: só a regra 60-30-10. A proporção áurea e a de Fibonacci quase não mudavam o
+ * visual dos mockups, então saíram daqui (continuam nas harmonias).
  */
 import { UsageProportion } from '../domain/proportion/UsageProportion.js';
 import { Role } from '../domain/proportion/RoleAdvisor.js';
@@ -46,15 +49,6 @@ export class UsageMockupPanel {
   }
 
   mount() {
-    const name = Dom.uid('proporcao');
-    const proportion = Dom.el('fieldset', { class: 'chip-group' }, [
-      Dom.el('legend', { text: 'Proporção de uso' }),
-      Dom.el('div', { class: 'chips' }, UsageProportion.list().map((p) => Dom.el('label', { class: 'chip', title: p.description }, [
-        Dom.el('input', { type: 'radio', name, value: p.id, on: { change: () => this.#store.setProportion(p.id) } }),
-        Dom.el('span', { text: p.name }),
-      ]))),
-    ]);
-
     const roleFields = ROLES.map(([role, label]) => {
       const id = Dom.uid(`papel-${role}`);
       const select = Dom.el('select', { id, class: 'select', on: { change: () => this.#onRoleChange(role) } },
@@ -80,7 +74,7 @@ export class UsageMockupPanel {
     this.#legend = Dom.el('ul', { class: 'mock-legend' });
 
     Dom.replace(this.#root, [
-      Dom.el('div', { class: 'mock-controls' }, [proportion, roles]),
+      Dom.el('div', { class: 'mock-controls' }, [roles]),
       this.#suggestion,
       this.#live,
       this.#shareBar,
@@ -109,11 +103,10 @@ export class UsageMockupPanel {
   }
 
   #render() {
-    const { palette, roles, rolesAuto, proportionId } = this.#store.state;
-    const proportion = UsageProportion.get(proportionId);
+    const { palette, roles, rolesAuto } = this.#store.state;
+    const proportion = UsageProportion.RULE;
     const d = this.#store.describeRoles();
 
-    for (const input of this.#root.querySelectorAll('input[type="radio"]')) input.checked = input.value === proportionId;
     for (const [role] of ROLES) this.#selects[role].value = String(roles[role]);
 
     this.#suggestion.textContent = rolesAuto

@@ -1,9 +1,8 @@
-// Testes unitários: níveis WCAG, faixas APCA, paleta e as 6 comparações (RF-03, RF-04, RF-17).
+// Testes unitários: níveis WCAG, paleta e as 6 comparações (RF-03, RF-04, RF-17).
 import { describe, it, expect } from 'vitest';
 import { Color } from '../../src/domain/color/Color.js';
 import { Palette } from '../../src/domain/palette/Palette.js';
 import { ContrastEvaluator, Level } from '../../src/domain/contrast/ContrastEvaluator.js';
-import { ApcaContrast } from '../../src/domain/contrast/ApcaContrast.js';
 import { PaletteComparator } from '../../src/domain/contrast/PaletteComparator.js';
 import { ReadableTextPicker } from '../../src/domain/contrast/ReadableTextPicker.js';
 import { Wcag2Contrast } from '../../src/domain/contrast/Wcag2Contrast.js';
@@ -32,21 +31,6 @@ describe('ContrastEvaluator.levels', () => {
 
   it('não arredonda para cima: 4,499 não passa em AA', () => {
     expect(ev.levels(4.499).normalText).toBe(Level.FAIL);
-  });
-});
-
-describe('ApcaContrast.describe', () => {
-  const apca = new ApcaContrast();
-  it.each([
-    [106, 'Ótimo para texto de corpo'],
-    [-80, 'Mínimo para texto de corpo'],
-    [62, 'Texto de conteúdo (não corpo)'],
-    [50, 'Títulos e texto grande'],
-    [35, 'Texto não essencial'],
-    [20, 'Só elementos não textuais'],
-    [5, 'Invisível para texto'],
-  ])('Lc %f → %s', (lc, label) => {
-    expect(apca.describe(lc)).toBe(label);
   });
 });
 
@@ -79,12 +63,11 @@ describe('PaletteComparator', () => {
     expect(pairs).toEqual(['A/B', 'B/A', 'A/C', 'C/A', 'B/C', 'C/B']);
   });
 
-  it('cada comparação tem razão, níveis e APCA', () => {
+  it('cada comparação tem razão e níveis WCAG (sem APCA desde a v1.1.0)', () => {
     const first = comparator.compare(brand())[0];
     expect(first.ratio).toBeCloseTo(17.1, 1);
     expect(first.levels.normalText).toBe(Level.AAA);
-    expect(typeof first.apca.lc).toBe('number');
-    expect(typeof first.apca.description).toBe('string');
+    expect(first).not.toHaveProperty('apca');
   });
 
   it('worst aponta o par de menor contraste (cinza/ciano)', () => {

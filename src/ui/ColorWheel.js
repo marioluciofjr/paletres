@@ -7,6 +7,10 @@
  *  - a distância até o centro é a saturação (centro = 0%, borda = 100%).
  * O marcador da cor A é o "tom base": pode ser arrastado com o mouse/dedo ou
  * movido pelo teclado (setas ←/→ mudam a matiz; ↑/↓ mudam a saturação; Shift acelera).
+ *
+ * v1.1.0: a roda não mexe mais direto na paleta da pessoa. Ela recebe um "modelo"
+ * (o rascunho HarmonyWorkbench) com a mesma interface do PaletteStore: state.palette,
+ * setColor, checkpoint e recordFrom. O evento que avisa mudanças também chega pronto.
  */
 import { ColorConverter } from '../domain/color/ColorConverter.js';
 import { StoreEvent } from '../app/PaletteStore.js';
@@ -20,18 +24,20 @@ const R = 144;
 
 export class ColorWheel {
   #root;
-  #store;
+  #model;
   #bus;
+  #event;
   #gesture;
   #svg;
   #lines = [];
   #markers = [];
 
-  constructor({ root, store, bus }) {
+  constructor({ root, model, bus, event = StoreEvent.PALETTE }) {
     this.#root = root;
-    this.#store = store;
+    this.#model = model;
     this.#bus = bus;
-    this.#gesture = new GestureRecorder(store);
+    this.#event = event;
+    this.#gesture = new GestureRecorder(model);
   }
 
   mount() {
@@ -42,7 +48,7 @@ export class ColorWheel {
       tabindex: '0',
       role: 'slider',
       'aria-roledescription': 'roda cromática',
-      'aria-label': 'Tom base (cor A) na roda cromática',
+      'aria-label': 'Tom base (cor A) da paleta nova, na roda cromática',
       'aria-describedby': hintId,
       'aria-valuemin': '0',
       'aria-valuemax': '359',
@@ -69,7 +75,7 @@ export class ColorWheel {
     this.#bindPointer();
     this.#svg.addEventListener('keydown', (e) => this.#onKey(e));
     this.#svg.addEventListener('blur', () => this.#gesture.end());
-    this.#bus.on(StoreEvent.PALETTE, () => this.#render());
+    this.#bus.on(this.#event, () => this.#render());
     this.#render();
   }
 
@@ -136,7 +142,7 @@ export class ColorWheel {
   }
 
   #onKey(e) {
-    const { h, s } = this.#store.state.palette.at(0).hsb;
+    const { h, s } = this.#model.state.palette.at(0).hsb;
     const step = e.shiftKey ? 15 : 1;
     const moves = {
       ArrowLeft: { h: h - step }, ArrowRight: { h: h + step },
@@ -150,13 +156,13 @@ export class ColorWheel {
   }
 
   #moveBase({ h, s }) {
-    const current = this.#store.state.palette.at(0);
+    const current = this.#model.state.palette.at(0);
     const next = current.withHsb({ h: ColorConverter.normalizeHue(h), s });
-    this.#gesture.step((opts) => this.#store.setColor(0, next, opts));
+    this.#gesture.step((opts) => this.#model.setColor(0, next, opts));
   }
 
   #render() {
-    const { palette } = this.#store.state;
+    const { palette } = this.#model.state;
     palette.colors.forEach((color, i) => {
       const { x, y } = ColorWheel.position(color.hsb.h, color.hsb.s);
       this.#markers[i].g.setAttribute('transform', `translate(${x} ${y})`);

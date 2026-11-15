@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Paletrês — 3 cores, 6 comparações de contraste</title>
-    <meta name="description" content="Escolha 3 cores e descubra se elas combinam e se dá para ler. Compare 6 combinações (WCAG 2.2 e APCA), gere paletas por harmonias, proporção áurea e Fibonacci, e teste em mockups e fotos." />
+    <meta name="description" content="Gere uma paleta de 3 cores e descubra se dá para ler. Compare as 6 combinações pela WCAG 2.2, teste em mockups e fotos, gere harmonias e exporte." />
     <meta name="theme-color" content="#230023" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,37 +23,10 @@
     <script type="module" src="./src/main.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#paleta">Pular para a ferramenta</a>
+    <a class="skip-link" href="#comecar" data-component="skip-link">Pular para a ferramenta</a>
 
-    <!-- ===================== CABEÇALHO COM PARALLAX ===================== -->
+    <!-- ===================== CABEÇALHO ===================== -->
     <header class="site-header zone-roxo" data-component="header">
-      <div class="parallax" aria-hidden="true">
-        <svg class="parallax__layer" data-parallax="0.15" data-period="240" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
-          <defs>
-            <pattern id="pl-rings" width="240" height="96" patternUnits="userSpaceOnUse">
-              <path d="M150 20a28 28 0 1 1-20 8" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
-            </pattern>
-          </defs>
-          <rect width="3840" height="96" fill="url(#pl-rings)" />
-        </svg>
-        <svg class="parallax__layer" data-parallax="0.3" data-period="320" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
-          <defs>
-            <pattern id="pl-moons" width="320" height="96" patternUnits="userSpaceOnUse">
-              <path d="M60 62a22 22 0 1 0 22-30a16 16 0 1 1-22 30z" fill="none" stroke="#F2F2F2" stroke-width="1.75" stroke-linejoin="round" />
-            </pattern>
-          </defs>
-          <rect width="3840" height="96" fill="url(#pl-moons)" />
-        </svg>
-        <svg class="parallax__layer" data-parallax="0.5" data-period="200" viewBox="0 0 3840 96" preserveAspectRatio="xMinYMid slice">
-          <defs>
-            <pattern id="pl-waves" width="200" height="96" patternUnits="userSpaceOnUse">
-              <path d="M0 80q25-14 50 0t50 0t50 0t50 0" fill="none" stroke="#42FFFF" stroke-width="1.75" stroke-linecap="round" />
-            </pattern>
-          </defs>
-          <rect width="3840" height="96" fill="url(#pl-waves)" />
-        </svg>
-      </div>
-
       <div class="site-header__inner">
         <a class="brand" href="#inicio" aria-label="Paletrês, voltar ao início">
           <img src="./favicon.svg" alt="" width="40" height="40" />
@@ -68,12 +41,13 @@
           <ul>
             <li><a href="#paleta">Paleta</a></li>
             <li><a href="#comparacoes">Contraste</a></li>
-            <li><a href="#harmonias">Harmonias</a></li>
-            <li><a href="#tons">Tons</a></li>
-            <li><a href="#daltonismo">Daltonismo</a></li>
             <li><a href="#pratica">Na prática</a></li>
             <li><a href="#exportar">Exportar</a></li>
+            <li><a href="#daltonismo">Daltonismo</a></li>
+            <li><a href="#harmonias">Harmonias</a></li>
+            <li><a href="#tons">Tons</a></li>
             <li><a href="#aprenda">Aprenda</a></li>
+            <li><a href="#sobre">Sobre</a></li>
             <li class="site-nav__extra">
               <a class="btn btn--ghost btn--sm" href="https://prazocerto.me" target="_blank" rel="noopener noreferrer">
                 <span>Visitar Prazo Certo</span><span class="visually-hidden"> (abre em nova aba)</span><span data-icon="external"></span>
@@ -89,143 +63,173 @@
     </header>
 
     <main id="conteudo">
-      <!-- ===================== INÍCIO ===================== -->
-      <section id="inicio" class="hero zone-roxo" aria-labelledby="hero-title">
+      <!-- ===================== INÍCIO (com parallax nas 3 bolas) ===================== -->
+      <section id="inicio" class="hero zone-roxo" aria-labelledby="hero-title" data-component="hero">
         <div class="container hero__grid">
           <div class="hero__text">
             <p class="eyebrow">3 cores · 6 comparações</p>
             <h1 id="hero-title" class="hero__title">Paletrês</h1>
-            <p class="hero__lead">Escolha 3 cores e descubra, na hora, se elas combinam e se dá para ler um texto de uma cor em cima da outra.</p>
+            <p class="hero__lead">Gere 3 cores e descubra, na hora, se elas combinam e se dá para ler um texto de uma cor em cima da outra.</p>
             <ol class="steps">
-              <li><span class="steps__n">1</span> Escolha 3 cores</li>
-              <li><span class="steps__n">2</span> Veja se dá para ler</li>
-              <li><span class="steps__n">3</span> Teste e exporte</li>
+              <li><span class="steps__n">1</span> Escolha</li>
+              <li><span class="steps__n">2</span> Confira</li>
+              <li><span class="steps__n">3</span> Teste</li>
+              <li><span class="steps__n">4</span> Exporte</li>
             </ol>
-            <a class="btn btn--primary btn--lg" href="#paleta">Montar minha paleta</a>
+            <button class="btn btn--primary btn--lg" type="button" data-action="start" data-gate="locked">
+              <span data-icon="sparkle"></span>Gerar paleta
+            </button>
+            <a class="btn btn--primary btn--lg" href="#paleta" data-gate="started" hidden>Ver minha paleta</a>
           </div>
-          <div class="hero__art" data-component="hero-art" role="img" aria-label="Sua paleta atual"></div>
+          <div class="hero__art" data-component="hero-art" role="img" aria-label="Sua paleta ainda está vazia"></div>
         </div>
       </section>
 
-      <!-- ===================== PALETA ===================== -->
-      <section id="paleta" class="section" aria-labelledby="paleta-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Passo 1 de 3 · Escolha</p>
-            <h2 id="paleta-title">Escolha suas 3 cores</h2>
-            <p class="section__lead">Clique no quadrado para escolher uma cor, digite o código HEX ou comece por uma paleta pronta.
-              <button class="info-btn" type="button" data-info="hex">O que é HEX?</button></p>
-            <div class="info-panel" id="info-hex" hidden>HEX é o "nome" de uma cor em código: 6 letras e números depois do #. Ex.: <code>#230023</code> é o roxo da Prazo Certo. Você não precisa decorar: é só clicar no quadrado e escolher.</div>
-          </header>
-
-          <div class="presets" data-component="presets"></div>
-
-          <div class="toolbar" data-component="history" role="group" aria-label="Ações da paleta"></div>
-
-          <div class="slots" data-component="slots"></div>
-
-          <div class="hsb card zone-roxo" data-component="hsb"></div>
+      <!-- ===================== PORTÃO: antes de gerar a primeira paleta ===================== -->
+      <section id="comecar" class="section gate" aria-labelledby="comecar-title" data-gate="locked" tabindex="-1">
+        <div class="container gate__inner">
+          <div class="gate__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <h2 id="comecar-title">Sua paleta ainda está vazia</h2>
+          <p class="section__lead">Clique em <strong>Gerar paleta</strong>. O Paletrês sorteia 3 cores que combinam e que dão para ler. Depois você ajusta cada cor, troca por uma paleta pronta e testa tudo.</p>
+          <button class="btn btn--primary btn--lg" type="button" data-action="start">
+            <span data-icon="sparkle"></span>Gerar paleta
+          </button>
         </div>
       </section>
 
-      <!-- ===================== COMPARAÇÕES ===================== -->
-      <section id="comparacoes" class="section section--alt" aria-labelledby="comparacoes-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Passo 2 de 3 · Confira</p>
-            <h2 id="comparacoes-title">Dá para ler? As 6 combinações</h2>
-            <p class="section__lead">Cada card mostra uma cor como texto sobre outra como fundo. Leia o veredito primeiro; os números ficam logo abaixo.
-              <button class="info-btn" type="button" data-info="wcag">O que é WCAG?</button>
-              <button class="info-btn" type="button" data-info="apca">E APCA?</button></p>
-            <div class="info-panel" id="info-wcag" hidden><strong>WCAG</strong> é a regra internacional de acessibilidade na web. Ela mede o contraste de 1:1 (nada) a 21:1 (preto no branco). <strong>AA</strong> é o mínimo recomendado (4,5:1 para textos). <strong>AAA</strong> é o nível mais exigente (7:1).</div>
-            <div class="info-panel" id="info-apca" hidden><strong>APCA</strong> é o método que deve entrar no futuro WCAG 3. Ele considera a direção: texto escuro no fundo claro é diferente de texto claro no fundo escuro. Por isso os 6 cards têm valores APCA diferentes. Aqui ele é só uma referência.</div>
-          </header>
-          <div data-component="comparisons"></div>
-        </div>
-      </section>
+      <!-- ===================== A FERRAMENTA (aparece depois de gerar) ===================== -->
+      <div id="ferramenta" data-gate="started" hidden>
+        <!-- PASSO 1 -->
+        <section id="paleta" class="section" aria-labelledby="paleta-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow">Passo 1 de 4 · Escolha</p>
+              <h2 id="paleta-title" tabindex="-1">Escolha suas 3 cores</h2>
+              <p class="section__lead">Clique no quadrado para escolher uma cor, digite o código HEX ou troque por uma paleta pronta.
+                <button class="info-btn" type="button" data-info="hex">O que é HEX?</button></p>
+              <div class="info-panel" id="info-hex" hidden>HEX é o "nome" de uma cor em código: 6 letras e números depois do #. Ex.: <code>#FF0000</code> é vermelho puro. Você não precisa decorar: é só clicar no quadrado e escolher.
+                <span class="info-panel__source">Fonte oficial: <a href="https://www.w3.org/TR/css-color-4/#hex-notation" target="_blank" rel="noopener noreferrer">W3C, CSS Color Module Level 4<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
+            </header>
 
-      <!-- ===================== HARMONIAS ===================== -->
-      <section id="harmonias" class="section" aria-labelledby="harmonias-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Atalho · Sem ideia? Gere uma paleta</p>
-            <h2 id="harmonias-title">Harmonias do círculo cromático</h2>
-            <p class="section__lead">Escolha um estilo, ajuste o tom base na roda e clique em <strong>Gerar paleta</strong>. Ligue a garantia para a paleta já sair legível.
-              <button class="info-btn" type="button" data-info="harmonia">O que é harmonia?</button></p>
-            <div class="info-panel" id="info-harmonia" hidden>Harmonia é uma "receita" para escolher cores que combinam, usando a posição delas no círculo cromático (o círculo com todas as cores do arco-íris).</div>
-          </header>
-          <div class="harmony" data-component="harmony"></div>
-        </div>
-      </section>
+            <div class="presets" data-component="presets"></div>
+            <p class="presets__credit">Paletas prontas escolhidas no <a href="https://colorhunt.co" target="_blank" rel="noopener noreferrer">Color Hunt<span class="visually-hidden"> (abre em nova aba)</span></a>. De cada paleta de 4 cores, usamos as 3 com melhor contraste.</p>
 
-      <!-- ===================== TINTS E SHADES ===================== -->
-      <section id="tons" class="section section--alt" aria-labelledby="tons-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Extra · Variações</p>
-            <h2 id="tons-title">Tints e shades</h2>
-            <p class="section__lead">Versões mais claras (tints, misturadas com branco) e mais escuras (shades, misturadas com preto) de cada cor, de 10% em 10%.</p>
-          </header>
-          <div data-component="tints"></div>
-        </div>
-      </section>
+            <div class="toolbar" data-component="history" role="group" aria-label="Ações da paleta"></div>
 
-      <!-- ===================== DALTONISMO ===================== -->
-      <section id="daltonismo" class="section" aria-labelledby="daltonismo-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Extra · Para todo mundo</p>
-            <h2 id="daltonismo-title">Como pessoas com daltonismo veem</h2>
-            <p class="section__lead">Cerca de 1 em cada 12 homens tem algum tipo de daltonismo. Veja a sua paleta pelos olhos dessas pessoas e o contraste em cada caso.</p>
-          </header>
-          <div data-component="vision"></div>
-        </div>
-      </section>
+            <div class="slots" data-component="slots"></div>
 
-      <!-- ===================== NA PRÁTICA ===================== -->
-      <section id="pratica" class="section section--alt" aria-labelledby="pratica-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Passo 3 de 3 · Teste</p>
-            <h2 id="pratica-title">Teste na prática</h2>
-            <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10 (ou a proporção áurea e Fibonacci). Depois, aplique as cores numa foto.
-              <button class="info-btn" type="button" data-info="603010">O que é 60-30-10?</button></p>
-            <div class="info-panel" id="info-603010" hidden>Uma regra simples de decoração e design: <strong>60%</strong> da tela com a cor principal (o fundo), <strong>30%</strong> com a cor de apoio (cards, barras) e <strong>10%</strong> com a cor de destaque (botões e links).</div>
-          </header>
-          <div data-component="mockups"></div>
-          <div class="grading card" data-component="grading"></div>
-        </div>
-      </section>
+            <div class="hsb card zone-roxo" data-component="hsb"></div>
+          </div>
+        </section>
 
-      <!-- ===================== EXPORTAR ===================== -->
-      <section id="exportar" class="section" aria-labelledby="exportar-title">
-        <div class="container">
-          <header class="section__head">
-            <p class="eyebrow">Passo 3 de 3 · Exporte</p>
-            <h2 id="exportar-title">Exportar e compartilhar</h2>
-            <p class="section__lead">Baixe a imagem da paleta, copie o código para o seu site ou mande o link para alguém.</p>
-          </header>
-          <div data-component="export"></div>
-        </div>
-      </section>
+        <!-- PASSO 2 -->
+        <section id="comparacoes" class="section section--alt" aria-labelledby="comparacoes-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow">Passo 2 de 4 · Confira</p>
+              <h2 id="comparacoes-title">Dá para ler? As 6 combinações</h2>
+              <p class="section__lead">Cada card mostra uma cor como texto sobre outra como fundo. Leia o veredito primeiro; os números ficam logo abaixo.
+                <button class="info-btn" type="button" data-info="wcag">O que é WCAG?</button></p>
+              <div class="info-panel" id="info-wcag" hidden><strong>WCAG</strong> é a regra internacional de acessibilidade na web, publicada pelo W3C. Ela mede o contraste de 1:1 (nada) a 21:1 (preto no branco). <strong>AA</strong> é o mínimo recomendado (4,5:1 para textos). <strong>AAA</strong> é o nível mais exigente (7:1).
+                <span class="info-panel__source">Fonte oficial: <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">W3C, critério 1.4.3 da WCAG 2.2<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
+            </header>
+            <div data-component="comparisons"></div>
+          </div>
+        </section>
 
-      <!-- ===================== APRENDA ===================== -->
+        <!-- PASSO 3 -->
+        <section id="pratica" class="section" aria-labelledby="pratica-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow">Passo 3 de 4 · Teste</p>
+              <h2 id="pratica-title">Teste na prática</h2>
+              <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10. Depois, aplique as 3 cores numa foto.
+                <button class="info-btn" type="button" data-info="603010">O que é 60-30-10?</button></p>
+              <div class="info-panel" id="info-603010" hidden>Uma regra simples de decoração e design: <strong>60%</strong> da tela com a cor principal (o fundo), <strong>30%</strong> com a cor de apoio (cards, barras) e <strong>10%</strong> com a cor de destaque (botões e links).
+                <span class="info-panel__source">Fonte: <a href="https://www.adobe.com/uk/creativecloud/design/discover/color-theory.html" target="_blank" rel="noopener noreferrer">Adobe, guia de teoria das cores<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
+            </header>
+            <div data-component="mockups"></div>
+            <div class="grading card" data-component="grading"></div>
+          </div>
+        </section>
+
+        <!-- PASSO 4 -->
+        <section id="exportar" class="section section--alt" aria-labelledby="exportar-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow">Passo 4 de 4 · Exporte</p>
+              <h2 id="exportar-title">Exportar e compartilhar</h2>
+              <p class="section__lead">Baixe a imagem da paleta, copie o código para o seu site ou mande o link para alguém.</p>
+            </header>
+            <div data-component="export"></div>
+          </div>
+        </section>
+
+        <!-- EXTRAS -->
+        <section id="daltonismo" class="section" aria-labelledby="daltonismo-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow">Extra · Usa a sua paleta atual</p>
+              <h2 id="daltonismo-title">Como pessoas com daltonismo veem</h2>
+              <p class="section__lead">Cerca de 1 em cada 12 homens tem algum tipo de daltonismo. Veja a sua paleta pelos olhos dessas pessoas e o contraste em cada caso.
+                <a class="source-link" href="https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/color-blindness" target="_blank" rel="noopener noreferrer">Fonte: National Eye Institute (NEI)<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+            </header>
+            <div data-component="vision"></div>
+          </div>
+        </section>
+
+        <section id="harmonias" class="section section--alt" aria-labelledby="harmonias-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow"><span class="tag-new">Cria uma paleta nova</span> Extra · Sem ideia? Comece por uma harmonia</p>
+              <h2 id="harmonias-title">Harmonias do círculo cromático</h2>
+              <p class="section__lead">Siga as 3 etapas abaixo. A paleta nova fica num rascunho ao lado da sua: nada do que você fez nos passos 1 a 4 se perde.
+                <button class="info-btn" type="button" data-info="harmonia">O que é harmonia?</button></p>
+              <div class="info-panel" id="info-harmonia" hidden>Harmonia é uma "receita" para escolher cores que combinam, usando a posição delas no círculo cromático (o círculo com todas as cores do arco-íris). É o mesmo princípio da roda do Adobe Color.
+                <span class="info-panel__source">Fonte oficial: <a href="https://color.adobe.com/create/color-wheel" target="_blank" rel="noopener noreferrer">Adobe Color, roda cromática<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
+            </header>
+            <div class="harmony" data-component="harmony"></div>
+          </div>
+        </section>
+
+        <section id="tons" class="section" aria-labelledby="tons-title">
+          <div class="container">
+            <header class="section__head">
+              <p class="eyebrow"><span class="tag-new">Variações da sua paleta</span> Extra</p>
+              <h2 id="tons-title">Tints e shades</h2>
+              <p class="section__lead">Versões mais claras (tints, misturadas com branco) e mais escuras (shades, misturadas com preto) de cada cor, de 10% em 10%.
+                <a class="source-link" href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix" target="_blank" rel="noopener noreferrer">Fonte: MDN, função color-mix()<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+              <p class="callout callout--note">Clicar num tom só <strong>copia o código</strong>: a sua paleta não muda. Se você escolher <strong>Usar na paleta</strong>, a cor troca nos passos 1 a 4, e o botão Desfazer (no Passo 1) traz a anterior de volta.</p>
+            </header>
+            <div data-component="tints"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================== APRENDA (com fontes oficiais) ===================== -->
       <section id="aprenda" class="section section--alt" aria-labelledby="aprenda-title">
         <div class="container">
           <header class="section__head">
             <p class="eyebrow">Para entender</p>
-            <h2 id="aprenda-title">Aprenda em 2 minutos</h2>
+            <h2 id="aprenda-title">Aprenda em 5 minutos</h2>
+            <p class="section__lead">Cada explicação traz o link da fonte oficial, para você conferir e se aprofundar.</p>
           </header>
           <div class="learn">
             <article class="learn__item card zone-roxo">
               <h3>Contraste e WCAG</h3>
               <p>Contraste é a diferença de claridade entre o texto e o fundo. A WCAG mede isso de 1:1 a 21:1. Para um parágrafo, o mínimo é <strong>4,5:1</strong> (nível AA). Títulos grandes pedem <strong>3:1</strong>. O nível AAA pede <strong>7:1</strong>.</p>
               <p>Botões, ícones e bordas também precisam de <strong>3:1</strong> contra o que está em volta.</p>
+              <p class="sources">Fontes oficiais (W3C):
+                <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">WCAG 2.2<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">critério 1.4.3 (AA)<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html" target="_blank" rel="noopener noreferrer">critério 1.4.6 (AAA)<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer">critério 1.4.11 (componentes)<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
               <h3>Por que 6 comparações?</h3>
               <p>Com 3 cores (A, B e C) existem 3 pares: AB, AC e BC. Cada par pode ser "texto sobre fundo" nas duas direções: A sobre B e B sobre A. Isso dá 6 combinações.</p>
-              <p>No WCAG as duas direções dão o mesmo número. No <strong>APCA</strong>, não: texto claro no escuro costuma precisar de mais contraste.</p>
+              <p>Na WCAG, as duas direções dão o mesmo número. Mesmo assim, vale ver as duas: texto escuro no fundo claro não parece igual a texto claro no fundo escuro.</p>
+              <p class="sources">Fonte oficial: <a href="https://www.w3.org/WAI/WCAG22/Techniques/general/G18" target="_blank" rel="noopener noreferrer">W3C, técnica G18 (como calcular o contraste)<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
               <h3>Harmonias clássicas</h3>
@@ -238,33 +242,96 @@
                 <li><strong>Composto:</strong> uma vizinha e uma oposta.</li>
                 <li><strong>Tons e monocromático:</strong> uma cor só, mais clara ou mais escura.</li>
               </ul>
+              <p class="sources">Fontes oficiais (Adobe):
+                <a href="https://color.adobe.com/create/color-wheel" target="_blank" rel="noopener noreferrer">Adobe Color<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.adobe.com/uk/creativecloud/design/discover/color-wheel.html" target="_blank" rel="noopener noreferrer">combinações da roda cromática<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
               <h3>Proporção áurea</h3>
               <p>O número de ouro, <strong>φ ≈ 1,618</strong>, aparece em girassóis, conchas e na arte. O <strong>ângulo áureo</strong> (≈ 137,5°) divide o círculo nessa proporção: é como as sementes do girassol se espalham.</p>
-              <p>No Paletrês, cada cor gira 137,5° e fica 1,618 vez mais escura que a anterior. Na prática, a proporção áurea também divide a tela: 62%, 24% e 14%.</p>
+              <p>Na harmonia "Proporção áurea" do Paletrês, cada cor gira 137,5° no círculo e fica 1,618 vez mais escura que a anterior.</p>
+              <p class="sources">Fontes (Wolfram MathWorld):
+                <a href="https://mathworld.wolfram.com/GoldenRatio.html" target="_blank" rel="noopener noreferrer">número de ouro<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://mathworld.wolfram.com/GoldenAngle.html" target="_blank" rel="noopener noreferrer">ângulo áureo<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
               <h3>Sequência de Fibonacci</h3>
               <p>1, 1, 2, 3, 5, 8, 13, 21… Cada número é a soma dos dois anteriores. Ao dividir um termo pelo seguinte (13 ÷ 21), obtemos um número próximo de 0,618, o inverso do número de ouro.</p>
-              <p>No Paletrês, funciona assim:</p>
+              <p>Na harmonia "Fibonacci" do Paletrês:</p>
               <ol>
                 <li>Sorteamos 3 termos seguidos, por exemplo 8, 13 e 21.</li>
                 <li>O ângulo entre as cores é 360° × 13 ÷ 21, cerca de 222,9°.</li>
                 <li>O brilho segue 21/21, 13/21 e 8/21: 100%, 62% e 38%.</li>
               </ol>
-              <p>Quanto maiores os termos, mais o ângulo se aproxima de 222,5°, que é o ângulo áureo (137,5°) medido pelo outro lado do círculo.</p>
+              <p class="sources">Fontes:
+                <a href="https://oeis.org/A000045" target="_blank" rel="noopener noreferrer">OEIS A000045<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://mathworld.wolfram.com/FibonacciNumber.html" target="_blank" rel="noopener noreferrer">Wolfram MathWorld<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
-              <h3>Dicas rápidas</h3>
-              <ul>
-                <li>Use a cor mais clara ou a mais escura no fundo.</li>
-                <li>Guarde a cor mais viva para botões e destaques (os 10%).</li>
-                <li>Nunca dependa só da cor para dar um aviso: escreva também.</li>
-                <li>Teste no simulador de daltonismo antes de publicar.</li>
-              </ul>
+              <h3>Regra 60-30-10</h3>
+              <p>Uma regra de decoração que funciona muito bem em telas: <strong>60%</strong> com a cor dominante (o fundo), <strong>30%</strong> com a secundária (cards e barras) e <strong>10%</strong> com o destaque (botões e links).</p>
+              <p>Guarde o destaque para o que a pessoa mais precisa ver, como o botão principal.</p>
+              <p class="sources">Fontes:
+                <a href="https://www.adobe.com/uk/creativecloud/design/discover/color-theory.html" target="_blank" rel="noopener noreferrer">Adobe, teoria das cores<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.nngroup.com/articles/color-enhance-design/" target="_blank" rel="noopener noreferrer">Nielsen Norman Group<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Tints e shades</h3>
+              <p><strong>Tint</strong> é uma cor misturada com branco (fica mais clara). <strong>Shade</strong> é uma cor misturada com preto (fica mais escura). Com eles você cria fundos suaves, bordas e estados de botão sem sair da paleta.</p>
+              <p class="sources">Fontes oficiais:
+                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix" target="_blank" rel="noopener noreferrer">MDN, color-mix()<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.w3.org/TR/css-color-4/" target="_blank" rel="noopener noreferrer">W3C, CSS Color 4<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+            </article>
+            <article class="learn__item card zone-roxo">
+              <h3>Daltonismo</h3>
+              <p>Daltonismo é a dificuldade de diferenciar algumas cores, quase sempre o vermelho e o verde. O simulador do Paletrês usa o modelo científico de Machado, Oliveira e Fernandes (2009), da UFRGS.</p>
+              <p>Por isso, nunca use só a cor para dar um aviso: escreva também.</p>
+              <p class="sources">Fontes:
+                <a href="https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/color-blindness" target="_blank" rel="noopener noreferrer">National Eye Institute<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html" target="_blank" rel="noopener noreferrer">artigo da UFRGS<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html" target="_blank" rel="noopener noreferrer">W3C, critério 1.4.1<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+            </article>
+            <article class="learn__item card zone-roxo learn__item--wide">
+              <h3>Color grading no cinema</h3>
+              <p>No cinema, <strong>color grading</strong> é a etapa da pós-produção em que o colorista ajusta as cores de cada cena para contar a história. Tons frios e azulados costumam passar tensão ou solidão. Tons quentes e dourados, nostalgia e aconchego.</p>
+              <p>Antes do digital, isso era feito no laboratório: o <em>color timer</em> escolhia a luz de cópia de cada plano do filme. Hoje é feito em programas como o DaVinci Resolve. A ASC (a associação americana dos diretores de fotografia) criou padrões como o ASC CDL, para as cores não mudarem de um programa para outro.</p>
+              <p>No Paletrês usamos uma técnica simples, o <strong>mapa de gradiente</strong>: as sombras da foto recebem a cor mais escura, os meios-tons a cor do meio e as luzes a cor mais clara.</p>
+              <p class="sources">Fontes:
+                <a href="https://theasc.com/mitc/" target="_blank" rel="noopener noreferrer">ASC, Motion Imaging Technology Council<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://www.blackmagicdesign.com/products/davinciresolve/color" target="_blank" rel="noopener noreferrer">Blackmagic Design, DaVinci Resolve<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+                <a href="https://helpx.adobe.com/photoshop/using/applying-special-color-effects-images.html" target="_blank" rel="noopener noreferrer">Adobe, mapa de gradiente no Photoshop<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
           </div>
+        </div>
+      </section>
+
+      <!-- ===================== SOBRE ===================== -->
+      <section id="sobre" class="section" aria-labelledby="sobre-title">
+        <div class="container sobre">
+          <header class="section__head">
+            <p class="eyebrow">Sobre</p>
+            <h2 id="sobre-title">De onde veio o Paletrês</h2>
+          </header>
+          <div class="sobre__text">
+            <p>A ideia surgiu de um incômodo meu. Toda vez que eu ia conferir o contraste pela WCAG, as ferramentas só deixavam comparar <strong>duas cores</strong>. E eu quase sempre trabalho com <strong>três cores</strong> numa paleta. Então eu fazia a conta três vezes e anotava tudo.</p>
+            <p>Também resolvi juntar num lugar só tudo de legal que eu via em outros sites para designers: harmonias do círculo cromático, tints e shades, simulador de daltonismo, mockups e color grading. O Paletrês é um "Megazord" de recursos para analisar paletas de cores e tornar a vida de designers e de quem não é designer mais fácil.</p>
+            <p class="sobre__sign">Mário Lúcio, idealizador do Paletrês</p>
+            <p class="sources sobre__inspo">Inspirado em:
+              <a href="https://colorshark.io" target="_blank" rel="noopener noreferrer">Color Shark<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+              <a href="https://color.adobe.com" target="_blank" rel="noopener noreferrer">Adobe Color<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+              <a href="https://maketintsandshades.com" target="_blank" rel="noopener noreferrer">Make Tints and Shades<span class="visually-hidden"> (abre em nova aba)</span></a> ·
+              <a href="https://colorhunt.co" target="_blank" rel="noopener noreferrer">Color Hunt<span class="visually-hidden"> (abre em nova aba)</span></a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== CTA PRAZO CERTO ===================== -->
+      <section class="cta zone-ciano" aria-labelledby="cta-title">
+        <div class="container cta__inner">
+          <h2 id="cta-title" class="cta__text">Se você gostou dessa página e quer entender mais sobre letramento em IA generativa, acesse prazocerto.me agora mesmo!</h2>
+          <a class="btn btn--primary btn--lg" href="https://prazocerto.me" target="_blank" rel="noopener noreferrer">
+            <span>Acessar prazocerto.me</span><span class="visually-hidden"> (abre em nova aba)</span><span data-icon="external"></span>
+          </a>
         </div>
       </section>
     </main>
@@ -273,7 +340,7 @@
     <footer class="site-footer zone-roxo">
       <div class="container site-footer__grid">
         <div>
-          <img class="site-footer__logo" src="./logo-cinza-roxo.svg" alt="Prazo Certo" width="192" height="108" loading="lazy" />
+          <img class="site-footer__logo" src="./logo-cinza-roxo.svg" alt="Prazo Certo" width="320" height="180" loading="lazy" />
         </div>
         <nav aria-label="Contatos">
           <h2 class="site-footer__title">Contatos</h2>
@@ -284,7 +351,24 @@
             <li><a href="https://behance.net/prazocerto" target="_blank" rel="noopener noreferrer">Behance<span class="visually-hidden"> (abre em nova aba)</span></a></li>
           </ul>
         </nav>
-        <p class="site-footer__credit">Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.</p>
+        <!-- O Clawd, mascote do Claude Code, na cor laranja original, "falando" o crédito num balão de HQ. -->
+        <figure class="clawd">
+          <svg class="clawd__art" viewBox="0 0 18 10" width="144" height="80" aria-hidden="true" focusable="false" shape-rendering="crispEdges">
+            <g fill="#D77757">
+              <rect x="3" y="0" width="12" height="2" />
+              <rect x="3" y="2" width="2" height="2" />
+              <rect x="6" y="2" width="6" height="2" />
+              <rect x="13" y="2" width="2" height="2" />
+              <rect x="1" y="4" width="16" height="2" />
+              <rect x="3" y="6" width="12" height="2" />
+              <rect x="4" y="8" width="1" height="2" />
+              <rect x="6" y="8" width="1" height="2" />
+              <rect x="11" y="8" width="1" height="2" />
+              <rect x="13" y="8" width="1" height="2" />
+            </g>
+          </svg>
+          <figcaption class="clawd__bubble">Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto.</figcaption>
+        </figure>
       </div>
     </footer>
 

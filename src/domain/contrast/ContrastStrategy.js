@@ -1,9 +1,9 @@
 /**
  * ContrastStrategy — contrato (interface) de qualquer método de contraste.
  *
- * Padrão Strategy: WCAG 2.2 e APCA são "estratégias" diferentes para a mesma
- * pergunta ("quanto este texto se destaca deste fundo?"). Quem usa só conhece
- * este contrato, então dá para trocar ou somar métodos sem mexer no resto.
+ * Padrão Strategy: hoje o Paletrês usa só o WCAG 2.2, mas quem mede o contraste
+ * conhece apenas este contrato. Se um dia entrar outro método (ex.: o do futuro
+ * WCAG 3), basta criar outra estratégia, sem mexer no resto.
  */
 export class ContrastStrategy {
   /** Nome curto exibido na interface (ex.: "WCAG 2.2"). */

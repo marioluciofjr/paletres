@@ -11,6 +11,7 @@ import './styles/components.css';
 
 import { EventBus } from './app/EventBus.js';
 import { PaletteStore, StoreEvent } from './app/PaletteStore.js';
+import { HarmonyWorkbench } from './app/HarmonyWorkbench.js';
 import { createExporters } from './domain/export/defaultExporters.js';
 import { UrlStateCodec } from './infra/UrlStateCodec.js';
 import { ClipboardService } from './infra/ClipboardService.js';
@@ -21,7 +22,9 @@ import { Icons } from './ui/Icons.js';
 import { Toast } from './ui/Toast.js';
 import { InfoTips } from './ui/InfoTips.js';
 import { ThemeToggle } from './ui/ThemeToggle.js';
-import { ParallaxHeader } from './ui/ParallaxHeader.js';
+import { SiteMenu } from './ui/SiteMenu.js';
+import { ParallaxScene } from './ui/ParallaxScene.js';
+import { PaletteGate } from './ui/PaletteGate.js';
 import { HeroArt } from './ui/HeroArt.js';
 import { PresetBar } from './ui/PresetBar.js';
 import { HistoryToolbar } from './ui/HistoryToolbar.js';
@@ -52,12 +55,15 @@ class PaletresApp {
   start() {
     const bus = new EventBus();
     const codec = new UrlStateCodec(this.#win);
-    // Se a URL trouxer uma paleta (link compartilhado), começamos por ela.
+    // Se a URL trouxer uma paleta (link compartilhado), começamos por ela e o site já abre liberado.
+    // Sem paleta no link, o site abre vazio até a pessoa clicar em "Gerar paleta" (RF-25).
     const store = PaletteStore.create({ bus, initialPalette: codec.read() ?? undefined });
     const clipboard = new ClipboardService(this.#win.navigator, this.#doc);
     const storage = new PreferenceStorage(this.#win.localStorage);
     const downloader = new FileDownloader(this.#doc);
     const toast = new Toast({ root: this.#slot('toast') });
+    // Rascunho da seção de harmonias: gera paletas novas sem mexer na da pessoa (RF-26).
+    const bench = HarmonyWorkbench.create({ store, bus });
 
     // Toda mudança de paleta vai para a URL: o link está sempre pronto para compartilhar.
     bus.on(StoreEvent.PALETTE, ({ palette }) => codec.write(palette));
@@ -70,14 +76,16 @@ class PaletresApp {
 
     const components = [
       new ThemeToggle({ button: this.#slot('theme-toggle'), storage }),
-      new ParallaxHeader({ header: this.#slot('header'), win: this.#win }),
+      new SiteMenu({ header: this.#slot('header') }),
+      new ParallaxScene({ scene: this.#slot('hero'), stage: this.#slot('hero-art'), win: this.#win }),
+      new PaletteGate({ doc: this.#doc, win: this.#win, store, bus, toast }),
       new HeroArt({ root: this.#slot('hero-art'), store, bus }),
       new PresetBar({ root: this.#slot('presets'), store }),
       new HistoryToolbar({ root: this.#slot('history'), store, bus, doc: this.#doc, toast }),
       new ColorSlots({ root: this.#slot('slots'), store, bus, clipboard, toast }),
       new HsbSliderPanel({ root: this.#slot('hsb'), store, bus }),
       new ComparisonGrid({ root: this.#slot('comparisons'), store, bus }),
-      new HarmonyPanel({ root: this.#slot('harmony'), store, bus }),
+      new HarmonyPanel({ root: this.#slot('harmony'), store, bench, bus }),
       new UsageMockupPanel({ root: this.#slot('mockups'), store, bus }),
       new ColorGradingPanel({ root: this.#slot('grading'), store, bus, toast, downloader, win: this.#win }),
       new TintShadeTable({ root: this.#slot('tints'), store, bus, clipboard, toast }),
@@ -91,9 +99,10 @@ class PaletresApp {
 
     Icons.hydrate(this.#doc);
     new InfoTips({ root: this.#doc }).mount();
-    // Link com paleta quebrada (ex.: 2 ou 4 cores): avisamos antes de trocar pelo padrão.
-    if (codec.hasInvalid()) toast.show('O link tinha uma paleta inválida, então abri a paleta padrão.');
-    codec.write(store.state.palette);
+    // Link com paleta quebrada (ex.: 2 ou 4 cores): avisamos e o site abre vazio, como na primeira visita.
+    if (codec.hasInvalid()) toast.show('O link tinha uma paleta inválida. Clique em "Gerar paleta" para começar.');
+    // Só gravamos a paleta na URL depois que ela existe de verdade (link compartilhado ou "Gerar paleta").
+    if (store.state.started) codec.write(store.state.palette);
   }
 }
 

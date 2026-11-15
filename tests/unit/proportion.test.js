@@ -5,26 +5,17 @@ import { UsageProportion } from '../../src/domain/proportion/UsageProportion.js'
 import { RoleAdvisor, Role } from '../../src/domain/proportion/RoleAdvisor.js';
 
 describe('UsageProportion', () => {
-  it('tem 60-30-10, áurea e Fibonacci, todas somando 100%', () => {
+  // v1.1.0: nos mockups, áurea e Fibonacci quase não mudavam o visual. Fica só a 60-30-10.
+  it('tem só a regra 60-30-10, somando 100%', () => {
     const list = UsageProportion.list();
-    expect(list.map((p) => p.id)).toEqual(['60-30-10', 'aurea', 'fibonacci']);
-    for (const p of list) {
-      expect(p.shares.reduce((a, b) => a + b, 0)).toBeCloseTo(100, 5);
-      expect(p.description.length).toBeGreaterThan(10);
-    }
+    expect(list.map((p) => p.id)).toEqual(['60-30-10']);
+    expect(list[0].shares).toEqual([60, 30, 10]);
+    expect(list[0].description.length).toBeGreaterThan(10);
   });
 
-  it('áurea = 1/φ, 1/φ³ e 1/φ⁴ e Fibonacci = 8:5:3', () => {
-    const phi = (1 + Math.sqrt(5)) / 2;
-    const aurea = UsageProportion.get('aurea').shares;
-    expect(aurea[0]).toBeCloseTo(100 / phi, 5);
-    expect(aurea[1]).toBeCloseTo(100 / phi ** 3, 5);
-    expect(aurea[2]).toBeCloseTo(100 / phi ** 4, 5);
-    expect(UsageProportion.get('fibonacci').shares).toEqual([50, 31.25, 18.75]);
-  });
-
-  it('id desconhecido lança erro', () => {
-    expect(() => UsageProportion.get('x')).toThrow();
+  it('RULE é a 60-30-10 e id desconhecido lança erro', () => {
+    expect(UsageProportion.RULE.id).toBe('60-30-10');
+    expect(() => UsageProportion.get('aurea')).toThrow();
   });
 });
 

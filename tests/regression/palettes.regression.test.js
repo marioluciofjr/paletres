@@ -25,7 +25,7 @@ describe('Regressão do contraste das paletas prontas', () => {
   const comparator = new PaletteComparator();
   for (const preset of new PresetCatalog().list()) {
     it(preset.id, () => {
-      const rows = comparator.compare(preset.palette).map((c) => `${c.id} ${round(c.ratio)} ${c.levels.normalText} Lc ${round(c.apca.lc)}`);
+      const rows = comparator.compare(preset.palette).map((c) => `${c.id} ${round(c.ratio)} ${c.levels.normalText}`);
       expect(rows).toMatchSnapshot();
     });
   }

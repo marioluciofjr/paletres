@@ -7,6 +7,7 @@ import { Palette } from '../../src/domain/palette/Palette.js';
 import { GuardLevel } from '../../src/domain/guard/ContrastGuard.js';
 import { Wcag2Contrast } from '../../src/domain/contrast/Wcag2Contrast.js';
 import { RandomSource } from '../../src/infra/RandomSource.js';
+import { HarmonyWorkbench, DraftEvent } from '../../src/app/HarmonyWorkbench.js';
 
 describe('EventBus', () => {
   it('avisa os inscritos e permite cancelar a inscrição', () => {
@@ -120,8 +121,8 @@ describe('PaletteStore', () => {
   });
 
   it('applyPreset aplica uma paleta pronta (RF-19)', () => {
-    store.applyPreset('oceano');
-    expect(store.state.palette.hexes).toEqual(['#0B2545', '#EEF4ED', '#13A8A8']);
+    store.applyPreset('petroleo');
+    expect(store.state.palette.hexes).toEqual(['#071B2B', '#EEEEEE', '#167D8D']);
   });
 
   it('papéis: começam automáticos (sugeridos) e podem ser trocados (RF-24)', () => {
@@ -160,9 +161,126 @@ describe('PaletteStore', () => {
     expect(events).toContain(StoreEvent.SELECTION);
   });
 
-  it('setProportion valida o id', () => {
-    store.setProportion('aurea');
-    expect(store.state.proportionId).toBe('aurea');
-    expect(() => store.setProportion('xyz')).toThrow();
+  it('não tem mais a escolha de proporção (v1.1.0: só 60-30-10)', () => {
+    expect(store.state).not.toHaveProperty('proportionId');
+    expect(store.setProportion).toBeUndefined();
+  });
+});
+
+// v1.1.0 (RF-25): o site abre sem paleta; a pessoa precisa clicar em "Gerar paleta".
+describe('PaletteStore — início bloqueado', () => {
+  it('sem link, começa com started = false', () => {
+    const store = PaletteStore.create({ bus: new EventBus(), rng: RandomSource.seeded(1) });
+    expect(store.state.started).toBe(false);
+  });
+
+  it('com paleta no link, já começa liberado', () => {
+    const store = PaletteStore.create({ bus: new EventBus(), initialPalette: Palette.fromHexes(['#111111', '#EEEEEE', '#FF8800']) });
+    expect(store.state.started).toBe(true);
+    expect(store.state.palette.hexes).toEqual(['#111111', '#EEEEEE', '#FF8800']);
+  });
+
+  it('start() gera uma paleta legível (AA), libera o site, avisa e não cria passo de desfazer', () => {
+    const bus = new EventBus();
+    const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });
+    const before = store.state.palette;
+    const got = [];
+    bus.on(StoreEvent.STARTED, () => got.push('started'));
+    store.start();
+    expect(store.state.started).toBe(true);
+    expect(got).toEqual(['started']);
+    expect(store.state.palette.equals(before)).toBe(false);
+    expect(store.canUndo).toBe(false);
+    const wcag = new Wcag2Contrast();
+    const [dark, , light] = store.state.palette.sortedByLuminance();
+    expect(wcag.measure(dark, light)).toBeGreaterThanOrEqual(4.5);
+    expect(store.state.message.text).toMatch(/Pronto/);
+    // As escolhas da pessoa na seção de harmonias não mudam.
+    expect(store.state.guardLevel).toBe(GuardLevel.NONE);
+  });
+
+  it('start() chamado de novo não faz nada', () => {
+    const store = PaletteStore.create({ bus: new EventBus(), rng: RandomSource.seeded(7) });
+    store.start();
+    const p = store.state.palette;
+    store.start();
+    expect(store.state.palette.equals(p)).toBe(true);
+  });
+});
+
+// v1.1.0 (RF-26): as harmonias montam uma paleta NOVA num rascunho; a paleta da pessoa
+// só muda quando ela clica em "Usar esta paleta".
+describe('HarmonyWorkbench (rascunho das harmonias)', () => {
+  let bus;
+  let store;
+  let bench;
+
+  beforeEach(() => {
+    bus = new EventBus();
+    store = PaletteStore.create({ bus, rng: RandomSource.seeded(42), initialPalette: Palette.fromHexes(['#3366CC', '#F5F5F5', '#FF9900']) });
+    bench = HarmonyWorkbench.create({ store, bus, rng: RandomSource.seeded(42) });
+  });
+
+  it('começa igual à paleta da pessoa e sem nada pendente', () => {
+    expect(bench.state.palette.equals(store.state.palette)).toBe(true);
+    expect(bench.state.pending).toBe(false);
+  });
+
+  it('gerar muda só o rascunho, não a paleta da pessoa', () => {
+    const mine = store.state.palette;
+    const got = [];
+    bus.on(DraftEvent.PALETTE, () => got.push(1));
+    store.setHarmony('triade');
+    bench.generate();
+    expect(store.state.palette.equals(mine)).toBe(true);
+    expect(bench.state.pending).toBe(true);
+    expect(bench.state.palette.equals(mine)).toBe(false);
+    expect(bench.state.message.text.length).toBeGreaterThan(5);
+    expect(got.length).toBeGreaterThan(0);
+  });
+
+  it('"Usar esta paleta" aplica o rascunho e permite desfazer', () => {
+    const mine = store.state.palette;
+    bench.generate();
+    const draft = bench.state.palette;
+    bench.apply();
+    expect(store.state.palette.equals(draft)).toBe(true);
+    expect(bench.state.pending).toBe(false);
+    expect(store.state.message.text).toMatch(/Desfazer/);
+    store.undo();
+    expect(store.state.palette.equals(mine)).toBe(true);
+  });
+
+  it('"Descartar" volta o rascunho para a paleta da pessoa', () => {
+    bench.generate();
+    bench.discard();
+    expect(bench.state.pending).toBe(false);
+    expect(bench.state.palette.equals(store.state.palette)).toBe(true);
+  });
+
+  it('mexer na roda muda só a cor A do rascunho', () => {
+    const mine = store.state.palette;
+    bench.setColor(0, Color.fromHsb(10, 80, 80), { record: false });
+    expect(store.state.palette.equals(mine)).toBe(true);
+    expect(bench.state.palette.at(0).hex).toBe(Color.fromHsb(10, 80, 80).hex);
+    expect(bench.state.pending).toBe(true);
+  });
+
+  it('sem rascunho pendente, acompanha as mudanças da paleta da pessoa', () => {
+    store.setColor(2, Color.fromHex('#00AA55'));
+    expect(bench.state.palette.at(2).hex).toBe('#00AA55');
+  });
+
+  it('com rascunho pendente, não é sobrescrito por mudanças da paleta da pessoa', () => {
+    bench.generate();
+    const draft = bench.state.palette;
+    store.setColor(2, Color.fromHex('#00AA55'));
+    expect(bench.state.palette.equals(draft)).toBe(true);
+  });
+
+  it('aplicar sem nada pendente avisa e não muda nada', () => {
+    const mine = store.state.palette;
+    expect(bench.apply()).toBe(false);
+    expect(store.state.palette.equals(mine)).toBe(true);
   });
 });

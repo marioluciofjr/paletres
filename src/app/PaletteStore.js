@@ -1,21 +1,20 @@
 /**
  * PaletteStore — o estado único do Paletrês ("fonte da verdade").
  *
- * Guarda a paleta, a cor em edição, as escolhas (harmonia, garantia, proporção, papéis),
- * a última mensagem para a pessoa e o histórico para desfazer/refazer.
+ * Guarda a paleta, a cor em edição, as escolhas (harmonia, garantia, papéis), se a pessoa
+ * já começou (v1.1.0: o site abre sem paleta), a última mensagem e o histórico para desfazer/refazer.
  * Toda mudança passa por aqui e é anunciada no EventBus; os componentes só escutam.
  *
- * As dependências (harmonias, guard, sugestão de papéis, paletas prontas, sorteio)
+ * As dependências (gerador de paletas, guard, sugestão de papéis, paletas prontas)
  * chegam pelo construtor: é a injeção de dependência que deixa tudo testável.
  */
 import { Palette } from '../domain/palette/Palette.js';
 import { PresetCatalog } from '../domain/palette/PresetCatalog.js';
-import { HarmonyStrategy } from '../domain/harmony/HarmonyStrategy.js';
 import { createHarmonyRegistry } from '../domain/harmony/defaultHarmonies.js';
 import { ContrastGuard, GuardLevel } from '../domain/guard/ContrastGuard.js';
 import { RoleAdvisor } from '../domain/proportion/RoleAdvisor.js';
-import { UsageProportion } from '../domain/proportion/UsageProportion.js';
 import { RandomSource } from '../infra/RandomSource.js';
+import { PaletteGenerator } from './PaletteGenerator.js';
 
 export const StoreEvent = Object.freeze({
   PALETTE: 'palette:changed',
@@ -23,6 +22,7 @@ export const StoreEvent = Object.freeze({
   SETTINGS: 'settings:changed',
   HISTORY: 'history:changed',
   MESSAGE: 'message:changed',
+  STARTED: 'app:started',
 });
 
 const HISTORY_LIMIT = 60;
@@ -30,42 +30,47 @@ const HISTORY_LIMIT = 60;
 export class PaletteStore {
   #bus;
   #harmonies;
+  #generator;
   #guard;
   #advisor;
   #presets;
-  #rng;
 
   #palette;
   #selectedIndex = 0;
   #harmonyId = 'triade';
   #guardLevel = GuardLevel.NONE;
-  #proportionId = '60-30-10';
+  #started;
   #roles;
   #rolesAuto = true;
   #message = { kind: 'info', text: '' };
   #past = [];
   #future = [];
 
-  constructor({ bus, harmonies, guard, advisor, presets, rng, initialPalette }) {
+  constructor({ bus, harmonies, generator, guard, advisor, presets, initialPalette }) {
     this.#bus = bus;
     this.#harmonies = harmonies;
+    this.#generator = generator;
     this.#guard = guard;
     this.#advisor = advisor;
     this.#presets = presets;
-    this.#rng = rng;
+    // Sem paleta no link, o site abre "trancado" até a pessoa clicar em "Gerar paleta".
+    // A paleta padrão fica só por dentro (nunca aparece antes do início).
+    this.#started = Boolean(initialPalette);
     this.#palette = initialPalette ?? Palette.default();
     this.#roles = this.#advisor.suggest(this.#palette).roles;
   }
 
   /** Fábrica com as dependências padrão (o main.js e os testes usam). */
   static create({ bus, rng = RandomSource.system(), initialPalette } = {}) {
+    const harmonies = createHarmonyRegistry();
+    const guard = new ContrastGuard();
     return new PaletteStore({
       bus,
-      harmonies: createHarmonyRegistry(),
-      guard: new ContrastGuard(),
+      harmonies,
+      generator: new PaletteGenerator({ harmonies, guard, rng }),
+      guard,
       advisor: new RoleAdvisor(),
       presets: new PresetCatalog(),
-      rng,
       initialPalette,
     });
   }
@@ -78,7 +83,7 @@ export class PaletteStore {
       selectedIndex: this.#selectedIndex,
       harmonyId: this.#harmonyId,
       guardLevel: this.#guardLevel,
-      proportionId: this.#proportionId,
+      started: this.#started,
       roles: { ...this.#roles },
       rolesAuto: this.#rolesAuto,
       message: { ...this.#message },
@@ -91,6 +96,11 @@ export class PaletteStore {
 
   get presets() {
     return this.#presets;
+  }
+
+  /** O gerador de paletas (o rascunho das harmonias usa o mesmo). */
+  get generator() {
+    return this.#generator;
   }
 
   get canUndo() {
@@ -165,30 +175,29 @@ export class PaletteStore {
    * random=false parte da cor A atual; random=true sorteia uma cor base.
    */
   generate({ random = false } = {}) {
-    let base = random ? HarmonyStrategy.randomBase(this.#rng) : this.#palette.at(0).hsb;
-    const parts = [];
-    // Cor A sem cor (cinza, preto ou branco) ou muito escura: girar a matiz quase não muda nada.
-    // Usamos uma versão mais viva dela como base e avisamos com a mensagem certa para cada caso.
-    if (base.s < 15) {
-      base = { h: base.h, s: 60, b: Math.max(base.b, 70) };
-      parts.push('A cor A estava sem cor (cinza, preto ou branco), então usei uma versão colorida dela como base.');
-    } else if (base.b < 15) {
-      base = { h: base.h, s: base.s, b: 70 };
-      parts.push('A cor A é muito escura, então usei uma versão mais clara dela como base, mantendo o mesmo tom.');
-    }
-    const harmony = this.#harmonies.get(this.#harmonyId);
-    const result = harmony.generate(base, this.#rng);
-    let palette = new Palette(result.colors);
-    parts.push(`${harmony.name}: ${harmony.description}`);
-    if (result.note) parts.push(result.note);
-    let kind = 'info';
-    if (this.#guardLevel !== GuardLevel.NONE) {
-      const fixed = this.#guard.enforce(palette, this.#guardLevel);
-      palette = fixed.palette;
-      parts.push(fixed.message);
-      if (!fixed.ok) kind = 'warning';
-    }
-    this.setPalette(palette, { message: { kind, text: parts.join(' ') } });
+    const base = random ? this.#generator.randomBase() : this.#palette.at(0).hsb;
+    const { palette, message } = this.#generator.generate({ base, harmonyId: this.#harmonyId, guardLevel: this.#guardLevel });
+    this.setPalette(palette, { message });
+  }
+
+  /**
+   * "Gerar paleta" do início (RF-25): sorteia uma harmonia, garante contraste AA e libera o site.
+   * Não cria passo de desfazer (não existe "antes" para voltar) e não mexe nas escolhas da
+   * seção de harmonias. Chamar de novo não faz nada.
+   */
+  start() {
+    if (this.#started) return;
+    const { palette, harmony } = this.#generator.generate({
+      base: this.#generator.randomBase(),
+      harmonyId: this.#generator.randomHarmonyId(),
+      guardLevel: GuardLevel.AA,
+    });
+    this.#started = true;
+    this.setPalette(palette, {
+      record: false,
+      message: { kind: 'success', text: `Pronto! Gerei uma paleta ${harmony.name.toLowerCase()} com texto legível (AA). Agora ajuste as cores do seu jeito.` },
+    });
+    this.#bus.emit(StoreEvent.STARTED, this.state);
   }
 
   /** "Consertar contraste": aplica a garantia à paleta atual (padrão AA). */
@@ -219,12 +228,6 @@ export class PaletteStore {
   setGuard(level) {
     if (!Object.values(GuardLevel).includes(level)) throw new Error(`Nível de garantia inválido: ${level}`);
     this.#guardLevel = level;
-    this.#emitSettings();
-  }
-
-  setProportion(id) {
-    UsageProportion.get(id); // valida
-    this.#proportionId = id;
     this.#emitSettings();
   }
 

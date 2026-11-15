@@ -9,8 +9,15 @@
  * mostramos uma PRÉVIA rápida em baixa resolução (até 480px); 200 ms depois do último
  * movimento, recalculamos na resolução completa. Os buffers de pixels são reaproveitados.
  * Sem foto? "Usar imagem de exemplo" desenha uma paisagem para testar na hora.
+ *
+ * v1.1.0: para deixar claro que as 3 cores entram na foto, há
+ *  - uma LEGENDA: a faixa de claridade da foto (do escuro ao claro) e, embaixo, a cor da
+ *    paleta que cada trecho recebe (sombras, meios-tons e luzes);
+ *  - o modo "Onde entra cada cor": pinta cada parte da foto com UMA das 3 cores, sem
+ *    mistura, para a pessoa ver as 3 zonas.
  */
 import { GradientMap } from '../domain/grading/GradientMap.js';
+import { Palette } from '../domain/palette/Palette.js';
 import { StoreEvent } from '../app/PaletteStore.js';
 import { Dom } from './Dom.js';
 import { Icons } from './Icons.js';
@@ -23,6 +30,17 @@ const MAX_SOURCE_SIDE = 12000; // acima disso, recusamos (evita travar a aba)
 const MIN_SOURCE_SIDE = 16;
 const MAX_SOURCE_PIXELS = 64_000_000; // 64 megapixels: acima disso a memória da aba pode estourar
 const FULL_DELAY = 200;
+
+const ZONES = Object.freeze([
+  ['Sombras', 'as partes escuras'],
+  ['Meios-tons', 'as partes médias'],
+  ['Luzes', 'as partes claras'],
+]);
+
+const VIEWS = Object.freeze([
+  [GradientMap.Mode.SMOOTH, 'Resultado final (cores misturadas)'],
+  [GradientMap.Mode.ZONES, 'Onde entra cada cor (3 zonas)'],
+]);
 
 export class ColorGradingPanel {
   #root;
@@ -42,6 +60,9 @@ export class ColorGradingPanel {
   #intensity;
   #split;
   #download;
+  #mode = GradientMap.Mode.SMOOTH;
+  #legendRamp;
+  #legendList;
   #full = null; // { data: ImageData, out: Uint8ClampedArray }
   #preview = null; // { canvas, data: ImageData, out: Uint8ClampedArray }
   #frame = 0;
@@ -92,11 +113,21 @@ export class ColorGradingPanel {
       on: { click: () => this.#save() },
     }, [Icons.svg('download'), 'Baixar PNG']);
 
+    const viewName = Dom.uid('vista');
+    const view = Dom.el('fieldset', { class: 'chip-group' }, [
+      Dom.el('legend', { text: 'O que mostrar na foto' }),
+      Dom.el('div', { class: 'chips' }, VIEWS.map(([mode, label]) => Dom.el('label', { class: 'chip' }, [
+        Dom.el('input', { type: 'radio', name: viewName, value: mode, checked: mode === this.#mode, on: { change: () => this.#setMode(mode) } }),
+        Dom.el('span', { text: label }),
+      ]))),
+    ]);
+
     const controls = Dom.el('div', { class: 'grading__controls' }, [
       drop,
       Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'sample', on: { click: () => this.#useSample() } }, [Icons.svg('image'), 'Usar imagem de exemplo']),
       this.#error,
       this.#status,
+      view,
       Dom.el('div', { class: 'field' }, [Dom.el('label', { class: 'field__label', for: intensityId, text: 'Intensidade das cores da paleta' }), this.#intensity]),
       Dom.el('div', { class: 'field' }, [Dom.el('label', { class: 'field__label', for: splitId, text: 'Comparar antes e depois' }), this.#split]),
       this.#download,
@@ -115,12 +146,26 @@ export class ColorGradingPanel {
     ]);
     this.#empty = Dom.el('div', { class: 'stage-empty' }, 'Sua foto aparece aqui, recolorida com as 3 cores: sombras na cor mais escura, meios-tons na do meio e luzes na mais clara.');
 
+    // Legenda: a faixa de claridade (decorativa) e o que cada trecho vira. O texto da lista é o que o leitor de tela lê.
+    this.#legendRamp = Dom.el('div', { class: 'grade-legend__ramps', 'aria-hidden': 'true' });
+    this.#legendList = Dom.el('ul', { class: 'grade-legend__list' });
+    const legend = Dom.el('div', { class: 'grade-legend' }, [
+      Dom.el('p', { class: 'grade-legend__title', text: 'Como as 3 cores entram na foto' }),
+      this.#legendRamp,
+      this.#legendList,
+    ]);
+
     Dom.replace(this.#root, [
       Dom.el('h3', { text: 'Sua paleta numa foto (color grading)' }),
-      Dom.el('div', { class: 'grading__layout' }, [controls, Dom.el('div', {}, [this.#empty, this.#stage])]),
+      Dom.el('p', { class: 'grading__lead', text: 'Color grading é o ajuste de cor que o cinema faz em cada cena para criar um clima. Aqui, as 3 cores da sua paleta substituem as cores da foto conforme a claridade de cada parte. Veja a explicação completa em "Aprenda".' }),
+      Dom.el('div', { class: 'grading__layout' }, [controls, Dom.el('div', {}, [legend, this.#empty, this.#stage])]),
     ]);
     this.#setSplit(50);
-    this.#bus.on(StoreEvent.PALETTE, () => this.#schedule());
+    this.#renderLegend();
+    this.#bus.on(StoreEvent.PALETTE, () => {
+      this.#renderLegend();
+      this.#schedule();
+    });
   }
 
   #bindDrop(zone) {
@@ -283,7 +328,38 @@ export class ColorGradingPanel {
   }
 
   #map() {
-    return { map: GradientMap.fromPalette(this.#store.state.palette), k: Number(this.#intensity.value) / 100 };
+    return { map: GradientMap.fromPalette(this.#store.state.palette, { mode: this.#mode }), k: Number(this.#intensity.value) / 100 };
+  }
+
+  /** Troca entre o resultado final e o mapa das 3 zonas. */
+  #setMode(mode) {
+    this.#mode = mode;
+    this.#renderLegend();
+    this.#schedule();
+  }
+
+  /** Desenha a legenda: sombras, meios-tons e luzes, cada um com a cor que recebe. */
+  #renderLegend() {
+    const { palette } = this.#store.state;
+    const [dark, mid, light] = palette.sortedByLuminance();
+    const zones = this.#mode === GradientMap.Mode.ZONES;
+    const mapped = zones
+      ? `linear-gradient(to right, ${dark.hex} 0 33.33%, ${mid.hex} 33.33% 66.67%, ${light.hex} 66.67% 100%)`
+      : `linear-gradient(to right, ${dark.hex}, ${mid.hex}, ${light.hex})`;
+    Dom.replace(this.#legendRamp, [
+      Dom.el('span', { class: 'grade-legend__label', text: 'Claridade da foto' }),
+      Dom.el('span', { class: 'grade-legend__bar grade-legend__bar--gray frame' }),
+      Dom.el('span', { class: 'grade-legend__label', text: 'Vira esta cor' }),
+      Dom.el('span', { class: 'grade-legend__bar frame', style: { background: mapped } }),
+    ]);
+    Dom.replace(this.#legendList, [dark, mid, light].map((color, i) => {
+      const label = Palette.LABELS[palette.colors.indexOf(color)];
+      const [zone, what] = ZONES[i];
+      return Dom.el('li', {}, [
+        Dom.el('span', { class: 'preset__dot', style: { background: color.hex }, 'aria-hidden': 'true' }),
+        Dom.el('span', {}, [Dom.el('strong', { text: zone }), ` (${what}) recebem a cor ${label} ${color.hex}`]),
+      ]);
+    }));
   }
 
   #applyPreview() {
@@ -302,7 +378,8 @@ export class ColorGradingPanel {
     const { data, out } = this.#full;
     map.apply(data.data, k, out);
     this.#after.getContext('2d').putImageData(new ImageData(out, data.width, data.height), 0, 0);
-    this.#stage.setAttribute('aria-label', `Foto com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, intensidade ${this.#intensity.value}%`);
+    const view = this.#mode === GradientMap.Mode.ZONES ? 'mapa das 3 zonas' : 'resultado final';
+    this.#stage.setAttribute('aria-label', `Foto com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, ${view}, intensidade ${this.#intensity.value}%`);
   }
 
   /**

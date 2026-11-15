@@ -1,6 +1,6 @@
 # Paletrês — guia das specs
 
-O Paletrês compara **3 cores em 6 combinações** de contraste (WCAG 2.2 e APCA) e gera paletas por harmonias do círculo cromático, inclusive pela proporção áurea e pela Sequência de Fibonacci.
+O Paletrês compara **3 cores em 6 combinações** de contraste (WCAG 2.2) e gera paletas por harmonias do círculo cromático, inclusive pela proporção áurea e pela Sequência de Fibonacci. Versão 1.1.0.
 
 ## Como rodar
 

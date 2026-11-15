@@ -22,9 +22,9 @@ Site estático (Vite + JavaScript com classes) que compara 3 cores em 6 combina�
 2. **Camadas:** `src/domain` nunca importa de `ui`, `app` ou `infra`, nem usa `document` ou `window`.
 3. **OOP:** uma classe por arquivo, uma responsabilidade por classe e dependências recebidas pelo construtor.
 4. **Comentários:** em português do Brasil, didáticos, explicando o *porquê*.
-5. **Cores da interface:** só roxo `#230023`, cinza `#f2f2f2` e ciano `#42ffff`, nos pares permitidos. Preto `#000000` só na moldura das amostras. Ver [DESIGN.md](DESIGN.md).
+5. **Cores da interface:** só roxo `#230023`, cinza `#f2f2f2` e ciano `#42ffff`, nos pares permitidos. Exceções documentadas em [DESIGN.md](DESIGN.md) §1.1: preto `#000000` na moldura das amostras e o laranja `#D77757` do Clawd no rodapé.
 6. **Acessibilidade:** todo controle novo precisa de rótulo, foco visível, alvo de 44px ou mais e funcionar no teclado. Rode o subagente `a11y-web` ao mexer em `src/ui`.
-7. **Movimento:** anime **só `transform`** (a marca proíbe opacidade) e respeite `prefers-reduced-motion`.
+7. **Movimento:** anime **só `transform`/`translate`** (a marca proíbe opacidade) e respeite `prefers-reduced-motion`.
 8. **Specs vivas:** ao terminar uma tarefa, atualize [TASKS.md](TASKS.md) e [TRACEABILITY.md](TRACEABILITY.md) antes do commit.
 9. **Git:** commits pequenos, no formato de [WORKFLOW.md](WORKFLOW.md). Nunca faça push sem pedido do Mário.
 
@@ -32,6 +32,8 @@ Site estático (Vite + JavaScript com classes) que compara 3 cores em 6 combina�
 
 - Não adicione frameworks (React, Vue, Tailwind) sem uma decisão registrada em [ARCHITECTURE.md](ARCHITECTURE.md).
 - Não envie dados para serviços externos: o site é 100% local.
+- Toda explicação nova precisa de link de fonte oficial. **Nunca use links da Wikipédia** (RF-29).
+- Não use as cores da marca Prazo Certo como paleta de exemplo (RF-19).
 - Não altere os valores de contrato de [TESTS.md](TESTS.md) para "fazer o teste passar".
 
 ## Como adicionar uma harmonia

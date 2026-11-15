@@ -5,8 +5,9 @@
   box-sizing: border-box;
 }
 
+/* A rolagem suave fica só no "Gerar paleta" (PaletteGate), que respeita "reduzir movimento"
+   (auditoria de motion M04): âncoras do menu e o link "Pular" pulam direto. */
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + var(--space-4));
   -webkit-text-size-adjust: 100%;
 }
@@ -68,6 +69,16 @@ input,
 select {
   font: inherit;
   color: inherit;
+}
+
+/* Toque sem o atraso do "duplo toque" e sem o flash cinza do celular (auditoria A11Y-04). */
+a,
+button,
+label,
+select,
+input {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Foco sempre visível, 3px, com afastamento. */

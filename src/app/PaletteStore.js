@@ -187,16 +187,32 @@ export class PaletteStore {
    */
   start() {
     if (this.#started) return;
-    const { palette, harmony } = this.#generator.generate({
+    const { palette, harmony, message } = this.#generator.generate({
       base: this.#generator.randomBase(),
       harmonyId: this.#generator.randomHarmonyId(),
       guardLevel: GuardLevel.AA,
     });
     this.#started = true;
-    this.setPalette(palette, {
-      record: false,
-      message: { kind: 'success', text: `Pronto! Gerei uma paleta ${harmony.name.toLowerCase()} com texto legível (AA). Agora ajuste as cores do seu jeito.` },
-    });
+    // Se a garantia não conseguiu AA (raro com uma base viva), a mensagem diz isso em vez de prometer.
+    const text = message.kind === 'warning'
+      ? `Gerei uma paleta ${harmony.name.toLowerCase()}. ${message.text}`
+      : `Pronto! Gerei uma paleta ${harmony.name.toLowerCase()} com texto legível (AA). Agora ajuste as cores do seu jeito.`;
+    this.setPalette(palette, { record: false, message: { kind: message.kind === 'warning' ? 'warning' : 'success', text } });
+    this.#bus.emit(StoreEvent.STARTED, this.state);
+  }
+
+  /**
+   * Abre a paleta de um link (ex.: link antigo com # colado na mesma aba).
+   * Antes de começar, ela libera o site como o "Gerar paleta" (sem passo de desfazer);
+   * depois de começar, é uma troca de paleta comum, que pode ser desfeita.
+   */
+  adopt(palette) {
+    if (this.#started) {
+      this.setPalette(palette, { message: { kind: 'info', text: 'Abri a paleta do link.' } });
+      return;
+    }
+    this.#started = true;
+    this.setPalette(palette, { record: false, message: { kind: 'success', text: 'Abri a paleta do link. Agora ajuste as cores do seu jeito.' } });
     this.#bus.emit(StoreEvent.STARTED, this.state);
   }
 

@@ -48,6 +48,7 @@ export class HarmonyPanel {
   #draftStatus;
   #apply;
   #discard;
+  #generateBtn;
 
   constructor({ root, store, bench, bus }) {
     this.#root = root;
@@ -107,7 +108,7 @@ export class HarmonyPanel {
       'Descartar a paleta nova');
     return this.#step(3, 'Gere, compare e decida', 'A paleta nova aparece ao lado da sua. A sua só muda se você clicar em "Usar esta paleta".', [
       Dom.el('div', { class: 'harmony__actions' }, [
-        Dom.el('button', { type: 'button', class: 'btn btn--primary btn--lg', 'data-action': 'generate', on: { click: () => this.#bench.generate() } },
+        this.#generateBtn = Dom.el('button', { type: 'button', class: 'btn btn--primary btn--lg', 'data-action': 'generate', on: { click: () => this.#bench.generate() } },
           [Icons.svg('sparkle'), 'Gerar paleta nova']),
         Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'random-base', on: { click: () => this.#bench.generate({ random: true }) } },
           [Icons.svg('shuffle'), 'Sortear o tom base']),
@@ -164,8 +165,13 @@ export class HarmonyPanel {
   }
 
   #onDiscard() {
-    if (!this.#bench.state.pending) return;
+    if (!this.#bench.state.pending) {
+      this.#callout.classList.remove('callout--warning');
+      this.#callout.textContent = 'Não há paleta nova para descartar.';
+      return;
+    }
     this.#bench.discard();
+    this.#callout.classList.remove('callout--warning');
     this.#callout.textContent = 'Paleta nova descartada. A sua paleta continua a mesma.';
   }
 
@@ -189,6 +195,9 @@ export class HarmonyPanel {
     this.#draftStatus.textContent = pending ? 'Pronta para usar.' : 'Ainda igual à sua. Clique em "Gerar paleta nova".';
     this.#apply.setAttribute('aria-disabled', String(!pending));
     this.#discard.setAttribute('aria-disabled', String(!pending));
+    // Um só botão preenchido por vez (Lei de Hick): com rascunho, o destaque passa para "Usar esta paleta".
+    this.#generateBtn.classList.toggle('btn--primary', !pending);
+    this.#generateBtn.classList.toggle('btn--ghost', pending);
     // A mensagem da geração (só quando há rascunho novo) vai para a região de status.
     if (pending && message.text && this.#callout.textContent !== message.text) {
       this.#callout.textContent = message.text;

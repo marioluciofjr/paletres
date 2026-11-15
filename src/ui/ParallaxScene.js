@@ -18,6 +18,8 @@ export class ParallaxScene {
   #win;
   #reduced;
   #ticking = false;
+  #limit = 0;
+  #last = null;
 
   constructor({ scene, stage, win = window }) {
     this.#scene = scene;
@@ -27,7 +29,9 @@ export class ParallaxScene {
   }
 
   mount() {
+    this.#measure();
     this.#win.addEventListener('scroll', () => this.#requestFrame(), { passive: true });
+    this.#win.addEventListener('resize', () => { this.#measure(); this.#requestFrame(); }, { passive: true });
     this.#reduced.addEventListener?.('change', () => this.#update());
     this.#update();
   }
@@ -41,10 +45,16 @@ export class ParallaxScene {
     });
   }
 
+  /** Altura do início: lida só ao montar e ao redimensionar (ler layout a cada quadro custa caro). */
+  #measure() {
+    this.#limit = this.#scene.offsetHeight || 0;
+  }
+
   #update() {
-    // Depois que o início sai da tela, não há o que mover: paramos no limite.
-    const limit = this.#scene.offsetHeight || 0;
-    const y = this.#reduced.matches ? 0 : Math.min(this.#win.scrollY, limit);
-    this.#stage.style.setProperty('--parallax-y', String(Math.round(y)));
+    // Depois que o início sai da tela, não há o que mover: o valor para no limite e não é regravado.
+    const y = this.#reduced.matches ? 0 : Math.round(Math.min(this.#win.scrollY, this.#limit));
+    if (y === this.#last) return;
+    this.#last = y;
+    this.#stage.style.setProperty('--parallax-y', String(y));
   }
 }

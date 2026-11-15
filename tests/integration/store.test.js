@@ -199,6 +199,20 @@ describe('PaletteStore — início bloqueado', () => {
     expect(store.state.guardLevel).toBe(GuardLevel.NONE);
   });
 
+  it('adopt() abre a paleta de um link antigo colado antes de gerar e libera o site (limites #1)', () => {
+    const bus = new EventBus();
+    const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });
+    const got = [];
+    bus.on(StoreEvent.STARTED, () => got.push('started'));
+    store.adopt(Palette.fromHexes(['#000000', '#FFFFFF', '#FF0000']));
+    expect(store.state.started).toBe(true);
+    expect(store.state.palette.hexes).toEqual(['#000000', '#FFFFFF', '#FF0000']);
+    expect(store.canUndo).toBe(false);
+    expect(got).toEqual(['started']);
+    store.adopt(Palette.fromHexes(['#111111', '#FFFFFF', '#FF0000']));
+    expect(store.canUndo).toBe(true);
+  });
+
   it('start() chamado de novo não faz nada', () => {
     const store = PaletteStore.create({ bus: new EventBus(), rng: RandomSource.seeded(7) });
     store.start();
@@ -276,6 +290,31 @@ describe('HarmonyWorkbench (rascunho das harmonias)', () => {
     const draft = bench.state.palette;
     store.setColor(2, Color.fromHex('#00AA55'));
     expect(bench.state.palette.equals(draft)).toBe(true);
+  });
+
+  it('com rascunho pendente, se a paleta da pessoa ficar igual ao rascunho, nada fica pendente (limites #2)', () => {
+    bench.generate();
+    store.setPalette(bench.state.palette);
+    expect(bench.state.pending).toBe(false);
+  });
+
+  it('gerar de novo com o mesmo resultado avisa que a paleta continua igual (limites #4)', () => {
+    store.setHarmony('triade');
+    bench.generate();
+    bench.generate();
+    expect(bench.state.message.text).toMatch(/Sortear o tom base/);
+  });
+
+  it('girar a matiz de um cinza na roda não deixa nada pendente (o HEX não muda; limites #5)', () => {
+    store.setColor(0, Color.fromHex('#808080'));
+    bench.setColor(0, store.state.palette.at(0).withHsb({ h: 120 }));
+    expect(bench.state.pending).toBe(false);
+  });
+
+  it('"Usar esta paleta" limpa a mensagem da geração (limites #3)', () => {
+    bench.generate();
+    bench.apply();
+    expect(bench.state.message.text).toBe('');
   });
 
   it('aplicar sem nada pendente avisa e não muda nada', () => {

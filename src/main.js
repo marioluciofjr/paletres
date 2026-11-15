@@ -71,7 +71,7 @@ class PaletresApp {
     // Âncoras do menu (#tons) também disparam este evento e são ignoradas.
     this.#win.addEventListener('hashchange', () => {
       const p = codec.readLegacyHash();
-      if (p) store.setPalette(p);
+      if (p) store.adopt(p);
     });
 
     const components = [

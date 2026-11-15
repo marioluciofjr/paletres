@@ -60,6 +60,7 @@ export class PaletteGate {
   /** Antes de começar, um link para uma seção escondida leva ao aviso do portão. */
   #guardLink(e) {
     if (this.#store.state.started) return;
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
     const link = e.target.closest?.('a[href^="#"]');
     if (!link) return;
     const target = this.#doc.getElementById(link.getAttribute('href').slice(1));

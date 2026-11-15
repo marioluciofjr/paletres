@@ -61,6 +61,7 @@ export class ColorGradingPanel {
   #split;
   #download;
   #mode = GradientMap.Mode.SMOOTH;
+  #subject = 'sua foto';
   #legendRamp;
   #legendList;
   #full = null; // { data: ImageData, out: Uint8ClampedArray }
@@ -224,6 +225,7 @@ export class ColorGradingPanel {
     this.#draw(bitmap, bitmap.width, bitmap.height);
     bitmap.close?.();
     // Só agora, com a foto aceita, mostramos o nome do arquivo.
+    this.#subject = `sua foto (${file.name})`;
     this.#fileName.textContent = file.name;
     this.#fileName.title = file.name;
     this.#status.textContent = '';
@@ -313,6 +315,7 @@ export class ColorGradingPanel {
     ctx.fillRect(0, h * 0.72, w, h * 0.28);
     this.#error.textContent = '';
     this.#draw(c, w, h);
+    this.#subject = 'paisagem de exemplo com céu, sol, montanhas e lago';
     this.#fileName.textContent = 'Imagem de exemplo';
     this.#fileName.title = '';
     this.#toast.show('Imagem de exemplo carregada.');
@@ -328,7 +331,9 @@ export class ColorGradingPanel {
   }
 
   #map() {
-    return { map: GradientMap.fromPalette(this.#store.state.palette, { mode: this.#mode }), k: Number(this.#intensity.value) / 100 };
+    // No modo zonas, a intensidade fica em 100%: com mistura, as 3 zonas deixariam de ser puras.
+    const k = this.#mode === GradientMap.Mode.ZONES ? 1 : Number(this.#intensity.value) / 100;
+    return { map: GradientMap.fromPalette(this.#store.state.palette, { mode: this.#mode }), k };
   }
 
   /** Troca entre o resultado final e o mapa das 3 zonas. */
@@ -379,7 +384,7 @@ export class ColorGradingPanel {
     map.apply(data.data, k, out);
     this.#after.getContext('2d').putImageData(new ImageData(out, data.width, data.height), 0, 0);
     const view = this.#mode === GradientMap.Mode.ZONES ? 'mapa das 3 zonas' : 'resultado final';
-    this.#stage.setAttribute('aria-label', `Foto com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, ${view}, intensidade ${this.#intensity.value}%`);
+    this.#stage.setAttribute('aria-label', `${this.#subject.charAt(0).toUpperCase()}${this.#subject.slice(1)}, recolorida com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, ${view}, intensidade ${this.#intensity.value}%`);
   }
 
   /**

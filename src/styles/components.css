@@ -406,6 +406,7 @@
 }
 
 .callout {
+  --focus-ring: var(--ciano);
   position: relative;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-8);
   border-radius: var(--radius-md);
@@ -479,6 +480,8 @@
 }
 
 .info-panel {
+  /* Fundo roxo: o anel de foco dos links aqui dentro precisa ser ciano (auditoria A11Y-01). */
+  --focus-ring: var(--ciano);
   position: relative;
   margin-top: var(--space-3);
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-8);

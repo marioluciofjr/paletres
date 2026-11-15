@@ -14,5 +14,5 @@ export default [
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
-  { ignores: ['dist/**', 'node_modules/**', 'test-results/**', 'playwright-report/**'] },
+  { ignores: ['dist/**', 'node_modules/**', 'test-results/**', 'playwright-report/**', 'tmp/**'] },
 ];

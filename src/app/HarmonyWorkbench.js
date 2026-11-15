@@ -30,11 +30,22 @@ export class HarmonyWorkbench {
     this.#generator = generator;
     this.#palette = store.state.palette;
     // Sem rascunho pendente, o rascunho acompanha a paleta da pessoa.
+    // Com rascunho pendente, ele fica, mas o "pendente" é recalculado (a pessoa pode ter
+    // chegado à mesma paleta por outro caminho).
     this.#bus.on(StoreEvent.PALETTE, ({ palette }) => {
-      if (this.#pending) return;
-      this.#palette = palette;
+      if (this.#pending) {
+        this.#pending = !HarmonyWorkbench.#sameHexes(this.#palette, palette);
+        if (!this.#pending) this.#message = { kind: 'info', text: '' };
+      } else {
+        this.#palette = palette;
+      }
       this.#emit();
     });
+  }
+
+  /** Compara pelo HEX: em cinzas, mudar a matiz muda o HSB mas não a cor que se vê. */
+  static #sameHexes(a, b) {
+    return a.hexes.join() === b.hexes.join();
   }
 
   /** Fábrica: usa o mesmo gerador do PaletteStore. */
@@ -51,7 +62,8 @@ export class HarmonyWorkbench {
     const next = this.#palette.withColor(index, color);
     if (next.equals(this.#palette)) return;
     this.#palette = next;
-    this.#pending = !next.equals(this.#store.state.palette);
+    this.#pending = !HarmonyWorkbench.#sameHexes(next, this.#store.state.palette);
+    this.#message = { kind: 'info', text: '' };
     this.#emit();
   }
 
@@ -64,9 +76,13 @@ export class HarmonyWorkbench {
     const { harmonyId, guardLevel } = this.#store.state;
     const base = random ? this.#generator.randomBase() : this.#palette.at(0).hsb;
     const { palette, message } = this.#generator.generate({ base, harmonyId, guardLevel });
+    // A maioria das harmonias tem uma resposta só para cada cor: gerar de novo dá o mesmo resultado.
+    const same = this.#pending && HarmonyWorkbench.#sameHexes(palette, this.#palette);
     this.#palette = palette;
-    this.#message = message;
-    this.#pending = !palette.equals(this.#store.state.palette);
+    this.#message = same
+      ? { kind: message.kind, text: `A paleta continua igual: esta harmonia tem uma resposta só para esta cor. Para variar, use "Sortear o tom base" ou mexa na roda. ${message.text}` }
+      : message;
+    this.#pending = !HarmonyWorkbench.#sameHexes(palette, this.#store.state.palette);
     this.#emit();
   }
 
@@ -75,6 +91,7 @@ export class HarmonyWorkbench {
     if (!this.#pending) return false;
     const draft = this.#palette;
     this.#pending = false;
+    this.#message = { kind: 'info', text: '' };
     this.#store.setPalette(draft, {
       message: { kind: 'success', text: 'Paleta nova aplicada nos passos 1 a 4. Quer a anterior de volta? Use "Desfazer" no Passo 1.' },
     });

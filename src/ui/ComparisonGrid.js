@@ -75,6 +75,9 @@ export class ComparisonGrid {
     ]);
 
     this.#bus.on(StoreEvent.PALETTE, () => this.#render());
+    // O STARTED chega logo depois da 1ª paleta: cancelamos o anúncio do resumo para o leitor
+    // de tela não falar 3 vezes (aviso do início + foco no Passo 1 + resumo).
+    this.#bus.on(StoreEvent.STARTED, () => clearTimeout(this.#liveTimer));
     this.#bus.on(StoreEvent.MESSAGE, (message) => {
       if (!this.#showMessage) return;
       this.#showMessage = false;

@@ -166,6 +166,7 @@ export class ColorWheel {
     });
     const { h, s } = palette.at(0).hsb;
     this.#svg.setAttribute('aria-valuenow', String(Math.round(h)));
-    this.#svg.setAttribute('aria-valuetext', `Matiz ${Math.round(h)} graus, intensidade ${Math.round(s)}%. Cor A ${palette.at(0).hex}`);
+    // Texto curto: é lido a cada toque nas setas (o HEX aparece no campo da cor A).
+    this.#svg.setAttribute('aria-valuetext', `Matiz ${Math.round(h)} graus, intensidade ${Math.round(s)}%`);
   }
 }

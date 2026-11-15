@@ -65,8 +65,14 @@ export class ParallaxHeader {
     this.#header.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.#toggle.getAttribute('aria-expanded') === 'true') this.#setOpen(false);
     });
+    // No Safari, clicar num botão não dá foco a ele: o focusout chegaria sem destino e fecharia
+    // o menu logo antes do clique reabri-lo. Por isso marcamos o toque no botão "Seções".
+    let pressingToggle = false;
+    this.#toggle.addEventListener('pointerdown', () => { pressingToggle = true; });
+    this.#toggle.addEventListener('click', () => { pressingToggle = false; });
     // Se o foco sair do menu aberto (Tab para fora), o menu fecha sozinho.
     this.#nav.addEventListener('focusout', (e) => {
+      if (pressingToggle) return;
       const next = e.relatedTarget;
       const stillInside = next && (this.#nav.contains(next) || next === this.#toggle);
       if (!stillInside && this.#toggle.getAttribute('aria-expanded') === 'true') this.#setOpen(false, false);

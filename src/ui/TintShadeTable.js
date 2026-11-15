@@ -20,6 +20,7 @@ export class TintShadeTable {
   #rows;
   #mode = 'copy';
   #activeCol = [9, 9, 9]; // em cada faixa, qual célula recebe o Tab (começa na original)
+  #hintId = '';
 
   constructor({ root, store, bus, clipboard, toast, generator = new TintShadeGenerator() }) {
     this.#root = root;
@@ -40,7 +41,8 @@ export class TintShadeTable {
       Dom.el('legend', { text: 'Ao clicar num tom:' }),
       Dom.el('div', { class: 'chips' }, [option('copy', 'Copiar o HEX'), option('apply', 'Usar na paleta')]),
     ]);
-    const hint = Dom.el('p', { class: 'field__label', text: 'Dica: no teclado, use Tab para ir de uma cor a outra e as setas ← → para andar entre os tons.' });
+    this.#hintId = Dom.uid('tons-dica');
+    const hint = Dom.el('p', { id: this.#hintId, class: 'field__label', text: 'Dica: no teclado, use Tab para ir de uma cor a outra e as setas ← → para andar entre os tons.' });
     this.#rows = Dom.el('div');
     Dom.replace(this.#root, [mode, hint, this.#rows]);
     this.#bus.on(StoreEvent.PALETTE, () => this.#render());
@@ -64,6 +66,7 @@ export class TintShadeTable {
       class: 'tint-strip',
       role: 'group',
       'aria-label': `Tons da cor ${label}`,
+      'aria-describedby': this.#hintId,
       on: { keydown: (e) => this.#onKey(e, index, strip) },
     }, scale.map((s, col) => Dom.el('button', {
       type: 'button',

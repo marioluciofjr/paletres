@@ -1034,11 +1034,10 @@
 
 /* Hover diferente do selecionado: borda grossa e sublinhado, sem preencher. */
 @media (hover: hover) and (pointer: fine) {
-  /* outline por dentro (offset negativo) engrossa a borda sem mudar o tamanho do chip. */
+  /* Só sublinhado: não mexe no tamanho do chip nem no anel de foco (que usa outline). */
   .chip input:not(:checked) + span:hover {
-    outline: var(--stroke-control) solid var(--border);
-    outline-offset: calc(-1 * var(--stroke-accent));
     text-decoration: underline;
+    text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 }
@@ -1106,7 +1105,7 @@
 
 .mockups {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: var(--space-8);
   align-items: start;
 }
@@ -1148,6 +1147,8 @@
 
 .msite__url {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
   margin-left: 8px;
   padding: 2px 10px;
   border-radius: 999px;

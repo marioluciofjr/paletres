@@ -28,9 +28,9 @@
 | RF-24 Sugestão de papéis | T07, T12b | `domain/proportion/RoleAdvisor.js` | `unit/proportion.test.js` | ✅ |
 | RF-15 Botão Prazo Certo (nova aba) | T10 | `index.html` (menu) | `e2e/site.spec.js` | ✅ |
 | RF-16 Crédito no rodapé | T10 | `index.html` (rodapé) | `e2e/site.spec.js` | ✅ |
-| RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` | ✅ (aguarda auditoria T16) |
+| RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` + 2 ciclos de auditoria | ✅ |
 | RNF-02 Identidade Prazo Certo | T10, T16 | `styles/*` | auditor UX (2 ciclos, aprovado) | ✅ |
-| RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` | 🔄 |
+| RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` + `vite preview` | ✅ |
 | RNF-04 OOP e camadas | todas | `src/**` | revisão de código + lint | ✅ |
 | RNF-06 TDD | todas | — | `tests/**` (172 Vitest + 21 Playwright) | ✅ |
 | RNF-09 Didático para não designers | T11–T13, T16 | `ui/*`, textos | e2e + auditor UX (aprovado) | ✅ |

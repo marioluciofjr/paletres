@@ -79,20 +79,28 @@ test('roda cromática: o foco é visível no controle inteiro', async ({ page })
   expect(await outlineOf(stage)).not.toBe(before);
 });
 
-test('regiões vivas não falam a cada passo do slider (no máximo 1 anúncio)', async ({ page }) => {
+test('regiões vivas não falam a cada passo do slider (no máximo 1 anúncio por região)', async ({ page }) => {
   await page.goto('/');
   await page.waitForTimeout(1200);
   await page.evaluate(() => {
-    window.__mutations = 0;
-    const observer = new MutationObserver((list) => { window.__mutations += list.length; });
-    for (const el of document.querySelectorAll('[role="status"], [aria-live]')) {
-      if (el.closest('.toast')) continue;
-      observer.observe(el, { childList: true, characterData: true, subtree: true });
-    }
+    // Conta quantas vezes cada região muda de texto (um "anúncio" para o leitor de tela).
+    window.__announcements = [];
+    document.querySelectorAll('[role="status"], [aria-live]').forEach((el, i) => {
+      if (el.closest('.toast')) return;
+      window.__announcements[i] = 0;
+      let last = el.textContent;
+      new MutationObserver(() => {
+        if (el.textContent !== last) {
+          last = el.textContent;
+          window.__announcements[i] += 1;
+        }
+      }).observe(el, { childList: true, characterData: true, subtree: true });
+    });
   });
   const hue = page.locator('#paleta input[type="range"]').first();
   await hue.focus();
   for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowRight');
   await page.waitForTimeout(1200);
-  expect(await page.evaluate(() => window.__mutations)).toBeLessThanOrEqual(2);
+  const counts = (await page.evaluate(() => window.__announcements)).filter((n) => n !== null);
+  expect(Math.max(0, ...counts)).toBeLessThanOrEqual(1);
 });

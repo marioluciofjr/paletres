@@ -22,12 +22,12 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T13 | Seção "Aprenda" e revisão gramatical | RF-12 | Claude | ✅ |
 | T14 | Testes e2e e varredura axe (28 testes, inclui foco visível e debounce de anúncios) | RNF-01 | Claude | ✅ |
 | T15 | Testes de regressão com semente fixa (24 snapshots) | RF-05 | Claude | ✅ |
-| T16 | Auditorias em 2 ciclos (a11y-web, acessibilidade, UX, motion e casos extremos) e correções | RNF-01, RNF-07, RNF-09 | Claude | 🔄 |
-| T17 | Build final e README pronto para o GitHub | RNF-03 | Claude | ⏳ |
+| T16 | Auditorias em 2 ciclos (a11y-web, acessibilidade, UX, motion e casos extremos) e correções | RNF-01, RNF-07, RNF-09 | Claude | ✅ |
+| T17 | Build final (`dist/`, ~36 KB gzip) conferido no `vite preview` e README pronto para o GitHub | RNF-03 | Claude | ✅ |
 
 ## Próximo passo
 
-T16 — fechar o 2º ciclo do a11y-web; depois T17 (build final).
+Todas as tarefas da v1 concluídas. Próximo passo: teste manual do Mário e, com o aval dele, publicação no GitHub Pages.
 
 ## Backlog (fora da v1)
 

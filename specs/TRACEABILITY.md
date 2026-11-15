@@ -40,6 +40,6 @@
 | RNF-02 Identidade Prazo Certo | T10, T16 | `styles/*` | auditor UX (2 ciclos, aprovado) | ✅ |
 | RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` + `vite preview` | ✅ |
 | RNF-04 OOP e camadas | todas | `src/**` | revisão de código + lint | ✅ |
-| RNF-06 TDD | todas | — | `tests/**` (210 Vitest + 43 Playwright na v1.1.0) | ✅ |
+| RNF-06 TDD | todas | — | `tests/**` (210 Vitest + 44 Playwright na v1.1.0) | ✅ |
 | RNF-09 Didático para não designers | T11–T13, T16 | `ui/*`, textos | e2e + auditor UX (aprovado) | ✅ |
 | RNF-07 Movimento reduzido | T10, T24 | `ui/ParallaxScene.js` | `e2e/site.spec.js` | ✅ |

@@ -44,7 +44,8 @@ export class HistoryToolbar {
       [Icons.svg('redo'), 'Refazer']);
 
     // "Começar do zero" (pedido do Mário): apaga a paleta e volta aos círculos com "?".
-    const reset = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'reset', on: { click: () => this.#store.reset() } },
+    // Fica separado de Desfazer/Refazer (à direita), para não ser clicado por engano (auditoria UX A2).
+    const reset = Dom.el('button', { type: 'button', class: 'btn btn--ghost toolbar__reset', 'data-action': 'reset', on: { click: () => this.#store.reset() } },
       [Icons.svg('x'), 'Começar do zero']);
 
     Dom.replace(this.#root, [shuffle, this.#undo, this.#redo, reset]);
@@ -61,7 +62,9 @@ export class HistoryToolbar {
     const key = e.key.toLowerCase();
     if (key === 'z' && !e.shiftKey) {
       e.preventDefault();
-      this.#store.undo();
+      // Logo depois de um "Começar do zero", Ctrl+Z recupera a paleta apagada.
+      if (this.#store.canRestore) this.#store.restore();
+      else this.#store.undo();
     } else if ((key === 'z' && e.shiftKey) || key === 'y') {
       e.preventDefault();
       this.#store.redo();

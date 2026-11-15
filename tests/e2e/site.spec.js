@@ -50,6 +50,13 @@ test.describe('Início sem paleta (RF-25)', () => {
     await expect(page.locator('#comecar')).toBeFocused();
     await expect(page).not.toHaveURL(/\?p=/);
     await expect(page.locator('.toast')).toContainText('Tudo limpo');
+    // Apagou sem querer? Dá para recuperar (auditoria UX A1).
+    await page.getByRole('button', { name: 'Recuperar minha paleta' }).click();
+    await expect(page.locator('#ferramenta')).toBeVisible();
+    await expect(hexInputs(page).nth(0)).toHaveValue('#230023');
+    await expect(page).toHaveURL(/\?p=230023-f2f2f2-42ffff/);
+    await page.getByRole('button', { name: 'Começar do zero' }).click();
+    await expect(page.locator('.hero-dot--empty')).toHaveCount(3);
     // Recarregar continua no zero; gerar de novo funciona.
     await page.reload();
     await expect(page.locator('.hero-dot--empty')).toHaveCount(3);

@@ -46,6 +46,7 @@ export class PaletteStore {
   #message = { kind: 'info', text: '' };
   #past = [];
   #future = [];
+  #beforeReset = null; // o que o "Começar do zero" apagou (para "Recuperar minha paleta")
 
   constructor({ bus, harmonies, generator, guard, advisor, presets, initialPalette }) {
     this.#bus = bus;
@@ -110,6 +111,11 @@ export class PaletteStore {
 
   get canRedo() {
     return this.#future.length > 0;
+  }
+
+  /** Dá para recuperar a paleta apagada pelo "Começar do zero"? */
+  get canRestore() {
+    return this.#beforeReset !== null;
   }
 
   // ---------- paleta ----------
@@ -188,6 +194,7 @@ export class PaletteStore {
    */
   start() {
     if (this.#started) return;
+    this.#beforeReset = null;
     const { palette, harmony, message } = this.#generator.generate({
       base: this.#generator.randomBase(),
       harmonyId: this.#generator.randomHarmonyId(),
@@ -208,6 +215,11 @@ export class PaletteStore {
    */
   reset() {
     if (!this.#started) return;
+    // Guardamos tudo antes de apagar: um clique errado não pode perder o trabalho (auditoria UX A1).
+    this.#beforeReset = {
+      palette: this.#palette, past: this.#past, future: this.#future,
+      roles: this.#roles, rolesAuto: this.#rolesAuto, selectedIndex: this.#selectedIndex,
+    };
     this.#started = false;
     this.#past = [];
     this.#future = [];
@@ -221,6 +233,25 @@ export class PaletteStore {
     this.#bus.emit(StoreEvent.RESET, this.state);
   }
 
+  /** "Recuperar minha paleta": desfaz o "Começar do zero". Devolve false se não há o que recuperar. */
+  restore() {
+    if (!this.#beforeReset || this.#started) return false;
+    const saved = this.#beforeReset;
+    this.#beforeReset = null;
+    this.#started = true;
+    this.#palette = saved.palette;
+    this.#past = saved.past;
+    this.#future = saved.future;
+    this.#roles = saved.roles;
+    this.#rolesAuto = saved.rolesAuto;
+    this.#selectedIndex = saved.selectedIndex;
+    this.#bus.emit(StoreEvent.HISTORY, this.#historyState());
+    this.#bus.emit(StoreEvent.PALETTE, this.state);
+    this.#setMessage({ kind: 'success', text: 'Paleta recuperada, com o histórico de Desfazer.' });
+    this.#bus.emit(StoreEvent.STARTED, this.state);
+    return true;
+  }
+
   /**
    * Abre a paleta de um link (ex.: link antigo com # colado na mesma aba).
    * Antes de começar, ela libera o site como o "Gerar paleta" (sem passo de desfazer);
@@ -232,6 +263,7 @@ export class PaletteStore {
       return;
     }
     this.#started = true;
+    this.#beforeReset = null;
     this.setPalette(palette, { record: false, message: { kind: 'success', text: 'Abri a paleta do link. Agora ajuste as cores do seu jeito.' } });
     this.#bus.emit(StoreEvent.STARTED, this.state);
   }

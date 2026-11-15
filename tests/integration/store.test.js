@@ -230,6 +230,30 @@ describe('PaletteStore — início bloqueado', () => {
     expect(store.state.started).toBe(true);
   });
 
+  it('restore() desfaz o "Começar do zero": paleta e histórico voltam (auditoria UX A1)', () => {
+    const bus = new EventBus();
+    const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });
+    store.start();
+    store.setColor(0, Color.fromHex('#123456'));
+    const before = store.state.palette;
+    store.reset();
+    expect(store.canRestore).toBe(true);
+    expect(store.restore()).toBe(true);
+    expect(store.state.started).toBe(true);
+    expect(store.state.palette.equals(before)).toBe(true);
+    expect(store.canUndo).toBe(true);
+    expect(store.canRestore).toBe(false);
+  });
+
+  it('depois de gerar outra paleta, não dá mais para recuperar a apagada', () => {
+    const store = PaletteStore.create({ bus: new EventBus(), rng: RandomSource.seeded(7) });
+    store.start();
+    store.reset();
+    store.start();
+    expect(store.canRestore).toBe(false);
+    expect(store.restore()).toBe(false);
+  });
+
   it('reset() antes de começar não faz nada', () => {
     const bus = new EventBus();
     const store = PaletteStore.create({ bus, rng: RandomSource.seeded(7) });

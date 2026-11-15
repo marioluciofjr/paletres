@@ -32,6 +32,7 @@ export class PaletteGate {
     for (const button of this.#doc.querySelectorAll('[data-action="start"]')) {
       button.addEventListener('click', () => this.#store.start());
     }
+    this.#doc.querySelector('[data-action="restore"]')?.addEventListener('click', () => this.#store.restore());
     // Captura: decide antes do navegador pular para a âncora.
     this.#doc.addEventListener('click', (e) => this.#guardLink(e), true);
     this.#bus.on(StoreEvent.STARTED, () => this.#onStarted());
@@ -44,6 +45,9 @@ export class PaletteGate {
     for (const el of this.#doc.querySelectorAll('[data-gate]')) {
       el.hidden = el.dataset.gate === 'locked' ? started : !started;
     }
+    // "Recuperar minha paleta" só aparece logo depois de um "Começar do zero".
+    const restore = this.#doc.querySelector('[data-component="restore"]');
+    if (restore) restore.hidden = started || !this.#store.canRestore;
     const skip = this.#doc.querySelector('[data-component="skip-link"]');
     if (skip) skip.setAttribute('href', started ? '#paleta-title' : '#comecar');
   }

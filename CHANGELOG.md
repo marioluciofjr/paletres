@@ -16,7 +16,7 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 - Seção **Sobre**, com a origem da ideia, e item "Sobre" no menu.
 - **CTA da Prazo Certo** antes do rodapé.
 - O mascote **Clawd** "fala" o crédito do projeto num balão de HQ.
-- Botão **Começar do zero**: apaga a paleta, limpa o link e volta aos círculos com "?".
+- Botão **Começar do zero**: apaga a paleta, limpa o link e volta aos círculos com "?". Apagou sem querer? "Recuperar minha paleta" (ou Ctrl+Z) traz tudo de volta.
 
 ### Alterado
 

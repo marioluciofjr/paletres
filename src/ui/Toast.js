@@ -32,9 +32,11 @@ export class Toast {
     this.#bubble.textContent = text;
     this.#bubble.classList.add('is-visible');
     clearTimeout(this.#timer);
+    // Mensagens longas ficam mais tempo: cerca de 45 ms por caractere, com o mínimo padrão.
+    const duration = Math.max(this.#duration, text.length * 45);
     this.#timer = setTimeout(() => {
       this.#bubble.classList.remove('is-visible');
       this.#live.textContent = '';
-    }, this.#duration);
+    }, duration);
   }
 }

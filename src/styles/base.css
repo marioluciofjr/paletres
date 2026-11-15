@@ -19,6 +19,8 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   overflow-x: hidden;
+  /* Celular deitado com "notch": o conteúdo não fica escondido atrás dele. */
+  padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
 }
 
 h1,

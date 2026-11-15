@@ -43,6 +43,15 @@ export class UrlStateCodec {
     return LEGACY_HASH.test(hash ?? '') ? UrlStateCodec.decode(hash) : null;
   }
 
+  /**
+   * Só o formato antigo (#rrggbb-rrggbb-rrggbb). Usado no evento "hashchange": clicar numa
+   * âncora do menu (#tons) também muda o hash, e isso NÃO pode mexer na paleta.
+   */
+  readLegacyHash() {
+    const { hash } = this.#win.location;
+    return LEGACY_HASH.test(hash ?? '') ? UrlStateCodec.decode(hash) : null;
+  }
+
   /** O link trouxe ?p= mas ele não é uma paleta válida (ex.: 2 ou 4 cores). */
   hasInvalid() {
     const param = this.#param();

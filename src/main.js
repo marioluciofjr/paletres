@@ -62,8 +62,9 @@ class PaletresApp {
     // Toda mudança de paleta vai para a URL: o link está sempre pronto para compartilhar.
     bus.on(StoreEvent.PALETTE, ({ palette }) => codec.write(palette));
     // Link no formato antigo (#rrggbb-rrggbb-rrggbb) colado na mesma aba: aplicamos.
+    // Âncoras do menu (#tons) também disparam este evento e são ignoradas.
     this.#win.addEventListener('hashchange', () => {
-      const p = codec.read();
+      const p = codec.readLegacyHash();
       if (p) store.setPalette(p);
     });
 
@@ -72,7 +73,7 @@ class PaletresApp {
       new ParallaxHeader({ header: this.#slot('header'), win: this.#win }),
       new HeroArt({ root: this.#slot('hero-art'), store, bus }),
       new PresetBar({ root: this.#slot('presets'), store }),
-      new HistoryToolbar({ root: this.#slot('history'), store, bus, doc: this.#doc }),
+      new HistoryToolbar({ root: this.#slot('history'), store, bus, doc: this.#doc, toast }),
       new ColorSlots({ root: this.#slot('slots'), store, bus, clipboard, toast }),
       new HsbSliderPanel({ root: this.#slot('hsb'), store, bus }),
       new ComparisonGrid({ root: this.#slot('comparisons'), store, bus }),

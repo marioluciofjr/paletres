@@ -18,12 +18,14 @@ export class HistoryToolbar {
   #doc;
   #undo;
   #redo;
+  #toast;
 
-  constructor({ root, store, bus, doc = document }) {
+  constructor({ root, store, bus, doc = document, toast = null }) {
     this.#root = root;
     this.#store = store;
     this.#bus = bus;
     this.#doc = doc;
+    this.#toast = toast;
   }
 
   mount() {
@@ -33,9 +35,12 @@ export class HistoryToolbar {
       'data-action': 'shuffle',
       on: { click: () => this.#store.generate({ random: true }) },
     }, [Icons.svg('shuffle'), 'Sortear paleta']);
-    this.#undo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'undo', 'aria-keyshortcuts': 'Control+Z', on: { click: () => this.#store.undo() } },
+    // Botão indisponível clicado: em vez de silêncio, explicamos o porquê.
+    const undo = () => { if (!this.#store.undo()) this.#toast?.show('Nada para desfazer ainda.'); };
+    const redo = () => { if (!this.#store.redo()) this.#toast?.show('Nada para refazer.'); };
+    this.#undo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'undo', 'aria-keyshortcuts': 'Control+Z', on: { click: undo } },
       [Icons.svg('undo'), 'Desfazer']);
-    this.#redo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'redo', 'aria-keyshortcuts': 'Control+Shift+Z', on: { click: () => this.#store.redo() } },
+    this.#redo = Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'redo', 'aria-keyshortcuts': 'Control+Shift+Z', on: { click: redo } },
       [Icons.svg('redo'), 'Refazer']);
 
     Dom.replace(this.#root, [shuffle, this.#undo, this.#redo]);

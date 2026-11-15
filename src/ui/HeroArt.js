@@ -27,7 +27,10 @@ export class HeroArt {
     this.#root.setAttribute('aria-label', `Sua paleta atual: ${palette.hexes.map((h, i) => `cor ${Palette.LABELS[i]} ${h}`).join(', ')}`);
     Dom.replace(this.#root, palette.colors.map((c, i) =>
       Dom.el('span', { class: 'hero-dot', style: { background: c.hex } }, [
-        Dom.el('span', { class: 'hero-dot__label', text: `${Palette.LABELS[i]} ${c.hex}` }),
+        Dom.el('span', { class: 'hero-dot__label', 'aria-hidden': 'true' }, [
+          Palette.LABELS[i],
+          Dom.el('span', { class: 'hero-dot__hex', text: ` ${c.hex}` }),
+        ]),
       ]),
     ));
   }

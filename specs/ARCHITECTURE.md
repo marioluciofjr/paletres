@@ -79,7 +79,7 @@
 | ADR-04 | APCA 0.0.98G-4g só como referência | Selo APCA | O WCAG 3 ainda é rascunho. |
 | ADR-05 | Matrizes de Machado (2009) com severidade 1,0 | Brettel (1997) | Uma matriz 3×3 por tipo; simples e bem aceita. |
 | ADR-06 | Tints e shades por mistura em RGB | Mistura em OKLab | Mesmo resultado do maketintsandshades.com, que é a referência pedida. |
-| ADR-07 | Estado na URL (hash) | Query string | O hash não recarrega a página e funciona no GitHub Pages. |
+| ADR-07 | Paleta na query string (`?p=`) com replaceState | Paleta no hash (`#`) | O hash ficou livre para as âncoras do menu: com a paleta no hash, clicar no menu apagava o link (auditoria E06). Links antigos com `#` continuam sendo lidos. |
 | ADR-08 | Garantia AA/AAA só no par principal + destaque ≥ 3:1 | Exigir os 3 pares | Com 3 cores, os 3 pares em AA é matematicamente quase impossível. |
 | ADR-09 | Razão exibida com 2 casas, arredondada para baixo | 1 casa, arredondamento comum | Evita mostrar "4,50:1" para um par de 4,499:1, que não passa em AA. |
 

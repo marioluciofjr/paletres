@@ -21,6 +21,7 @@ const MAX_SIDE = 1600; // tamanho de trabalho
 const PREVIEW_SIDE = 480; // tamanho da prévia rápida
 const MAX_SOURCE_SIDE = 12000; // acima disso, recusamos (evita travar a aba)
 const MIN_SOURCE_SIDE = 16;
+const MAX_SOURCE_PIXELS = 64_000_000; // 64 megapixels: acima disso a memória da aba pode estourar
 const FULL_DELAY = 200;
 
 export class ColorGradingPanel {
@@ -104,7 +105,8 @@ export class ColorGradingPanel {
 
     this.#before = Dom.el('canvas', { 'aria-hidden': 'true' });
     this.#after = Dom.el('canvas', { class: 'stage__after', 'aria-hidden': 'true' });
-    this.#divider = Dom.el('span', { class: 'stage__divider', 'aria-hidden': 'true' });
+    // O "trilho" (track) ocupa o palco inteiro; é ele que anda com transform. A linha fica na borda esquerda dele.
+    this.#divider = Dom.el('span', { class: 'stage__track', 'aria-hidden': 'true' }, [Dom.el('span', { class: 'stage__divider' })]);
     this.#stage = Dom.el('div', { class: 'stage frame', role: 'img', hidden: true }, [
       this.#before,
       this.#after,
@@ -145,22 +147,36 @@ export class ColorGradingPanel {
 
     this.#status.textContent = 'Processando sua foto…';
     this.#stage.setAttribute('aria-busy', 'true');
-    let bitmap;
+    // 1º lemos só as dimensões (sem decodificar tudo) para recusar fotos gigantes antes de travar a aba.
+    const url = this.#win.URL.createObjectURL(file);
+    let img;
     try {
-      bitmap = await this.#win.createImageBitmap(file);
+      img = await this.#readImage(url);
     } catch {
+      this.#win.URL.revokeObjectURL(url);
       return this.#fail('Não foi possível abrir esta imagem. Tente outro arquivo.');
     }
-    const { width, height } = bitmap;
-    if (Math.max(width, height) > MAX_SOURCE_SIDE) {
-      bitmap.close?.();
-      return this.#fail(`Imagem grande demais (${width} × ${height} px). Use uma com até ${MAX_SOURCE_SIDE} px no lado maior.`);
+    const { naturalWidth: width, naturalHeight: height } = img;
+    const problem = this.#sizeProblem(width, height);
+    if (problem) {
+      this.#win.URL.revokeObjectURL(url);
+      return this.#fail(problem);
     }
-    if (Math.min(width, height) < MIN_SOURCE_SIDE) {
-      bitmap.close?.();
-      return this.#fail(`Imagem pequena demais (${width} × ${height} px). Use uma com pelo menos ${MIN_SOURCE_SIDE} px de cada lado.`);
+    // 2º decodificamos já reduzida para o tamanho de trabalho (até 1600px).
+    const scale = Math.min(1, MAX_SIDE / Math.max(width, height));
+    let bitmap;
+    try {
+      bitmap = await this.#win.createImageBitmap(img, {
+        resizeWidth: Math.max(1, Math.round(width * scale)),
+        resizeHeight: Math.max(1, Math.round(height * scale)),
+        resizeQuality: 'high',
+      });
+    } catch {
+      this.#win.URL.revokeObjectURL(url);
+      return this.#fail('Não foi possível abrir esta imagem. Tente outro arquivo.');
     }
-    this.#draw(bitmap, width, height);
+    this.#win.URL.revokeObjectURL(url);
+    this.#draw(bitmap, bitmap.width, bitmap.height);
     bitmap.close?.();
     // Só agora, com a foto aceita, mostramos o nome do arquivo.
     this.#fileName.textContent = file.name;
@@ -168,6 +184,27 @@ export class ColorGradingPanel {
     this.#status.textContent = '';
     this.#stage.removeAttribute('aria-busy');
     this.#toast.show('Foto carregada.');
+  }
+
+  /** Carrega a imagem num <img> só para conhecer largura e altura. */
+  #readImage(url) {
+    return new Promise((resolve, reject) => {
+      const img = new this.#win.Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('imagem inválida'));
+      img.src = url;
+    });
+  }
+
+  /** Devolve a mensagem de erro de tamanho, ou null se a imagem serve. */
+  #sizeProblem(width, height) {
+    if (Math.min(width, height) < MIN_SOURCE_SIDE) {
+      return `Imagem pequena demais (${width} × ${height} px). Use uma com pelo menos ${MIN_SOURCE_SIDE} px de cada lado.`;
+    }
+    if (Math.max(width, height) > MAX_SOURCE_SIDE || width * height > MAX_SOURCE_PIXELS) {
+      return `Imagem grande demais (${width} × ${height} px). Use uma com até ${MAX_SOURCE_SIDE} px no lado maior e até 64 megapixels.`;
+    }
+    return null;
   }
 
   /** Desenha a imagem reduzida, guarda os pixels originais e prepara a prévia rápida. */
@@ -232,6 +269,7 @@ export class ColorGradingPanel {
     this.#error.textContent = '';
     this.#draw(c, w, h);
     this.#fileName.textContent = 'Imagem de exemplo';
+    this.#fileName.title = '';
     this.#toast.show('Imagem de exemplo carregada.');
   }
 
@@ -267,15 +305,21 @@ export class ColorGradingPanel {
     this.#stage.setAttribute('aria-label', `Foto com as cores da paleta ${this.#store.state.palette.hexes.join(', ')}, intensidade ${this.#intensity.value}%`);
   }
 
-  /** Move o divisor e o recorte direto nos elementos (sem variável CSS no pai). */
+  /**
+   * Move o divisor e o recorte direto nos elementos. O divisor fica dentro de um trilho
+   * da largura do palco, então translateX(v%) anda v% do palco usando só transform.
+   */
   #setSplit(v) {
-    this.#divider.style.left = `${v}%`;
+    this.#divider.style.transform = `translateX(${v}%)`;
     this.#after.style.clipPath = `inset(0 0 0 ${v}%)`;
     this.#split.setAttribute('aria-valuetext', `${v}% da largura mostra o antes`);
   }
 
   async #save() {
-    if (!this.#full) return;
+    if (!this.#full) {
+      this.#toast.show('Escolha uma foto ou use a imagem de exemplo antes de baixar.');
+      return;
+    }
     const blob = await new Promise((resolve) => this.#after.toBlob(resolve, 'image/png'));
     if (!blob) return;
     this.#downloader.download(blob, 'paletres-color-grading.png');

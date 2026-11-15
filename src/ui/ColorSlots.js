@@ -129,13 +129,20 @@ export class ColorSlots {
   #onHexBlur(index, input, error) {
     this.#applyShort(index, input);
     this.#gesture.end();
-    // Ao sair do campo com um valor incompleto, avisamos.
+    // Ao sair do campo: valor válido vira o HEX "bonito" (#AABBCC); valor incompleto ganha aviso.
     const value = Color.normalizeInput(input.value);
-    if (!Color.isValidHex(value)) this.#setError(input, error, this.#errorText(value));
+    if (Color.isValidHex(value)) {
+      input.value = this.#store.state.palette.at(index).hex;
+      this.#setError(input, error, '');
+    } else {
+      this.#setError(input, error, this.#errorText(value));
+    }
   }
 
   #errorText(value) {
-    return `"${value}" não é um HEX válido. Use 3 ou 6 dígitos hexadecimais, como #230023.`;
+    // Textos colados muito longos são encurtados na mensagem, para não estourar o cartão.
+    const shown = value.length > 14 ? `${value.slice(0, 12)}…` : value;
+    return `"${shown}" não é um HEX válido. Use 3 ou 6 dígitos hexadecimais, como #230023.`;
   }
 
   #setError(input, error, text) {

@@ -38,7 +38,7 @@ export class HsbSliderPanel {
     const head = Dom.el('div', { class: 'hsb__head' }, [
       this.#chip,
       this.#title,
-      Dom.el('button', { type: 'button', class: 'info-btn', 'data-info': 'hsb' }, 'O que é isso?'),
+      Dom.el('button', { type: 'button', class: 'info-btn', 'data-info': 'hsb', 'aria-label': 'O que é isso? Matiz, saturação e brilho' }, 'O que é isso?'),
     ]);
     const info = Dom.el('div', { class: 'info-panel', id: 'info-hsb', hidden: true },
       'Matiz é o "tom" da cor no círculo (0° é vermelho, 120° é verde, 240° é azul). Saturação diz o quanto ela é viva (0% é cinza). Brilho diz o quanto ela é clara (0% é preto).');

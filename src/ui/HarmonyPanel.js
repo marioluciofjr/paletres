@@ -84,8 +84,10 @@ export class HarmonyPanel {
   /** Botão "O que é isso?" + painel de explicação (ligados depois pelo InfoTips). */
   #help(key) {
     if (!HELP[key]) return [];
+    // Nome acessível único (começa pelo texto visível, como pede a WCAG 2.5.3).
+    const topic = { matematica: 'harmonias matemáticas', contraste: 'harmonia de contraste', garantia: 'garantia de contraste' }[key];
     return [
-      Dom.el('button', { type: 'button', class: 'info-btn', 'data-info': `harmonia-${key}` }, 'O que é isso?'),
+      Dom.el('button', { type: 'button', class: 'info-btn', 'data-info': `harmonia-${key}`, 'aria-label': `O que é isso? ${topic}` }, 'O que é isso?'),
       Dom.el('div', { class: 'info-panel', id: `info-harmonia-${key}`, hidden: true, text: HELP[key] }),
     ];
   }
@@ -108,6 +110,8 @@ export class HarmonyPanel {
       input.checked = input.value === harmonyId || input.value === guardLevel;
     }
     const h = this.#store.harmonies.get(harmonyId);
-    this.#desc.textContent = `${h.name}: ${h.description}`;
+    const text = `${h.name}: ${h.description}`;
+    // Só reescreve (e o leitor de tela só anuncia) quando a harmonia mudou de fato.
+    if (this.#desc.textContent !== text) this.#desc.textContent = text;
   }
 }

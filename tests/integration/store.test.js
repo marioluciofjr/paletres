@@ -147,6 +147,13 @@ describe('PaletteStore', () => {
     expect(store.state.message.text).toMatch(/sem cor/);
   });
 
+  it('cor A escura mas colorida (roxo da marca) não é chamada de "sem cor" (auditoria N02)', () => {
+    store.setHarmony('triade');
+    store.generate();
+    expect(store.state.message.text).not.toMatch(/sem cor/);
+    expect(store.state.message.text).toMatch(/muito escura/);
+  });
+
   it('selectColor muda a cor em edição', () => {
     store.selectColor(2);
     expect(store.state.selectedIndex).toBe(2);

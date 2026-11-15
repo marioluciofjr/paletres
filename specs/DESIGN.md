@@ -56,9 +56,9 @@ Ordem das seções, todas com âncora no menu:
 2. **Paleta** (`#paleta`): faixa "Comece por aqui" com as paletas prontas, os botões Desfazer, Refazer e "Sortear paleta", os 3 slots de cor (amostra, seletor visual, campo HEX, botão copiar e botão "Editar") e o painel HSB da cor em edição.
 3. **Comparações** (`#comparacoes`): resumo em linguagem simples ("Sua paleta tem 2 combinações boas para texto"), o botão "Consertar contraste" e os 6 cards numa grade 3×2 (2×3 no tablet, 1 coluna no mobile).
 4. **Harmonias** (`#harmonias`): roda cromática, seletor de harmonia, seletor de garantia (Livre/AA/AAA), botão "Gerar paleta" e a faixa de proporção de uso.
-5. **Teste na prática** (`#pratica`): seletor de proporção (60-30-10, áurea, Fibonacci), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: área de upload (arrastar ou escolher arquivo), imagem antes/depois com divisor arrastável, slider de intensidade e botão "Baixar PNG".
-6. **Tints e shades** (`#tons`): uma linha de 19 células por cor (9 claros de 90% a 10%, a original e 9 escuros de 10% a 90%). Paramos em 90% porque 100% seria branco ou preto puro.
-7. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
+5. **Tints e shades** (`#tons`): uma linha de 19 células por cor (9 claros de 90% a 10%, a original e 9 escuros de 10% a 90%). Paramos em 90% porque 100% seria branco ou preto puro.
+6. **Daltonismo** (`#daltonismo`): a paleta original e as 4 simulações.
+7. **Teste na prática** (`#pratica`): seletor de proporção (60-30-10, áurea, Fibonacci), seletores de papel (dominante, secundária, destaque) e os dois mockups lado a lado: site web (navegador com barra, menu, hero, cards e botão) e app mobile (moldura de celular com barra superior, lista, card e botão flutuante). Abaixo, o **color grading**: área de upload (arrastar ou escolher arquivo), imagem antes/depois com divisor arrastável, slider de intensidade e botão "Baixar PNG".
 8. **Exportar** (`#exportar`): CSS, JSON, PNG e o link compartilhável.
 9. **Aprenda** (`#aprenda`): blocos curtos sobre WCAG, APCA, harmonias, proporção áurea e Fibonacci.
 10. **Rodapé**: logo, contatos e o crédito "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto."

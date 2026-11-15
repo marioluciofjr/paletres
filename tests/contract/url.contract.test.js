@@ -36,6 +36,12 @@ describe('UrlStateCodec', () => {
     expect(new UrlStateCodec(fakeWindow({ hash: '#tons' })).read()).toBeNull();
   });
 
+  it('readLegacyHash só reage ao formato antigo no # (âncoras do menu são ignoradas) (auditoria N01)', () => {
+    expect(new UrlStateCodec(fakeWindow({ search: '?p=000000-ffffff-ff0000', hash: '#tons' })).readLegacyHash()).toBeNull();
+    expect(new UrlStateCodec(fakeWindow({ search: '?p=000000-ffffff-ff0000', hash: '#111111-222222-333333' })).readLegacyHash().hexes)
+      .toEqual(['#111111', '#222222', '#333333']);
+  });
+
   it('hasInvalid avisa quando o link trouxe uma paleta quebrada', () => {
     expect(new UrlStateCodec(fakeWindow({ search: '?p=000000-ffffff' })).hasInvalid()).toBe(true);
     expect(new UrlStateCodec(fakeWindow({ search: '' })).hasInvalid()).toBe(false);

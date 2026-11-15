@@ -44,11 +44,17 @@
 
 /* Hover só em dispositivos com mouse: no toque, o hover "grudaria" depois do clique. */
 @media (hover: hover) and (pointer: fine) {
-  .btn--primary:hover,
   .btn--ghost:hover {
     background: var(--ink);
     color: var(--surface);
     border-color: var(--ink);
+  }
+
+  /* Primário: no tema claro o fundo já é roxo (= ink), então o hover sublinha o texto. */
+  .btn--primary:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
   }
 }
 
@@ -290,9 +296,10 @@
 }
 
 .hero__title {
-  font-size: clamp(3.5rem, 2rem + 7vw, 7rem);
+  font-size: clamp(2.5rem, 1.5rem + 7vw, 7rem);
   font-weight: 700;
   line-height: 1;
+  overflow-wrap: anywhere;
   color: var(--ciano);
   margin-bottom: var(--space-4);
 }
@@ -361,6 +368,13 @@
   font-size: 0.875rem;
 }
 
+/* Telas estreitas: as bolas se sobrepõem, então o rótulo mostra só a letra (A, B, C). */
+@media (max-width: 480px) {
+  .hero-dot__hex {
+    display: none;
+  }
+}
+
 @media (max-width: 860px) {
   .hero__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -399,8 +413,16 @@
   border-radius: 2px;
 }
 
+/* Vazio, o aviso encolhe mas CONTINUA na árvore de acessibilidade:
+   assim o leitor de tela anuncia com segurança quando o texto chegar. */
 .callout:empty {
-  display: none;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.callout:empty::before {
+  content: none;
 }
 
 .callout--warning::before {
@@ -504,10 +526,11 @@
 .field__error {
   font-size: 0.8125rem;
   font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .field__error:empty {
-  display: none;
+  margin: 0;
 }
 
 /* ---------- Paletas prontas e barra de ações ---------- */
@@ -563,6 +586,7 @@
 
 .slot {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
 }
 
@@ -1010,8 +1034,10 @@
 
 /* Hover diferente do selecionado: borda grossa e sublinhado, sem preencher. */
 @media (hover: hover) and (pointer: fine) {
+  /* outline por dentro (offset negativo) engrossa a borda sem mudar o tamanho do chip. */
   .chip input:not(:checked) + span:hover {
-    border-width: var(--stroke-accent);
+    outline: var(--stroke-control) solid var(--border);
+    outline-offset: calc(-1 * var(--stroke-accent));
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -1338,12 +1364,13 @@
 }
 
 .grading__status:empty {
-  display: none;
+  margin: 0;
 }
 
 .stage {
   position: relative;
   width: fit-content;
+  min-width: min(100%, 240px);
   max-width: 100%;
   margin-inline: auto;
   overflow: hidden;
@@ -1368,15 +1395,22 @@
   clip-path: inset(0 0 0 50%);
 }
 
+/* Trilho do divisor: ocupa o palco inteiro e anda com transform (translateX em % do palco). */
+.stage__track {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(50%);
+}
+
 .stage__divider {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
+  left: 0;
   width: 4px;
   margin-left: -2px;
   background: var(--frame);
-  pointer-events: none;
 }
 
 .stage__tags {
@@ -1433,7 +1467,7 @@
   display: grid;
   grid-template-columns: repeat(19, minmax(40px, 1fr));
   gap: 4px;
-  padding: 4px;
+  padding: 8px;
 }
 
 .tint-cell {
@@ -1452,14 +1486,14 @@
 .tint-strip .tint-cell:focus-visible,
 [data-theme='dark'] .tint-strip .tint-cell:focus-visible {
   outline: var(--stroke-focus) solid var(--focus-ring);
-  outline-offset: 4px;
+  outline-offset: 2px;
 }
 
 .tint-scale {
   display: grid;
   grid-template-columns: repeat(19, minmax(40px, 1fr));
   gap: 4px;
-  padding: 0 4px;
+  padding: 0 8px;
   font-size: 0.75rem;
   font-weight: 500;
   text-align: center;
@@ -1631,8 +1665,10 @@
   min-height: var(--target);
 }
 
-.site-footer__links a:hover {
-  color: var(--ciano);
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__links a:hover {
+    color: var(--ciano);
+  }
 }
 
 .site-footer__credit {
@@ -1654,7 +1690,7 @@
   font-weight: 500;
   transform: translate(-50%, calc(100% + var(--space-12)));
   visibility: hidden;
-  transition: transform 150ms ease-in, visibility 0s linear 150ms;
+  transition: transform 150ms var(--ease-out), visibility 0s linear 150ms;
   pointer-events: none;
 }
 

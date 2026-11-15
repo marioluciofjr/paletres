@@ -1,5 +1,8 @@
 # Paletrês
 
+### 🎨 Use agora: **[paletres.prazocerto.me](https://paletres.prazocerto.me)**
+
+![site no ar - paletres.prazocerto.me](https://img.shields.io/badge/site%20no%20ar-paletres.prazocerto.me-42ffff?labelColor=230023)
 ![license - Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)
 ![versão - 1.1.0](https://img.shields.io/badge/vers%C3%A3o-1.1.0-230023)
 ![acessibilidade - WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
@@ -10,6 +13,7 @@
 ## Índice
 
 * [Introdução](#introdução)
+* [Acesse o site](#acesse-o-site)
 * [Estrutura do projeto](#estrutura-do-projeto)
   * [Os 4 passos](#os-4-passos)
   * [Ferramentas extras](#ferramentas-extras)
@@ -35,6 +39,19 @@ O Paletrês gera uma paleta de 3 cores e mostra, na hora, se as cores combinam e
 A ideia nasceu de um incômodo. As ferramentas de contraste da WCAG comparam só **duas** cores, mas uma paleta de interface quase sempre tem **três** papéis: fundo, texto e destaque. Com 3 cores existem 3 pares, e era preciso fazer a conta de cada um à mão.
 
 O Paletrês junta essa conta e tudo o que há de útil em outros sites para designers num lugar só. É um "Megazord" de recursos para analisar paletas, feito para designers e também para quem não é designer.
+
+## Acesse o site
+
+O Paletrês está no ar em **[https://paletres.prazocerto.me](https://paletres.prazocerto.me)**. Não precisa instalar nada nem criar conta: é só abrir no navegador, no computador ou no celular.
+
+Os links compartilhados pelo Paletrês também usam esse endereço, no formato `https://paletres.prazocerto.me/?p=rrggbb-rrggbb-rrggbb`.
+
+| Item | Detalhe |
+|------|---------|
+| Endereço | [paletres.prazocerto.me](https://paletres.prazocerto.me) |
+| Hospedagem | [Vercel](https://vercel.com), com HTTPS automático |
+| Atualização | Automática: cada push na branch `main` publica uma nova versão |
+| Domínio | Subdomínio de [prazocerto.me](https://prazocerto.me), ligado à Vercel por um registro CNAME |
 
 ## Estrutura do projeto
 
@@ -142,11 +159,11 @@ Outros comandos:
 | `npm test` | Testes rápidos: unidade, integração, contrato e regressão |
 | `npm run test:e2e` | Testes no navegador, com varredura de acessibilidade |
 | `npm run lint` | Confere o estilo do código |
-| `npm run build` | Gera o site final em `dist/`, pronto para o GitHub Pages |
+| `npm run build` | Gera o site final em `dist/` (a Vercel roda este comando a cada push) |
 
 ## Como usar
 
-1. Clique em **Gerar paleta**.
+1. Abra **[paletres.prazocerto.me](https://paletres.prazocerto.me)** e clique em **Gerar paleta**.
 2. No Passo 1, ajuste as cores ou escolha uma das 15 paletas prontas.
 3. No Passo 2, leia o veredito de cada par. Se algum par não der para ler, clique em **Consertar contraste**.
 4. No Passo 3, veja a paleta num site, num app e numa foto.
@@ -155,6 +172,7 @@ Outros comandos:
 Sem ideia de cores? Vá em **Harmonias**, escolha um tipo, gere uma paleta nova e clique em **Usar esta paleta**.
 
 ## Links úteis
+* [Paletrês no ar — paletres.prazocerto.me](https://paletres.prazocerto.me)
 * [WCAG 2.2 — W3C](https://www.w3.org/TR/WCAG22/)
 * [Critério 1.4.3, contraste mínimo — W3C](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
 * [Técnica G18, como calcular o contraste — W3C](https://www.w3.org/WAI/WCAG22/Techniques/general/G18)

@@ -15,7 +15,7 @@
 
 - Qualquer nova exceção à regra de cores da Prazo Certo. A moldura preta foi aprovada em 13/11/2026 e o Clawd laranja no rodapé foi pedido pelo Mário na v1.1.0 (15/11/2026).
 - Mudança de stack (ADR novo em [ARCHITECTURE.md](ARCHITECTURE.md)).
-- Push para o GitHub, publicação no GitHub Pages ou repositório público.
+- Push para o GitHub e mudanças de visibilidade do repositório. Em 15/11/2026 o Mário autorizou o deploy na Vercel (https://paletres.prazocerto.me) e tornou o repositório público.
 - Remover um requisito do [PRD.md](PRD.md).
 
 ## 3. O que o desenvolvedor decide sozinho

@@ -90,6 +90,7 @@
 | ADR-12 | Rascunho separado para as harmonias (`HarmonyWorkbench`) | Gerar direto na paleta da pessoa | Evita a sensação de "perdi tudo". A roda cromática recebe um modelo com a mesma interface da store (baixo acoplamento). |
 | ADR-14 | 3 comparações (uma por par), com 2 prévias por card | 6 cards, um por direção | Pedido do Mário: a WCAG dá o mesmo número nos dois sentidos, então 6 cards repetiam valores. As 2 prévias ficam porque a aparência muda. |
 | ADR-15 | "Começar do zero" com `store.reset()` + evento `app:reset` + `UrlStateCodec.clear()` | Recarregar a página | O endereço com `?p=` reabria a paleta e confundia o primeiro acesso. O reset limpa estado, histórico, rascunho e URL sem recarregar, mas guarda uma cópia: `restore()` desfaz o reset (auditoria UX: prevenção e recuperação de erro). |
+| ADR-16 | Deploy na Vercel (plano Hobby) com o subdomínio `paletres.prazocerto.me` | GitHub Pages | O Mário preferiu a experiência da Vercel. O domínio fica na HostGator: só um CNAME (`paletres` → valor do projeto na Vercel); o site WordPress em `prazocerto.me` não muda. Cada push na `main` publica. |
 | ADR-13 | Parallax por variável CSS (`--parallax-y`) e `translate` por bola | `transform` direto em cada elemento | As bolas são redesenhadas a cada paleta; a variável fica no contêiner e o efeito não se perde. |
 
 ## 6. Concessões aceitas

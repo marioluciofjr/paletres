@@ -5,6 +5,8 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [1.1.0] - 2026-11-15
 
+Publicada em **https://paletres.prazocerto.me** (Vercel).
+
 ### Adicionado
 
 - **Início sem paleta:** o site abre vazio e o botão **Gerar paleta** sorteia uma harmonia com contraste AA garantido e libera os passos. Links compartilhados continuam abrindo direto na paleta.

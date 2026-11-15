@@ -229,7 +229,7 @@ export class PaletteStore {
     this.#roles = this.#advisor.suggest(this.#palette).roles;
     this.#bus.emit(StoreEvent.HISTORY, this.#historyState());
     this.#bus.emit(StoreEvent.PALETTE, this.state);
-    this.#setMessage({ kind: 'info', text: 'Tudo limpo. Clique em "Gerar paleta" para começar de novo.' });
+    this.#setMessage({ kind: 'info', text: 'Tudo limpo. Clique em "Gerar paleta" para começar de novo. Apagou sem querer? Use "Recuperar minha paleta" ou Ctrl+Z.' });
     this.#bus.emit(StoreEvent.RESET, this.state);
   }
 

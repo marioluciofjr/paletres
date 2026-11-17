@@ -311,3 +311,28 @@ test.describe('Conteúdo, marca, tema e menu', () => {
     await expect(toggle).toBeFocused();
   });
 });
+
+// Busca do Google (Search Console): verificação, robots.txt, sitemap e link canônico.
+test.describe('Mecanismos de busca', () => {
+  test('arquivo de verificação do Google Search Console responde na raiz', async ({ request }) => {
+    const resposta = await request.get('/googlef4c73ca80a5f6c76.html');
+    expect(resposta.status()).toBe(200);
+    expect((await resposta.text()).trim()).toBe('google-site-verification: googlef4c73ca80a5f6c76.html');
+  });
+
+  test('robots.txt libera o site e aponta o sitemap', async ({ request }) => {
+    const texto = await (await request.get('/robots.txt')).text();
+    expect(texto).toContain('Allow: /');
+    expect(texto).toContain('Sitemap: https://paletres.prazocerto.me/sitemap.xml');
+  });
+
+  test('sitemap.xml lista o endereço oficial', async ({ request }) => {
+    const texto = await (await request.get('/sitemap.xml')).text();
+    expect(texto).toContain('<loc>https://paletres.prazocerto.me/</loc>');
+  });
+
+  test('a página declara o endereço canônico (links ?p= contam como a mesma página)', async ({ page }) => {
+    await page.goto('/?p=000000-ffffff-ff0000');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://paletres.prazocerto.me/');
+  });
+});

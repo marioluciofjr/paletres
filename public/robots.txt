@@ -1,0 +1,5 @@
+# Paletrês — orientações para os buscadores (Google e outros).
+User-agent: *
+Allow: /
+
+Sitemap: https://paletres.prazocerto.me/sitemap.xml

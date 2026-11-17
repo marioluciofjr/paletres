@@ -42,6 +42,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T30 | 3 comparações (uma por par, 2 prévias), card de cores em imagens com IA e Clawd ao lado dos contatos (2ª leva do `ajustes.md`) | RF-03, RF-16, RF-31, ADR-14 | Claude | ✅ |
 | T31 | Feedback em vídeo: "Começar do zero" (`reset`, `clear`) e etapas das harmonias sem o número grande | RF-26, RF-32, ADR-15 | Claude | ✅ |
 | T32 | Deploy na Vercel (`paletres.vercel.app`) e domínio `paletres.prazocerto.me` (CNAME na HostGator), tema claro por padrão, repositório público | RF-13, RNF-03, ADR-16 | Claude + Mário | ✅ |
+| T33 | Busca do Google: verificação do Search Console (arquivo HTML), robots.txt, sitemap.xml e link canônico | RF-33 | Claude + Mário | ✅ |
 | T28 | Licença Apache-2.0 (LICENSE + NOTICE), versão 1.1.0, CHANGELOG e README de portfólio | RNF-03 | Claude | ✅ |
 | T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade em 2 ciclos, UX, motion e casos extremos) e correções | RNF-01, RNF-09 | Claude | ✅ |
 

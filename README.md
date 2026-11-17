@@ -6,7 +6,7 @@
 ![license - Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)
 ![versão - 1.1.0](https://img.shields.io/badge/vers%C3%A3o-1.1.0-230023)
 ![acessibilidade - WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
-![testes - 210 Vitest + 44 Playwright](https://img.shields.io/badge/testes-210%20Vitest%20%2B%2044%20Playwright-230023)
+![testes - 210 Vitest + 48 Playwright](https://img.shields.io/badge/testes-210%20Vitest%20%2B%2048%20Playwright-230023)
 ![site - prazocerto.me](https://img.shields.io/badge/site-prazocerto.me-230023)
 ![linkedin - @marioluciofjr](https://img.shields.io/badge/linkedin-marioluciofjr-blue)
 
@@ -51,6 +51,7 @@ Os links compartilhados pelo Paletrês também usam esse endereço, no formato `
 | Endereço | [paletres.prazocerto.me](https://paletres.prazocerto.me) |
 | Hospedagem | [Vercel](https://vercel.com), com HTTPS automático |
 | Atualização | Automática: cada push na branch `main` publica uma nova versão |
+| Busca do Google | Verificado no Google Search Console, com `sitemap.xml` e `robots.txt` |
 | Domínio | Subdomínio de [prazocerto.me](https://prazocerto.me), ligado à Vercel por um registro CNAME |
 
 ## Estrutura do projeto

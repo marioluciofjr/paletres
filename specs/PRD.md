@@ -64,6 +64,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-31 | **Cores em imagens com IA generativa** (v1.1.0): card em "Aprenda" sobre como a cor muda a mensagem de uma imagem gerada por IA, com dica de prompt e link de **Psicologia das Cores** (Elliot e Maier, *Annual Review of Psychology*, 2014). | Must |
 | RF-32 | **Começar do zero** (v1.1.0, feedback em vídeo): botão no Passo 1 que apaga a paleta e o histórico, limpa o `?p=` do endereço e volta aos círculos com "?". É reversível: o aviso do início mostra "Recuperar minha paleta" (e Ctrl+Z recupera) até a pessoa gerar outra paleta. O botão fica à direita, longe de Desfazer/Refazer. | Must |
 | RF-33 | **Busca do Google**: arquivo de verificação do Google Search Console na raiz (`public/googlef4c73ca80a5f6c76.html`), `robots.txt`, `sitemap.xml` e link canônico `https://paletres.prazocerto.me/` (os links `?p=` contam como a mesma página). | Should |
+| RF-34 | **Estrela no GitHub**: no Sobre, ao lado do texto, um card convida a dar uma estrela no repositório (`github.com/marioluciofjr/paletres`), com explicação para leigos e link em nova aba. No celular, o card desce para baixo do texto. | Could |
 | RF-30 | **Passos seguidos** (v1.1.0): a ordem da página é Passo 1 (Escolha) → 2 (Confira) → 3 (Teste) → 4 (Exporte) e só depois os extras (Daltonismo, Harmonias, Tons), cada um com uma etiqueta que diz se usa a paleta atual ou cria outra. | Must |
 
 ## 5. Requisitos não funcionais

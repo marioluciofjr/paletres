@@ -1977,9 +1977,53 @@
 }
 
 /* ---------- Sobre ---------- */
+/* Sobre em duas colunas: o texto e, ao lado, o convite para dar uma estrela no GitHub. */
+.sobre__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 68ch) minmax(260px, 360px);
+  gap: var(--space-12);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .sobre__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}
+
 .sobre__text {
   max-width: 68ch;
   font-size: 1.125rem;
+}
+
+.star-cta {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.star-cta p {
+  margin: 0;
+}
+
+.star-cta__icon .icon {
+  width: 40px;
+  height: 40px;
+  color: var(--ciano);
+}
+
+.star-cta__title {
+  margin: 0;
+  color: var(--ciano);
+}
+
+.star-cta__note {
+  font-size: 0.875rem;
+}
+
+.star-cta__btn {
+  margin-top: var(--space-2);
 }
 
 .sobre__sign {

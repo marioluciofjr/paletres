@@ -336,3 +336,29 @@ test.describe('Mecanismos de busca', () => {
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://paletres.prazocerto.me/');
   });
 });
+
+// CTA "Dar uma estrela no GitHub" ao lado do Sobre (pedido do Mário).
+test.describe('Estrela no GitHub', () => {
+  test('o Sobre tem o convite para dar uma estrela, abrindo o repositório em nova aba', async ({ page }) => {
+    await page.goto('/');
+    const card = page.locator('#sobre .star-cta');
+    await expect(card).toContainText('estrela');
+    const link = card.getByRole('link', { name: /Dar uma estrela no GitHub/ });
+    await expect(link).toHaveAttribute('href', 'https://github.com/marioluciofjr/paletres');
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', /noopener/);
+    await expect(link).toContainText('abre em nova aba');
+  });
+
+  test('no computador o card fica ao lado do texto; no celular, embaixo', async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    await page.goto('/');
+    const texto = await page.locator('#sobre .sobre__text').boundingBox();
+    const card = await page.locator('#sobre .star-cta').boundingBox();
+    expect(card.x).toBeGreaterThan(texto.x + texto.width - 1);
+    await page.setViewportSize({ width: 390, height: 800 });
+    const texto2 = await page.locator('#sobre .sobre__text').boundingBox();
+    const card2 = await page.locator('#sobre .star-cta').boundingBox();
+    expect(card2.y).toBeGreaterThan(texto2.y + texto2.height - 1);
+  });
+});

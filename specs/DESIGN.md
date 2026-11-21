@@ -66,7 +66,7 @@ Ordem da v1.1.0 (os passos 1 a 4 ficam seguidos, para não quebrar a linha de ra
 2. **Portão** (`#comecar`, só antes de gerar): 3 círculos tracejados, "Sua paleta ainda está vazia" e o botão "Gerar paleta". A ferramenta (`#ferramenta`) fica escondida até o clique.
 3. **Passo 1 de 4 · Escolha** (`#paleta`), **Passo 2 de 4 · Confira** (`#comparacoes`), **Passo 3 de 4 · Teste** (`#pratica`) e **Passo 4 de 4 · Exporte** (`#exportar`).
 4. **Extras**, cada um com uma etiqueta antes do título: **Daltonismo** ("Usa a sua paleta atual"), **Harmonias** ("Cria uma paleta nova") e **Tints e shades** ("Variações da sua paleta").
-5. **Aprenda** (`#aprenda`), com a fonte oficial no fim de cada card (inclui "Cores em imagens com IA generativa", com o link de Psicologia das Cores); **Sobre** (`#sobre`); a faixa ciano do **CTA da Prazo Certo**; e o **Rodapé** em 3 colunas: logo de 320px, contatos e o Clawd com o balão do crédito (no tablet, a logo fica em cima; no celular, tudo empilhado).
+5. **Aprenda** (`#aprenda`), com a fonte oficial no fim de cada card (inclui "Cores em imagens com IA generativa", com o link de Psicologia das Cores); **Sobre** (`#sobre`), com o texto à esquerda e, à direita, o card roxo "Gostou do Paletrês?" para dar uma estrela no GitHub (no tema escuro, ganha borda ciano; no celular, desce para baixo do texto); a faixa ciano do **CTA da Prazo Certo**; e o **Rodapé** em 3 colunas: logo de 320px, contatos e o Clawd com o balão do crédito (no tablet, a logo fica em cima; no celular, tudo empilhado).
 
 Detalhe de cada seção (ordem antiga da v1.0.0 mantida abaixo como referência de conteúdo):
 

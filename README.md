@@ -6,7 +6,7 @@
 ![license - Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)
 ![versão - 1.2.0](https://img.shields.io/badge/vers%C3%A3o-1.2.0-230023)
 ![acessibilidade - WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
-![testes - 268 Vitest + 63 Playwright](https://img.shields.io/badge/testes-268%20Vitest%20%2B%2063%20Playwright-230023)
+![testes - 279 Vitest + 69 Playwright](https://img.shields.io/badge/testes-279%20Vitest%20%2B%2069%20Playwright-230023)
 ![site - prazocerto.me](https://img.shields.io/badge/site-prazocerto.me-230023)
 ![linkedin - @marioluciofjr](https://img.shields.io/badge/linkedin-marioluciofjr-blue)
 
@@ -74,7 +74,7 @@ O site é uma página única (one page). Ele abre vazio, com 3 círculos "?". O 
 | Daltonismo | Sim | Mostra a paleta como pessoas com protanopia, deuteranopia, tritanopia e acromatopsia veem |
 | Harmonias do círculo cromático | Cria uma paleta nova | 11 harmonias, inclusive proporção áurea, Fibonacci e âncora de contraste, num rascunho que só substitui a sua paleta no clique em "Usar esta paleta" |
 | Tons claros e escuros | Sim | 9 tons mais claros e 9 mais escuros de cada cor. Um clique copia o HEX |
-| Paleta a partir de uma imagem (no Passo 3) | Cria uma paleta nova | Acha até 6 cores principais de uma foto, ilustração ou print, mostra num mosaico e sugere o melhor trio com contraste. Você também pode escolher as 3 cores no mosaico |
+| Paleta a partir de uma imagem (no Passo 3) | Cria uma paleta nova | Acha até 6 cores principais de uma foto, ilustração ou print, mostra num mosaico e sugere o melhor trio com contraste. Você também pode escolher as 3 cores no mosaico. A imagem fica em miniatura, para você lembrar qual escolheu |
 
 ### Para quem não é designer
 
@@ -82,6 +82,7 @@ O site é uma página única (one page). Ele abre vazio, com 3 círculos "?". O 
 - Cada termo técnico tem um botão "O que é isso?" com a explicação ali mesmo.
 - A seção "Aprenda" explica contraste, harmonias, proporção áurea, Fibonacci, regra 60-30-10, tons claros e escuros, daltonismo, color grading no cinema e o papel das cores em imagens geradas por IA. Cada explicação traz o link de uma fonte oficial.
 - Nada se perde: Desfazer, Refazer e "Recuperar minha paleta" depois de um "Começar do zero".
+- Sem rolar a página de volta: o botão "Voltar ao Passo 1", no canto da tela, leva direto às 3 cores.
 
 ### Arquitetura do código
 

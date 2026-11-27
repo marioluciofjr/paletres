@@ -1341,6 +1341,26 @@
   margin: 0;
 }
 
+/* Miniatura da imagem escolhida (até 160 px, o tamanho da análise). Moldura preta: é imagem do usuário. */
+.image-palette__thumb {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  margin: 0;
+}
+
+.image-palette__thumb canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-palette__thumb figcaption {
+  max-width: 100%;
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
 .image-palette__result {
   display: grid;
   gap: var(--space-4);
@@ -1527,6 +1547,48 @@ button.mosaic__tile {
 
   .mosaic__tile {
     padding: var(--space-1) var(--space-2);
+  }
+}
+
+/* ---------- Botão fixo "Voltar ao Passo 1" (RF-36) ---------- */
+/* Canto inferior direito; abaixo do aviso (toast, z-index 80) e do menu. Sem animação de opacidade (regra da marca). */
+.to-step1 {
+  position: fixed;
+  right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 70;
+}
+
+/* .btn usa display: inline-flex, que venceria o atributo hidden. */
+.to-step1[hidden] {
+  display: none;
+}
+
+/*
+ * Halo da cor da página em volta do botão (3px, o mesmo do outline-offset do foco).
+ * O botão passa por cima de cards roxos: sem o halo, no tema claro, botão roxo e anel de foco roxo
+ * sumiriam sobre o roxo (auditoria a11y-web A2). Cinza no claro, roxo no escuro (pares da marca).
+ */
+.to-step1 {
+  box-shadow: 0 0 0 3px var(--cinza);
+}
+
+[data-theme='dark'] .to-step1 {
+  box-shadow: 0 0 0 3px var(--roxo);
+}
+
+/*
+ * Com o botão na tela, a rolagem automática (Tab, âncoras) deixa uma faixa livre embaixo:
+ * o elemento focado nunca fica escondido atrás do botão (WCAG 2.4.11, auditoria a11y-web A1).
+ */
+html:has(.to-step1:not([hidden])) {
+  scroll-padding-bottom: calc(var(--target) + 2 * var(--space-4) + env(safe-area-inset-bottom, 0px));
+}
+
+/* Em telas estreitas, o aviso (toast) ocupa quase a largura toda: ele sobe para cima do botão (B1). */
+@media (max-width: 480px) {
+  body:has(.to-step1:not([hidden])) .toast {
+    bottom: calc(var(--target) + var(--space-4) * 2 + env(safe-area-inset-bottom, 0px));
   }
 }
 

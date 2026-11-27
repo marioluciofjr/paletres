@@ -12,7 +12,9 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
   - Branco e preto (quase sempre o fundo) só entram se faltarem cores ou se ocuparem 40% da imagem ou mais. Quando ficam de fora, a tela avisa.
   - 1 cor: carregar outra imagem ou gerar a paleta monocromática. 2 cores: carregar outra imagem ou gerar a 3ª cor com um tom claro ou escuro de uma delas.
   - Escolha manual: clique em 3 peças do mosaico para montar o seu trio.
+  - A imagem escolhida aparece em miniatura, com o nome do arquivo.
   - A paleta só muda no clique em "Usar esta paleta", com Desfazer. A imagem é analisada no navegador e não é enviada.
+- **Botão "Voltar ao Passo 1"**, fixo no canto da tela: aparece quando você já passou da seção "Escolha suas 3 cores" e leva de volta para ela, sem precisar rolar a página.
 
 ### Alterado
 

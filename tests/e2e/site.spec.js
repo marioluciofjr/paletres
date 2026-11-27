@@ -469,3 +469,74 @@ test.describe('Tons claros e escuros (RF-08)', () => {
     await expect(page.locator('.tint-cell').first()).toHaveAttribute('aria-label', /^Claro 90% da cor A/);
   });
 });
+
+test.describe('Miniatura da imagem e botão "Voltar ao Passo 1" (RF-35 e RF-36)', () => {
+  test('a imagem escolhida aparece em miniatura, com o nome do arquivo', async ({ page }) => {
+    await page.goto(BRAND);
+    const panel = page.locator('[data-component="image-palette"]');
+    await expect(panel.locator('.image-palette__thumb')).toBeHidden();
+    const buffer = await stripesPng(page, ['#E63946', '#2A9D8F', '#F4A261']);
+    await panel.locator('input[type="file"]').setInputFiles({ name: 'pantanal.png', mimeType: 'image/png', buffer });
+    const thumb = panel.locator('.image-palette__thumb');
+    await expect(thumb).toBeVisible();
+    await expect(thumb.getByRole('img', { name: 'Imagem escolhida: pantanal.png' })).toBeVisible();
+    const box = await thumb.locator('canvas').boundingBox();
+    expect(box.width).toBeGreaterThan(50);
+    expect(box.width).toBeLessThanOrEqual(170);
+  });
+
+  test('o botão aparece depois do Passo 1 e leva de volta às 3 cores, sem mudar o link', async ({ page }) => {
+    await page.goto(BRAND);
+    const back = page.locator('[data-component="to-step1"]');
+    await expect(back).toBeHidden();
+    await page.locator('#pratica').scrollIntoViewIfNeeded();
+    await expect(back).toBeVisible();
+    const box = await back.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    const url = page.url();
+    await back.click();
+    await expect(page.locator('#paleta-title')).toBeFocused();
+    await expect(page.locator('#paleta-title')).toBeInViewport();
+    expect(page.url()).toBe(url);
+    await expect(back).toBeHidden();
+  });
+
+  test('com Tab, o elemento focado nunca fica escondido atrás do botão (WCAG 2.4.11)', async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 700 });
+    await page.goto(BRAND);
+    const cell = page.locator('.tint-cell').nth(9);
+    await page.locator('#pratica').scrollIntoViewIfNeeded();
+    await expect(page.locator('[data-component="to-step1"]')).toBeVisible();
+    await cell.focus();
+    const c = await cell.boundingBox();
+    const b = await page.locator('[data-component="to-step1"]').boundingBox();
+    const hidden = c.x >= b.x && c.y >= b.y && c.x + c.width <= b.x + b.width && c.y + c.height <= b.y + b.height;
+    expect(hidden).toBe(false);
+    expect(c.y + c.height).toBeLessThanOrEqual(b.y);
+  });
+
+  test('no tema claro, o botão tem um halo cinza (o foco aparece até sobre cards roxos)', async ({ page }) => {
+    await page.goto(BRAND);
+    await page.locator('#pratica').scrollIntoViewIfNeeded();
+    const shadow = await page.locator('[data-component="to-step1"]').evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(shadow).toContain('rgb(242, 242, 242)');
+  });
+
+  test('antes de "Gerar paleta", o botão não aparece nem no fim da página', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.site-footer').scrollIntoViewIfNeeded();
+    await expect(page.locator('[data-component="to-step1"]')).toBeHidden();
+  });
+
+  test('no celular, o botão cabe na tela e não cria rolagem lateral', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto(BRAND);
+    await page.locator('#pratica').scrollIntoViewIfNeeded();
+    const back = page.locator('[data-component="to-step1"]');
+    await expect(back).toBeVisible();
+    const box = await back.boundingBox();
+    expect(box.x + box.width).toBeLessThanOrEqual(320);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBe(0);
+  });
+});

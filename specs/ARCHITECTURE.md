@@ -50,7 +50,7 @@
 | `app` | `PaletteStore`, `EventBus`, `GestureRecorder` | Guardar o estado (inclusive `started`, do RF-25) e avisar quem está inscrito. |
 | `app` | `PaletteGenerator` | Gerar uma paleta por harmonia + garantia. Usado pelo `start()` da store e pelo rascunho. |
 | `app` | `HarmonyWorkbench` | O rascunho das harmonias (RF-26): mesma interface de modelo da store, evento próprio `draft:changed`. |
-| `ui` | `PaletteGate`, `SiteMenu`, `ParallaxScene` | Portão do início (RF-25), menu do celular e parallax das 3 bolas do início (RF-14). |
+| `ui` | `PaletteGate`, `SiteMenu`, `ParallaxScene`, `BackToStepButton` | Portão do início (RF-25), menu do celular, parallax das 3 bolas do início (RF-14) e o botão fixo "Voltar ao Passo 1" (RF-36). |
 | `ui` | um componente por seção | Desenhar e escutar o DOM. |
 
 ## 3. Padrões de projeto

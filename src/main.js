@@ -36,6 +36,7 @@ import { HarmonyPanel } from './ui/HarmonyPanel.js';
 import { UsageMockupPanel } from './ui/UsageMockupPanel.js';
 import { ColorGradingPanel } from './ui/ColorGradingPanel.js';
 import { ImagePalettePanel } from './ui/ImagePalettePanel.js';
+import { BackToStepButton } from './ui/BackToStepButton.js';
 import { TintShadeTable } from './ui/TintShadeTable.js';
 import { ColorBlindPreview } from './ui/ColorBlindPreview.js';
 import { ExportPanel } from './ui/ExportPanel.js';
@@ -85,6 +86,12 @@ class PaletresApp {
       new SiteMenu({ header: this.#slot('header') }),
       new ParallaxScene({ scene: this.#slot('hero'), stage: this.#slot('hero-art'), win: this.#win }),
       new PaletteGate({ doc: this.#doc, win: this.#win, store, bus, toast }),
+      new BackToStepButton({
+        button: this.#slot('to-step1'),
+        target: this.#doc.getElementById('paleta'),
+        focusTarget: this.#doc.getElementById('paleta-title'),
+        win: this.#win,
+      }),
       new HeroArt({ root: this.#slot('hero-art'), store, bus }),
       new PresetBar({ root: this.#slot('presets'), store }),
       new HistoryToolbar({ root: this.#slot('history'), store, bus, doc: this.#doc, toast }),

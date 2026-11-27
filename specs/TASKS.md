@@ -52,6 +52,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 | T35 | Paleta a partir de uma imagem: `Oklab`, `ColorQuantizer`, `DominantColorPicker`, `ImagePaletteExtractor`, `MosaicLayout`, `PaletteSuggester`, `ImageFileLoader` (extraído do color grading), `SampleImage` e `ImagePalettePanel` | RF-35, ADR-17, ADR-18, ADR-19 | Claude | ✅ |
 | T36 | "Tints e shades" → "Tons claros e escuros" (título, Aprenda, Sobre, rótulos das células, README e specs) | RF-08 | Claude | ✅ |
 | T37 | Auditoria a11y-web do painel da imagem: 3 achados altos (foco visível no tema escuro, foco da peça escolhida, foco perdido em "Voltar à sugestão automática"), 3 médios e 4 baixos corrigidos | RNF-01, RF-35 | Claude | ✅ |
+| T38 | Miniatura da imagem escolhida no painel da imagem e botão fixo "Voltar ao Passo 1" (`BackToStepButton`, ícone `arrow-up`), com a 2ª auditoria a11y-web: faixa livre na rolagem (2.4.11), halo para o foco sobre o roxo (2.4.7), botão que não some com o foco, aviso acima do botão no celular e miniatura nomeada pela legenda | RF-35, RF-36, RNF-01 | Claude | ✅ |
 | T28 | Licença Apache-2.0 (LICENSE + NOTICE), versão 1.1.0, CHANGELOG e README de portfólio | RNF-03 | Claude | ✅ |
 | T29 | Auditorias da v1.1.0 (a11y-web, acessibilidade em 2 ciclos, UX, motion e casos extremos) e correções | RNF-01, RNF-09 | Claude | ✅ |
 
@@ -59,7 +60,7 @@ Legenda: ✅ concluída · 🔄 em andamento · ⏳ pendente
 
 v1.1.0 concluída (T18–T34) e publicada: código em https://github.com/marioluciofjr/paletres (público) e site em https://paletres.prazocerto.me.
 
-v1.2.0 (T35–T37): paleta a partir de uma imagem e "Tons claros e escuros", com commit local. Próximo: teste manual do Mário e, com o aval dele, push (a Vercel publica sozinha).
+v1.2.0 (T35–T38): paleta a partir de uma imagem e "Tons claros e escuros", com commit local. Próximo: teste manual do Mário e, com o aval dele, push (a Vercel publica sozinha).
 
 ## Backlog (fora da v1)
 

@@ -37,10 +37,14 @@ export class ImagePalettePanel {
   #loader;
   #extractor;
   #suggester;
+  #sample;
   #wcag = new Wcag2Contrast();
 
   #fileInput;
   #fileName;
+  #thumb; // <figure> com a miniatura da imagem analisada
+  #thumbCanvas;
+  #thumbCaption;
   #error;
   #status;
   #result;
@@ -50,7 +54,8 @@ export class ImagePalettePanel {
   #auto = null; // sugestão automática (guardada para "Voltar à sugestão automática")
   #suggestion = null;
 
-  constructor({ root, store, bus, toast, loader = new ImageFileLoader(), extractor = new ImagePaletteExtractor(), suggester = new PaletteSuggester() }) {
+  /** `sample`: a imagem de exemplo (desenho + descrição). Nos testes, entra um dublê sem canvas. */
+  constructor({ root, store, bus, toast, loader = new ImageFileLoader(), extractor = new ImagePaletteExtractor(), suggester = new PaletteSuggester(), sample = SampleImage }) {
     this.#root = root;
     this.#store = store;
     this.#bus = bus;
@@ -58,6 +63,7 @@ export class ImagePalettePanel {
     this.#loader = loader;
     this.#extractor = extractor;
     this.#suggester = suggester;
+    this.#sample = sample;
   }
 
   mount() {
@@ -83,12 +89,21 @@ export class ImagePalettePanel {
       this.#fileName,
     ]);
     this.#bindDrop(drop);
+    // Miniatura: a pessoa lembra qual imagem escolheu enquanto olha o mosaico (RF-35, pedido do Mário).
+    // É a mesma versão pequena usada na análise (até 160 px), então não custa nada a mais.
+    // O nome acessível da miniatura vem da legenda visível: o leitor de tela não repete o nome do arquivo
+    // (auditoria a11y-web B2). Como é a imagem da própria pessoa, o nome do arquivo é a melhor identificação.
+    const captionId = Dom.uid('imagem-paleta-legenda');
+    this.#thumbCaption = Dom.el('figcaption', { id: captionId });
+    this.#thumbCanvas = Dom.el('canvas', { class: 'frame', role: 'img', 'aria-labelledby': captionId });
+    this.#thumb = Dom.el('figure', { class: 'image-palette__thumb', hidden: true }, [this.#thumbCanvas, this.#thumbCaption]);
     this.#error = Dom.el('p', { id: errorId, class: 'field__error', role: 'alert' });
     this.#status = Dom.el('p', { class: 'grading__status', role: 'status' });
     this.#result = Dom.el('div', { class: 'image-palette__result' });
 
     const controls = Dom.el('div', { class: 'grading__controls' }, [
       drop,
+      this.#thumb,
       Dom.el('button', { type: 'button', class: 'btn btn--ghost', 'data-action': 'image-palette-sample', on: { click: () => this.useSample() } }, [Icons.svg('image'), 'Usar imagem de exemplo']),
       this.#error,
       this.#status,
@@ -122,17 +137,37 @@ export class ImagePalettePanel {
     }
     this.#fileName.textContent = file.name;
     this.#fileName.title = file.name;
-    this.#analyze(pixels, `na imagem "${file.name}"`);
+    if (this.#analyze(pixels, `na imagem "${file.name}"`)) this.#showThumb(pixels, `Imagem escolhida: ${file.name}`);
   }
 
   /** "Usar imagem de exemplo": a mesma paisagem do color grading. */
   useSample() {
     this.#clearError();
-    const canvas = SampleImage.draw(document);
+    const canvas = this.#sample.draw(document);
     const pixels = this.#loader.pixelsFrom(canvas, canvas.width, canvas.height, ANALYSIS_SIDE);
     this.#fileName.textContent = 'Imagem de exemplo';
     this.#fileName.title = '';
-    this.#analyze(pixels, 'na imagem de exemplo');
+    // Aqui sabemos o que a imagem mostra, então a legenda descreve de verdade (auditoria a11y-web B3).
+    if (this.#analyze(pixels, 'na imagem de exemplo')) this.#showThumb(pixels, `Imagem de exemplo: ${this.#sample.DESCRIPTION}`);
+  }
+
+  /** Desenha a miniatura a partir dos pixels já lidos (sem abrir o arquivo de novo). `caption`: a legenda visível. */
+  #showThumb(pixels, caption) {
+    const canvas = this.#thumbCanvas;
+    canvas.width = pixels.width;
+    canvas.height = pixels.height;
+    // No navegador, os pixels já vêm como ImageData. Nos testes (jsdom), não há canvas: só montamos o rótulo.
+    const ctx = typeof ImageData === 'undefined' ? null : canvas.getContext('2d');
+    if (ctx) {
+      const data = pixels instanceof ImageData ? pixels : new ImageData(pixels.data, pixels.width, pixels.height);
+      ctx.putImageData(data, 0, 0);
+    }
+    this.#thumbCaption.textContent = caption;
+    this.#thumb.hidden = false;
+  }
+
+  #hideThumb() {
+    this.#thumb.hidden = true;
   }
 
   #bindDrop(zone) {
@@ -150,6 +185,7 @@ export class ImagePalettePanel {
     this.#fileInput.setAttribute('aria-invalid', 'true');
     this.#status.textContent = '';
     this.#analysis = null;
+    this.#hideThumb(); // a miniatura antiga não vale mais
     this.#renderEmpty();
   }
 
@@ -176,7 +212,7 @@ export class ImagePalettePanel {
     const { colors, ignored, found } = this.#extractor.extract(pixels);
     if (colors.length === 0) {
       this.#fail('Não encontrei cores nesta imagem: ela parece toda transparente. Tente outra.');
-      return;
+      return false;
     }
     this.#analysis = { colors, ignored, found, label };
     this.#choice = [];
@@ -187,6 +223,7 @@ export class ImagePalettePanel {
     this.#announce(colors.length >= 3
       ? 'Pronto! Confira o mosaico e a paleta sugerida.'
       : 'Pronto! Confira o mosaico e escolha o que fazer.');
+    return true;
   }
 
   // ---------- ações ----------
@@ -259,6 +296,7 @@ export class ImagePalettePanel {
     this.#status.textContent = '';
     this.#fileName.textContent = 'Nenhuma imagem escolhida.';
     this.#fileName.title = '';
+    this.#hideThumb();
     this.#renderEmpty();
   }
 

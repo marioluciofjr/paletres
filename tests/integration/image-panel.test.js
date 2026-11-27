@@ -144,6 +144,56 @@ describe('ImagePalettePanel: escolha manual e aplicação', () => {
   });
 });
 
+describe('ImagePalettePanel: miniatura da imagem escolhida', () => {
+  const thumb = () => root.querySelector('.image-palette__thumb');
+
+  it('começa escondida e aparece com o nome do arquivo depois da análise', async () => {
+    const panel = new ImagePalettePanel({ root, store, bus, toast, loader: fakeLoader(evenImage(VIVID.slice(0, 6))) });
+    panel.mount();
+    expect(thumb().hidden).toBe(true);
+    await panel.loadFile({ name: 'pantanal.jpg', type: 'image/jpeg', size: 1000 });
+    expect(thumb().hidden).toBe(false);
+    // O nome acessível vem da legenda visível (sem repetir o nome duas vezes para o leitor de tela).
+    const img = thumb().querySelector('[role="img"]');
+    expect(img.hasAttribute('aria-label')).toBe(false);
+    expect(root.querySelector(`#${img.getAttribute('aria-labelledby')}`).textContent).toBe('Imagem escolhida: pantanal.jpg');
+  });
+
+  it('a imagem de exemplo é descrita pelo que mostra', async () => {
+    // O jsdom não tem canvas: a imagem de exemplo e o carregador são dublês (injeção de dependência).
+    const sample = { DESCRIPTION: 'paisagem de exemplo com céu, sol, montanhas e lago', draw: () => ({ width: 100, height: 72 }) };
+    const loader = { pixelsFrom: () => evenImage(VIVID.slice(0, 6)), readPixels: async () => null };
+    const panel = new ImagePalettePanel({ root, store, bus, toast, loader, sample });
+    panel.mount();
+    panel.useSample();
+    expect(thumb().querySelector('figcaption').textContent).toBe('Imagem de exemplo: paisagem de exemplo com céu, sol, montanhas e lago');
+  });
+
+  it('a miniatura tem o tamanho da versão analisada (é uma miniatura de verdade)', async () => {
+    await mountWith(evenImage(VIVID.slice(0, 6)));
+    const canvas = thumb().querySelector('canvas');
+    expect(canvas.width).toBe(100); // a imagem sintética tem 100 px de largura
+  });
+
+  it('some no "Começar do zero"', async () => {
+    await mountWith(evenImage(VIVID.slice(0, 6)));
+    store.reset();
+    expect(thumb().hidden).toBe(true);
+  });
+
+  it('some quando o próximo arquivo dá erro (não fica a miniatura de uma imagem que não vale mais)', async () => {
+    let next = evenImage(VIVID.slice(0, 6));
+    const loader = { async readPixels() { if (next instanceof Error) throw next; return next; } };
+    const panel = new ImagePalettePanel({ root, store, bus, toast, loader });
+    panel.mount();
+    await panel.loadFile({ name: 'boa.png', type: 'image/png', size: 1 });
+    expect(thumb().hidden).toBe(false);
+    next = new ImageLoadError('Formato não aceito. Use uma foto JPG, PNG ou WebP.');
+    await panel.loadFile({ name: 'nota.txt', type: 'text/plain', size: 1 });
+    expect(thumb().hidden).toBe(true);
+  });
+});
+
 describe('ImagePalettePanel: foco e anúncios (auditoria a11y-web da v1.2.0)', () => {
   const status = () => root.querySelector('[role="status"]').textContent;
 

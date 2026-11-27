@@ -1,6 +1,6 @@
 {
   "name": "paletres",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Paletrês: gere 3 cores e confira as 6 combinações de contraste pela WCAG 2.2, teste em mockups e fotos, gere harmonias (inclusive proporção áurea e Fibonacci) e exporte.",
   "type": "module",
   "private": true,

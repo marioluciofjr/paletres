@@ -3,6 +3,22 @@
 Todas as mudanças importantes do Paletrês ficam registradas aqui.
 O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2026-11-27
+
+### Adicionado
+
+- **Paleta a partir de uma imagem** (no Passo 3, antes do color grading): envie uma foto, ilustração ou print, ou use a imagem de exemplo. O Paletrês acha até 6 cores principais e mostra num **mosaico**: linha de 3, grade 2 × 2, pirâmide de base 3 (5 cores) ou grade 2 × 3. Depois, sugere o melhor trio com contraste **AAA** e, se o AAA pedir mudar demais as cores da imagem, **AA**, avisando.
+  - Mais de 6 cores: entram as 5 de maior área e 1 vaga para a cor mais viva.
+  - Branco e preto (quase sempre o fundo) só entram se faltarem cores ou se ocuparem 40% da imagem ou mais. Quando ficam de fora, a tela avisa.
+  - 1 cor: carregar outra imagem ou gerar a paleta monocromática. 2 cores: carregar outra imagem ou gerar a 3ª cor com um tom claro ou escuro de uma delas.
+  - Escolha manual: clique em 3 peças do mosaico para montar o seu trio.
+  - A paleta só muda no clique em "Usar esta paleta", com Desfazer. A imagem é analisada no navegador e não é enviada.
+
+### Alterado
+
+- **"Tints e shades" agora é "Tons claros e escuros"** em todo o site (título da seção, card do Aprenda, Sobre e rótulos das células).
+- O código que abre imagens virou uma classe só (`ImageFileLoader`), usada pelo color grading e pela paleta da imagem.
+
 ## [1.1.0] - 2026-11-15
 
 Publicada em **https://paletres.prazocerto.me** (Vercel).

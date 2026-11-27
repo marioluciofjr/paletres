@@ -1,5 +1,5 @@
 /**
- * TintShadeTable — escala de tints e shades de cada cor (RF-08).
+ * TintShadeTable — escala de tons claros e escuros de cada cor (RF-08).
  * Um clique copia o HEX ou aplica o tom na paleta, conforme a opção escolhida.
  *
  * Teclado ("roving tabindex"): cada faixa é UMA parada de Tab; dentro dela, as setas

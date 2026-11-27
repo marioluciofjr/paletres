@@ -148,12 +148,14 @@
             <header class="section__head">
               <p class="eyebrow">Passo 3 de 4 · Teste</p>
               <h2 id="pratica-title">Teste na prática</h2>
-              <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10. Depois, aplique as 3 cores numa foto.
+              <p class="section__lead">Veja sua paleta num site e num app usando a regra 60-30-10. Também dá para tirar uma paleta nova de uma imagem e, por fim, aplicar as 3 cores numa foto.
                 <button class="info-btn" type="button" data-info="603010">O que é 60-30-10?</button></p>
               <div class="info-panel" id="info-603010" hidden>Uma regra simples de decoração e design: <strong>60%</strong> da tela com a cor principal (o fundo), <strong>30%</strong> com a cor de apoio (cards, barras) e <strong>10%</strong> com a cor de destaque (botões e links).
                 <span class="info-panel__source">Fonte: <a href="https://www.adobe.com/uk/creativecloud/design/discover/color-theory.html" target="_blank" rel="noopener noreferrer">Adobe, guia de teoria das cores<span class="visually-hidden"> (abre em nova aba)</span></a></span></div>
             </header>
             <div data-component="mockups"></div>
+            <!-- Paleta a partir de uma imagem (RF-35): cria uma paleta nova, só aplicada no clique em "Usar esta paleta". -->
+            <div class="image-palette card" data-component="image-palette"></div>
             <div class="grading card" data-component="grading"></div>
           </div>
         </section>
@@ -201,8 +203,8 @@
           <div class="container">
             <header class="section__head">
               <p class="eyebrow"><span class="tag-new">Variações da sua paleta</span> Extra</p>
-              <h2 id="tons-title">Tints e shades</h2>
-              <p class="section__lead">Versões mais claras (tints, misturadas com branco) e mais escuras (shades, misturadas com preto) de cada cor, de 10% em 10%.
+              <h2 id="tons-title">Tons claros e escuros</h2>
+              <p class="section__lead">Versões mais claras (misturadas com branco) e mais escuras (misturadas com preto) de cada cor, de 10% em 10%.
                 <a class="source-link" href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix" target="_blank" rel="noopener noreferrer">Fonte: MDN, função color-mix()<span class="visually-hidden"> (abre em nova aba)</span></a></p>
               <p class="callout callout--note">Clicar num tom só <strong>copia o código</strong>: a sua paleta não muda. Se você escolher <strong>Usar na paleta</strong>, a cor troca nos passos 1 a 4, e o botão Desfazer (no Passo 1) traz a anterior de volta.</p>
             </header>
@@ -281,8 +283,9 @@
                 <a href="https://www.nngroup.com/articles/color-enhance-design/" target="_blank" rel="noopener noreferrer">Nielsen Norman Group<span class="visually-hidden"> (abre em nova aba)</span></a></p>
             </article>
             <article class="learn__item card zone-roxo">
-              <h3>Tints e shades</h3>
-              <p><strong>Tint</strong> é uma cor misturada com branco (fica mais clara). <strong>Shade</strong> é uma cor misturada com preto (fica mais escura). Com eles você cria fundos suaves, bordas e estados de botão sem sair da paleta.</p>
+              <h3>Tons claros e escuros</h3>
+              <p>O <strong>tom claro</strong> é a cor misturada com branco. O <strong>tom escuro</strong> é a cor misturada com preto. Com eles você cria fundos suaves, bordas e estados de botão sem sair da paleta.</p>
+              <p>Em inglês, eles se chamam <em>tint</em> e <em>shade</em>. São os nomes que você vai encontrar em ferramentas de design e nas fontes abaixo.</p>
               <p class="sources">Fontes oficiais:
                 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix" target="_blank" rel="noopener noreferrer">MDN, color-mix()<span class="visually-hidden"> (abre em nova aba)</span></a> ·
                 <a href="https://www.w3.org/TR/css-color-4/" target="_blank" rel="noopener noreferrer">W3C, CSS Color 4<span class="visually-hidden"> (abre em nova aba)</span></a></p>
@@ -329,7 +332,7 @@
           <div class="sobre__grid">
           <div class="sobre__text">
             <p>A ideia surgiu de um incômodo meu. Toda vez que eu ia conferir o contraste pela WCAG, as ferramentas só deixavam comparar <strong>duas cores</strong>. E eu quase sempre trabalho com <strong>três cores</strong> numa paleta. Então eu fazia a conta três vezes e anotava tudo.</p>
-            <p>Também resolvi juntar num lugar só tudo de legal que eu via em outros sites para designers: harmonias do círculo cromático, tints e shades, simulador de daltonismo, mockups e color grading. O Paletrês é um "Megazord" de recursos para analisar paletas de cores e tornar a vida de designers e de quem não é designer mais fácil.</p>
+            <p>Também resolvi juntar num lugar só tudo de legal que eu via em outros sites para designers: harmonias do círculo cromático, tons claros e escuros, simulador de daltonismo, mockups e color grading. O Paletrês é um "Megazord" de recursos para analisar paletas de cores e tornar a vida de designers e de quem não é designer mais fácil.</p>
             <p class="sobre__sign">Mário Lúcio, idealizador do Paletrês</p>
             <p class="sources sobre__inspo">Inspirado em:
               <a href="https://colorshark.io" target="_blank" rel="noopener noreferrer">Color Shark<span class="visually-hidden"> (abre em nova aba)</span></a> ·

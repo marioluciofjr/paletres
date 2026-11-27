@@ -19,16 +19,13 @@
 import { GradientMap } from '../domain/grading/GradientMap.js';
 import { Palette } from '../domain/palette/Palette.js';
 import { StoreEvent } from '../app/PaletteStore.js';
+import { ImageFileLoader, ImageLoadError } from '../infra/ImageFileLoader.js';
 import { Dom } from './Dom.js';
 import { Icons } from './Icons.js';
+import { SampleImage } from './SampleImage.js';
 
-const ACCEPTED = Object.freeze(['image/png', 'image/jpeg', 'image/webp']);
-const MAX_BYTES = 15 * 1024 * 1024;
 const MAX_SIDE = 1600; // tamanho de trabalho
 const PREVIEW_SIDE = 480; // tamanho da prévia rápida
-const MAX_SOURCE_SIDE = 12000; // acima disso, recusamos (evita travar a aba)
-const MIN_SOURCE_SIDE = 16;
-const MAX_SOURCE_PIXELS = 64_000_000; // 64 megapixels: acima disso a memória da aba pode estourar
 const FULL_DELAY = 200;
 
 const ZONES = Object.freeze([
@@ -49,6 +46,7 @@ export class ColorGradingPanel {
   #toast;
   #downloader;
   #win;
+  #loader;
   #before;
   #after;
   #divider;
@@ -70,13 +68,14 @@ export class ColorGradingPanel {
   #frame = 0;
   #fullTimer = null;
 
-  constructor({ root, store, bus, toast, downloader, win = window }) {
+  constructor({ root, store, bus, toast, downloader, win = window, loader = new ImageFileLoader(win) }) {
     this.#root = root;
     this.#store = store;
     this.#bus = bus;
     this.#toast = toast;
     this.#downloader = downloader;
     this.#win = win;
+    this.#loader = loader;
   }
 
   mount() {
@@ -89,7 +88,7 @@ export class ColorGradingPanel {
       id: fileId,
       type: 'file',
       class: 'visually-hidden',
-      accept: ACCEPTED.join(','),
+      accept: ImageFileLoader.ACCEPTED.join(','),
       on: { change: (e) => this.#load(e.target.files?.[0]) },
     });
     const drop = Dom.el('div', { class: 'dropzone' }, [
@@ -194,40 +193,20 @@ export class ColorGradingPanel {
   async #load(file) {
     this.#error.textContent = '';
     if (!file) return;
-    if (!ACCEPTED.includes(file.type)) return this.#fail('Formato não aceito. Use uma foto JPG, PNG ou WebP.');
-    if (file.size > MAX_BYTES) return this.#fail('Arquivo muito grande. O limite é 15 MB.');
-
+    try {
+      this.#loader.validate(file); // formato e tamanho: erro na hora, antes do "Processando…"
+    } catch (err) {
+      return this.#fail(err.message);
+    }
     this.#status.textContent = 'Processando sua foto…';
     this.#stage.setAttribute('aria-busy', 'true');
-    // 1º lemos só as dimensões (sem decodificar tudo) para recusar fotos gigantes antes de travar a aba.
-    const url = this.#win.URL.createObjectURL(file);
-    let img;
-    try {
-      img = await this.#readImage(url);
-    } catch {
-      this.#win.URL.revokeObjectURL(url);
-      return this.#fail('Não foi possível abrir esta imagem. Tente outro arquivo.');
-    }
-    const { naturalWidth: width, naturalHeight: height } = img;
-    const problem = this.#sizeProblem(width, height);
-    if (problem) {
-      this.#win.URL.revokeObjectURL(url);
-      return this.#fail(problem);
-    }
-    // 2º decodificamos já reduzida para o tamanho de trabalho (até 1600px).
-    const scale = Math.min(1, MAX_SIDE / Math.max(width, height));
+    // O carregador lê as dimensões, recusa fotos gigantes e decodifica já reduzida (até 1600px).
     let bitmap;
     try {
-      bitmap = await this.#win.createImageBitmap(img, {
-        resizeWidth: Math.max(1, Math.round(width * scale)),
-        resizeHeight: Math.max(1, Math.round(height * scale)),
-        resizeQuality: 'high',
-      });
-    } catch {
-      this.#win.URL.revokeObjectURL(url);
-      return this.#fail('Não foi possível abrir esta imagem. Tente outro arquivo.');
+      bitmap = await this.#loader.decode(file, MAX_SIDE);
+    } catch (err) {
+      return this.#fail(err instanceof ImageLoadError ? err.message : 'Não foi possível abrir esta imagem. Tente outro arquivo.');
     }
-    this.#win.URL.revokeObjectURL(url);
     this.#draw(bitmap, bitmap.width, bitmap.height);
     bitmap.close?.();
     // Só agora, com a foto aceita, mostramos o nome do arquivo.
@@ -237,27 +216,6 @@ export class ColorGradingPanel {
     this.#status.textContent = '';
     this.#stage.removeAttribute('aria-busy');
     this.#toast.show('Foto carregada.');
-  }
-
-  /** Carrega a imagem num <img> só para conhecer largura e altura. */
-  #readImage(url) {
-    return new Promise((resolve, reject) => {
-      const img = new this.#win.Image();
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('imagem inválida'));
-      img.src = url;
-    });
-  }
-
-  /** Devolve a mensagem de erro de tamanho, ou null se a imagem serve. */
-  #sizeProblem(width, height) {
-    if (Math.min(width, height) < MIN_SOURCE_SIDE) {
-      return `Imagem pequena demais (${width} × ${height} px). Use uma com pelo menos ${MIN_SOURCE_SIDE} px de cada lado.`;
-    }
-    if (Math.max(width, height) > MAX_SOURCE_SIDE || width * height > MAX_SOURCE_PIXELS) {
-      return `Imagem grande demais (${width} × ${height} px). Use uma com até ${MAX_SOURCE_SIDE} px no lado maior e até 64 megapixels.`;
-    }
-    return null;
   }
 
   /** Desenha a imagem reduzida, guarda os pixels originais e prepara a prévia rápida. */
@@ -287,41 +245,12 @@ export class ColorGradingPanel {
     this.#applyFull();
   }
 
-  /** Paisagem de exemplo desenhada no próprio navegador (céu, sol, montanhas e lago). */
+  /** Paisagem de exemplo desenhada no próprio navegador (a mesma da paleta a partir de imagem). */
   #useSample() {
-    const w = 1200;
-    const h = 750;
-    const c = document.createElement('canvas');
-    c.width = w;
-    c.height = h;
-    const ctx = c.getContext('2d');
-    const sky = ctx.createLinearGradient(0, 0, 0, h * 0.6);
-    sky.addColorStop(0, '#1d2b53');
-    sky.addColorStop(1, '#ffcf8a');
-    ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#fff6d8';
-    ctx.beginPath();
-    ctx.arc(w * 0.7, h * 0.38, 70, 0, Math.PI * 2);
-    ctx.fill();
-    const ridge = (y, amp, color, seed) => {
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(0, h);
-      for (let x = 0; x <= w; x += 20) ctx.lineTo(x, y + Math.sin(x / 90 + seed) * amp + Math.sin(x / 37 + seed * 2) * amp * 0.4);
-      ctx.lineTo(w, h);
-      ctx.fill();
-    };
-    ridge(h * 0.52, 40, '#7a5c8c', 1);
-    ridge(h * 0.62, 30, '#3d3359', 2);
-    const lake = ctx.createLinearGradient(0, h * 0.72, 0, h);
-    lake.addColorStop(0, '#9cc3d9');
-    lake.addColorStop(1, '#0d1b2a');
-    ctx.fillStyle = lake;
-    ctx.fillRect(0, h * 0.72, w, h * 0.28);
+    const c = SampleImage.draw(document);
     this.#error.textContent = '';
-    this.#draw(c, w, h);
-    this.#subject = 'paisagem de exemplo com céu, sol, montanhas e lago';
+    this.#draw(c, c.width, c.height);
+    this.#subject = SampleImage.DESCRIPTION;
     this.#fileName.textContent = 'Imagem de exemplo';
     this.#fileName.title = '';
     this.#toast.show('Imagem de exemplo carregada.');

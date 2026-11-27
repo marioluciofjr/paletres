@@ -1,4 +1,4 @@
-// Testes de tints e shades (RF-08).
+// Testes dos tons claros e escuros (RF-08). No código, "tint" = tom claro e "shade" = tom escuro.
 import { describe, it, expect } from 'vitest';
 import { Color } from '../../src/domain/color/Color.js';
 import { TintShadeGenerator } from '../../src/domain/tints/TintShadeGenerator.js';
@@ -17,8 +17,8 @@ describe('TintShadeGenerator', () => {
     expect(scale).toHaveLength(19);
     expect(scale[9].color.hex).toBe('#230023');
     expect(scale[9].label).toBe('Original');
-    expect(scale[0].label).toBe('Tint 90%');
-    expect(scale[18].label).toBe('Shade 90%');
+    expect(scale[0].label).toBe('Claro 90%');
+    expect(scale[18].label).toBe('Escuro 90%');
   });
 
   it('a escala vai do mais claro ao mais escuro', () => {

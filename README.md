@@ -4,9 +4,9 @@
 
 ![site no ar - paletres.prazocerto.me](https://img.shields.io/badge/site%20no%20ar-paletres.prazocerto.me-42ffff?labelColor=230023)
 ![license - Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)
-![versão - 1.1.0](https://img.shields.io/badge/vers%C3%A3o-1.1.0-230023)
+![versão - 1.2.0](https://img.shields.io/badge/vers%C3%A3o-1.2.0-230023)
 ![acessibilidade - WCAG 2.2 AA](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA-230023)
-![testes - 210 Vitest + 50 Playwright](https://img.shields.io/badge/testes-210%20Vitest%20%2B%2050%20Playwright-230023)
+![testes - 268 Vitest + 63 Playwright](https://img.shields.io/badge/testes-268%20Vitest%20%2B%2063%20Playwright-230023)
 ![site - prazocerto.me](https://img.shields.io/badge/site-prazocerto.me-230023)
 ![linkedin - @marioluciofjr](https://img.shields.io/badge/linkedin-marioluciofjr-blue)
 
@@ -64,7 +64,7 @@ O site é uma página única (one page). Ele abre vazio, com 3 círculos "?". O 
 |-------|----------------|----------|
 | 1. Escolha | Ajusta as 3 cores | Campo HEX, seletor visual, sliders de Matiz, Saturação e Brilho, 15 paletas prontas do Color Hunt, Sortear, Desfazer, Refazer e Começar do zero |
 | 2. Confira | Vê se dá para ler | As 3 comparações pela WCAG 2.2 (uma por par, com as duas prévias), veredito em linguagem simples e o botão Consertar contraste (AA ou AAA) |
-| 3. Teste | Vê a paleta em uso | Mockups de site e de app pela regra 60-30-10, com sugestão de qual cor vai no fundo, nos cards e nos botões, e color grading numa foto |
+| 3. Teste | Vê a paleta em uso | Mockups de site e de app pela regra 60-30-10, com sugestão de qual cor vai no fundo, nos cards e nos botões, paleta a partir de uma imagem (mosaico com até 6 cores e sugestão do trio com contraste AAA ou AA) e color grading numa foto |
 | 4. Exporte | Leva a paleta embora | Imagem PNG, variáveis CSS, JSON e link compartilhável (`?p=rrggbb-rrggbb-rrggbb`) |
 
 ### Ferramentas extras
@@ -73,13 +73,14 @@ O site é uma página única (one page). Ele abre vazio, com 3 círculos "?". O 
 |------------|-------------------|-----------|
 | Daltonismo | Sim | Mostra a paleta como pessoas com protanopia, deuteranopia, tritanopia e acromatopsia veem |
 | Harmonias do círculo cromático | Cria uma paleta nova | 11 harmonias, inclusive proporção áurea, Fibonacci e âncora de contraste, num rascunho que só substitui a sua paleta no clique em "Usar esta paleta" |
-| Tints e shades | Sim | 9 tons mais claros e 9 mais escuros de cada cor. Um clique copia o HEX |
+| Tons claros e escuros | Sim | 9 tons mais claros e 9 mais escuros de cada cor. Um clique copia o HEX |
+| Paleta a partir de uma imagem (no Passo 3) | Cria uma paleta nova | Acha até 6 cores principais de uma foto, ilustração ou print, mostra num mosaico e sugere o melhor trio com contraste. Você também pode escolher as 3 cores no mosaico |
 
 ### Para quem não é designer
 
 - Cada card abre com um veredito simples, como "Bom: pode usar em textos". Os números vêm depois.
 - Cada termo técnico tem um botão "O que é isso?" com a explicação ali mesmo.
-- A seção "Aprenda" explica contraste, harmonias, proporção áurea, Fibonacci, regra 60-30-10, tints e shades, daltonismo, color grading no cinema e o papel das cores em imagens geradas por IA. Cada explicação traz o link de uma fonte oficial.
+- A seção "Aprenda" explica contraste, harmonias, proporção áurea, Fibonacci, regra 60-30-10, tons claros e escuros, daltonismo, color grading no cinema e o papel das cores em imagens geradas por IA. Cada explicação traz o link de uma fonte oficial.
 - Nada se perde: Desfazer, Refazer e "Recuperar minha paleta" depois de um "Começar do zero".
 
 ### Arquitetura do código
@@ -88,10 +89,10 @@ O código é JavaScript orientado a objetos, com alta coesão e baixo acoplament
 
 | Camada | Pasta | Exemplos de classes | Responsabilidade |
 |--------|-------|---------------------|------------------|
-| Domínio | `src/domain` | `Color`, `Palette`, `Wcag2Contrast`, `PaletteComparator`, `HarmonyStrategy` (11 subclasses), `ContrastGuard`, `GradientMap`, `ColorBlindSimulator` | Regras puras de cor, contraste, harmonia, color grading e exportação |
+| Domínio | `src/domain` | `Color`, `Palette`, `Wcag2Contrast`, `PaletteComparator`, `HarmonyStrategy` (11 subclasses), `ContrastGuard`, `GradientMap`, `ColorBlindSimulator`, `ImagePaletteExtractor`, `PaletteSuggester` | Regras puras de cor, contraste, harmonia, color grading, cores de uma imagem e exportação |
 | Aplicação | `src/app` | `PaletteStore`, `PaletteGenerator`, `HarmonyWorkbench`, `EventBus` | Estado único, geração de paletas, rascunho das harmonias e avisos entre componentes |
-| Infraestrutura | `src/infra` | `UrlStateCodec`, `ClipboardService`, `CanvasPngRenderer`, `RandomSource` | Conversa com o navegador: endereço, área de transferência, canvas e sorteio |
-| Interface | `src/ui` | `PaletteGate`, `ComparisonGrid`, `HarmonyPanel`, `ColorGradingPanel` | Um componente por seção da página |
+| Infraestrutura | `src/infra` | `UrlStateCodec`, `ClipboardService`, `CanvasPngRenderer`, `ImageFileLoader`, `RandomSource` | Conversa com o navegador: endereço, área de transferência, canvas, abertura de imagens e sorteio |
+| Interface | `src/ui` | `PaletteGate`, `ComparisonGrid`, `HarmonyPanel`, `ImagePalettePanel`, `ColorGradingPanel` | Um componente por seção da página |
 | Composição | `src/main.js` | `PaletresApp` | Cria as peças e entrega a cada uma só o que ela precisa |
 
 Padrões de projeto usados: Value Object, Strategy, Registry, Observer, Template Method e injeção de dependência. As decisões técnicas ficam registradas como ADRs em [`specs/ARCHITECTURE.md`](specs/ARCHITECTURE.md).
@@ -114,7 +115,7 @@ A interface segue a WCAG 2.2 AA: navegação por teclado, foco visível, alvos d
 
 ### Privacidade
 
-O Paletrês roda inteiro no navegador. Não há servidor, conta nem banco de dados. A foto do color grading é processada no seu computador e nunca é enviada. A paleta fica só no endereço da página (`?p=`), para você compartilhar se quiser.
+O Paletrês roda inteiro no navegador. Não há servidor, conta nem banco de dados. A foto do color grading e a imagem da paleta são processadas no seu computador e nunca são enviadas. A paleta fica só no endereço da página (`?p=`), para você compartilhar se quiser.
 
 ### Pastas do repositório
 

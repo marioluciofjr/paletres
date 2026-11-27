@@ -27,6 +27,26 @@ for (const [theme, url, when] of [['light', BRAND, 'com paleta'], ['dark', BRAND
   });
 }
 
+// Paleta a partir de uma imagem (RF-35): o mosaico só aparece depois de carregar uma imagem,
+// então a varredura geral não o vê. Aqui carregamos a imagem de exemplo, marcamos uma peça e varremos o painel.
+for (const theme of ['light', 'dark']) {
+  test(`paleta da imagem: mosaico e sugestão sem violações sérias (tema ${theme})`, async ({ page }) => {
+    await useTheme(page, theme);
+    await page.goto(BRAND);
+    const panel = page.locator('[data-component="image-palette"]');
+    await panel.getByRole('button', { name: 'Usar imagem de exemplo' }).click();
+    await panel.locator('.mosaic__tile').first().click();
+    await expect(panel.locator('.image-suggestion')).toBeVisible();
+    const { violations } = await new AxeBuilder({ page })
+      .include('[data-component="image-palette"]')
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    const serious = violations.filter((v) => ['serious', 'critical'].includes(v.impact));
+    const report = serious.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`);
+    expect(report, report.join('\n')).toEqual([]);
+  });
+}
+
 test('o primeiro Tab leva ao link "Pular para a ferramenta"', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
@@ -60,7 +80,7 @@ const outlineOf = (locator) => locator.evaluate((el) => {
 });
 
 for (const theme of ['light', 'dark']) {
-  test(`tints e shades: o foco muda o contorno (tema ${theme})`, async ({ page }) => {
+  test(`tons claros e escuros: o foco muda o contorno (tema ${theme})`, async ({ page }) => {
     await useTheme(page, theme);
     await page.goto(BRAND);
     for (const cell of [page.locator('.tint-cell').first(), page.locator('.tint-cell').nth(9)]) {
@@ -107,4 +127,44 @@ test('regiões vivas não falam a cada passo do slider (no máximo 1 anúncio po
   await page.waitForTimeout(1200);
   const counts = (await page.evaluate(() => window.__announcements)).filter((n) => n !== null);
   expect(Math.max(0, ...counts)).toBeLessThanOrEqual(1);
+});
+
+// Auditoria a11y-web da v1.2.0 (paleta a partir de uma imagem): foco visível nas peças do mosaico.
+for (const theme of ['light', 'dark']) {
+  test(`mosaico: o foco aparece na peça, e a peça escolhida com foco ganha um 2º anel (tema ${theme})`, async ({ page }) => {
+    await useTheme(page, theme);
+    await page.goto(BRAND);
+    const panel = page.locator('[data-component="image-palette"]');
+    await panel.getByRole('button', { name: 'Usar imagem de exemplo' }).click();
+    const tile = panel.locator('.mosaic__tile').nth(1);
+    // A1: peça não escolhida, com e sem foco do teclado.
+    const before = await outlineOf(tile);
+    await panel.locator('.mosaic__tile').nth(0).focus();
+    await page.keyboard.press('Tab');
+    await expect(tile).toBeFocused();
+    expect(await outlineOf(tile)).not.toBe(before);
+    // A2: peça escolhida com foco = anel da escolha + 2º anel (box-shadow).
+    await page.keyboard.press('Enter');
+    await expect(tile).toHaveAttribute('aria-pressed', 'true');
+    await expect(tile).toBeFocused();
+    const shadow = await tile.evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(shadow).not.toBe('none');
+  });
+}
+
+test('mosaico a 320px: "Escolhida" cabe dentro da peça e a página não rola para o lado', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto(BRAND);
+  const panel = page.locator('[data-component="image-palette"]');
+  await panel.getByRole('button', { name: 'Usar imagem de exemplo' }).click();
+  const tiles = panel.locator('.mosaic__tile');
+  for (const i of [0, 1, 2]) await tiles.nth(i).click();
+  const overflows = await panel.locator('.mosaic__tile[aria-pressed="true"]').evaluateAll((els) => els.map((el) => {
+    const picked = el.querySelector('.mosaic__picked').getBoundingClientRect();
+    const box = el.getBoundingClientRect();
+    return picked.right - box.right;
+  }));
+  for (const o of overflows) expect(o).toBeLessThanOrEqual(0);
+  const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(pageOverflow).toBe(0);
 });

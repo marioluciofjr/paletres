@@ -18,6 +18,7 @@ import { ClipboardService } from './infra/ClipboardService.js';
 import { PreferenceStorage } from './infra/PreferenceStorage.js';
 import { CanvasPngRenderer } from './infra/CanvasPngRenderer.js';
 import { FileDownloader } from './infra/FileDownloader.js';
+import { ImageFileLoader } from './infra/ImageFileLoader.js';
 import { Icons } from './ui/Icons.js';
 import { Toast } from './ui/Toast.js';
 import { InfoTips } from './ui/InfoTips.js';
@@ -34,6 +35,7 @@ import { ComparisonGrid } from './ui/ComparisonGrid.js';
 import { HarmonyPanel } from './ui/HarmonyPanel.js';
 import { UsageMockupPanel } from './ui/UsageMockupPanel.js';
 import { ColorGradingPanel } from './ui/ColorGradingPanel.js';
+import { ImagePalettePanel } from './ui/ImagePalettePanel.js';
 import { TintShadeTable } from './ui/TintShadeTable.js';
 import { ColorBlindPreview } from './ui/ColorBlindPreview.js';
 import { ExportPanel } from './ui/ExportPanel.js';
@@ -61,6 +63,8 @@ class PaletresApp {
     const clipboard = new ClipboardService(this.#win.navigator, this.#doc);
     const storage = new PreferenceStorage(this.#win.localStorage);
     const downloader = new FileDownloader(this.#doc);
+    // Um carregador de imagem só, com as mesmas regras para o color grading e a paleta da imagem.
+    const imageLoader = new ImageFileLoader(this.#win);
     const toast = new Toast({ root: this.#slot('toast') });
     // Rascunho da seção de harmonias: gera paletas novas sem mexer na da pessoa (RF-26).
     const bench = HarmonyWorkbench.create({ store, bus });
@@ -89,7 +93,8 @@ class PaletresApp {
       new ComparisonGrid({ root: this.#slot('comparisons'), store, bus }),
       new HarmonyPanel({ root: this.#slot('harmony'), store, bench, bus }),
       new UsageMockupPanel({ root: this.#slot('mockups'), store, bus }),
-      new ColorGradingPanel({ root: this.#slot('grading'), store, bus, toast, downloader, win: this.#win }),
+      new ImagePalettePanel({ root: this.#slot('image-palette'), store, bus, toast, loader: imageLoader }),
+      new ColorGradingPanel({ root: this.#slot('grading'), store, bus, toast, downloader, win: this.#win, loader: imageLoader }),
       new TintShadeTable({ root: this.#slot('tints'), store, bus, clipboard, toast }),
       new ColorBlindPreview({ root: this.#slot('vision'), store, bus }),
       new ExportPanel({

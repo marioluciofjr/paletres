@@ -39,11 +39,11 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-05 | Geração de paleta por harmonia: análogo, complementar, complementar dividido, tríade, quadrado, composto, tons, monocromático, proporção áurea, Fibonacci e âncora de contraste. Inclui roda cromática com marcadores. | Must |
 | RF-06 | Seletor de garantia **Livre / Garantir AA / Garantir AAA**. Ajusta só o brilho e mantém a matiz. Avisa em texto quando não consegue. | Must |
 | RF-07 | Prévia da proporção de uso com a regra **60-30-10** (v1.1.0: áurea e Fibonacci saíram dos mockups porque quase não mudavam o visual; continuam nas harmonias). | Should |
-| RF-08 | Tints e shades: 9 tons mais claros e 9 mais escuros de cada cor, de 10% a 90%. Um clique copia o HEX ou aplica o tom à paleta. | Should |
+| RF-08 | Tons claros e escuros (em inglês, *tints* e *shades*; nome em português desde a v1.2.0): 9 tons mais claros e 9 mais escuros de cada cor, de 10% a 90%. Um clique copia o HEX ou aplica o tom à paleta. | Should |
 | RF-09 | Simulador de daltonismo: protanopia, deuteranopia, tritanopia e acromatopsia. | Should |
 | RF-10 | Copiar cada HEX e exportar a paleta como variáveis CSS, JSON ou PNG. | Must |
 | RF-11 | Link compartilhável: as 3 cores ficam na URL (`?p=rrggbb-rrggbb-rrggbb`; o formato antigo com `#` continua sendo lido). | Must |
-| RF-12 | Seções explicativas sobre WCAG, as 3 comparações, cores em imagens com IA generativa, harmonias, proporção áurea, Fibonacci, 60-30-10, tints e shades, daltonismo e **color grading no cinema** (v1.1.0). | Should |
+| RF-12 | Seções explicativas sobre WCAG, as 3 comparações, cores em imagens com IA generativa, harmonias, proporção áurea, Fibonacci, 60-30-10, tons claros e escuros, daltonismo e **color grading no cinema** (v1.1.0). | Should |
 | RF-13 | Tema claro e escuro da interface, com a escolha lembrada no navegador. **O padrão é sempre o claro**, mesmo com o sistema no modo escuro (pedido do Mário depois do deploy: o tema no modo dark pode causar estranheza em quem não tem costume, se abrir logo de cara). | Should |
 | RF-14 | Menu fixo, **sem desenhos atrás** (v1.1.0). O parallax fica nas 3 bolas do início, que sobem em velocidades diferentes na rolagem e param quando o sistema pede menos movimento. | Must |
 | RF-15 | Botão "Visitar Prazo Certo" no menu, que abre https://prazocerto.me numa nova aba e avisa disso em texto para leitores de tela. | Must |
@@ -57,7 +57,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-24 | **Sugestão de papéis**: o app indica qual cor usar no fundo, no texto e nos botões e já aplica essa sugestão nos mockups (a pessoa pode trocar). | Must |
 | RF-16 | Rodapé com o crédito: "Projeto idealizado por Mário Lúcio em cocriação com Claude Code, por meio do modelo Opus 5.5 no esforço Alto." **v1.1.0:** quem "fala" o crédito é o mascote **Clawd**, na cor laranja original, num balão de fala de HQ. O Clawd fica **ao lado dos contatos** (embaixo só no celular). O logotipo da Prazo Certo fica maior (320px). | Must |
 | RF-25 | **Início sem paleta** (v1.1.0): sem link compartilhado, o site abre vazio. Os passos e os extras ficam escondidos até a pessoa clicar em **Gerar paleta**, que sorteia uma harmonia com contraste AA garantido e leva ao Passo 1. Links do menu para seções escondidas levam ao aviso. | Must |
-| RF-26 | **Harmonias em rascunho** (v1.1.0): a seção mostra 3 etapas, com o título "Etapa N de 3" e sem número grande ao lado (tipo de harmonia → contraste → gerar). A paleta gerada aparece ao lado da paleta atual e só a substitui no clique em "Usar esta paleta" (com Desfazer). Tints e shades avisam que clicar só copia o código. | Must |
+| RF-26 | **Harmonias em rascunho** (v1.1.0): a seção mostra 3 etapas, com o título "Etapa N de 3" e sem número grande ao lado (tipo de harmonia → contraste → gerar). A paleta gerada aparece ao lado da paleta atual e só a substitui no clique em "Usar esta paleta" (com Desfazer). Os tons claros e escuros avisam que clicar só copia o código. | Must |
 | RF-27 | **Sobre** (v1.1.0): item no menu e seção que conta a origem da ideia (comparar 3 cores na WCAG; um "Megazord" de recursos para designers e não designers). | Must |
 | RF-28 | **CTA da Prazo Certo** (v1.1.0) antes do rodapé: "Se você gostou dessa página e quer entender mais sobre letramento em IA generativa, acesse prazocerto.me agora mesmo!", com botão que abre o site em nova aba. | Must |
 | RF-29 | **Fontes oficiais** (v1.1.0): cada explicação traz o link de uma fonte oficial (W3C, MDN, Adobe, NEI, MathWorld, OEIS, ASC, Blackmagic Design). **Links da Wikipédia são proibidos.** | Must |
@@ -65,6 +65,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 | RF-32 | **Começar do zero** (v1.1.0, feedback em vídeo): botão no Passo 1 que apaga a paleta e o histórico, limpa o `?p=` do endereço e volta aos círculos com "?". É reversível: o aviso do início mostra "Recuperar minha paleta" (e Ctrl+Z recupera) até a pessoa gerar outra paleta. O botão fica à direita, longe de Desfazer/Refazer. | Must |
 | RF-33 | **Busca do Google**: arquivo de verificação do Google Search Console na raiz (`public/googlef4c73ca80a5f6c76.html`), `robots.txt`, `sitemap.xml` e link canônico `https://paletres.prazocerto.me/` (os links `?p=` contam como a mesma página). | Should |
 | RF-34 | **Estrela no GitHub**: no Sobre, ao lado do texto, um card convida a dar uma estrela no repositório (`github.com/marioluciofjr/paletres`), com explicação para leigos e link em nova aba. No celular, o card desce para baixo do texto. | Could |
+| RF-35 | **Paleta a partir de uma imagem** (v1.2.0), no Passo 3, antes do color grading: a pessoa envia uma imagem (ou usa a de exemplo) e o Paletrês acha até 6 cores principais (k-means no OKLab, cores parecidas juntas, manchas abaixo de 1% descartadas). **Mosaico**: 3 cores em linha, 4 em grade 2 × 2, 5 em pirâmide de base 3 (2 em cima, 3 embaixo), 6 em grade 2 × 3. Mais de 6: as 5 de maior área e 1 **vaga de destaque** para a cor mais viva. **Branco e preto** (quase sempre o fundo) só entram se faltarem cores (menos de 3 sem eles) ou se ocuparem 40% da imagem ou mais; quando ficam de fora, a tela avisa. **1 cor**: carregar outra imagem ou gerar a paleta monocromática (a cor + 2 tons dela). **2 cores**: carregar outra imagem ou gerar a 3ª cor (um tom claro ou escuro de uma das duas). **3 a 6 cores**: sugestão do melhor trio pelo `ContrastGuard`, AAA primeiro; se o AAA exigir mudar alguma cor mais de 0,2 no OKLab, cai para AA e avisa. A pessoa também pode montar o trio clicando em 3 peças. A paleta só muda no clique em "Usar esta paleta" (com Desfazer). A imagem é analisada no navegador e nunca é enviada. | Should |
 | RF-30 | **Passos seguidos** (v1.1.0): a ordem da página é Passo 1 (Escolha) → 2 (Confira) → 3 (Teste) → 4 (Exporte) e só depois os extras (Daltonismo, Harmonias, Tons), cada um com uma etiqueta que diz se usa a paleta atual ou cria outra. | Must |
 
 ## 5. Requisitos não funcionais
@@ -85,8 +86,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 
 - Paletas com mais de 3 cores.
 - Contas de usuário, nuvem ou banco de dados.
-- Extrair a paleta de uma imagem (o color grading faz o caminho inverso: aplica a paleta na imagem).
-- Enviar imagens a servidores: o color grading é 100% local.
+- Enviar imagens a servidores: o color grading e a paleta a partir de uma imagem são 100% locais.
 - APCA: saiu na v1.1.0 (ver RF-04 e ADR-10). Pode voltar quando o WCAG 3 for publicado.
 - Publicação no GitHub, que acontece depois, a pedido do Mário.
 
@@ -116,3 +116,7 @@ O **Paletrês** é um site estático de uma página (one page). Ele:
 ## 10. Mudanças da v1.1.0
 
 Pedido do Mário em `ajustes.md` (16 itens). Resumo: 3 comparações em vez de 6 (sem repetir o mesmo número); menu sem desenhos; 15 paletas do Color Hunt; início sem paleta com o botão "Gerar paleta"; fontes oficiais sem Wikipédia; explicação de color grading no cinema e legenda das 3 cores na foto; mockups só com 60-30-10; Clawd no crédito; sem APCA; harmonias em 3 etapas e em rascunho; passos 1 a 4 seguidos; logotipo maior; seção Sobre; CTA da Prazo Certo; card sobre cores em imagens com IA generativa; Clawd ao lado dos contatos.
+
+## 11. Mudanças da v1.2.0
+
+Pedido do Mário em 27/11/2026, depois de debater a viabilidade: **paleta a partir de uma imagem** (RF-35), com o mosaico de até 6 cores, a sugestão do trio com AAA primeiro e AA como plano B, e a escolha manual. Decisões dele: a 3ª cor de uma imagem com 2 cores é um tom claro ou escuro de uma delas; 5 cores pela área + 1 vaga de destaque; branco e preto só entram com carência de cores ou se forem muito evidentes; escolha manual incluída; "AAA, senão AA, avisando". Junto, o termo **"Tints e shades" virou "Tons claros e escuros"** em todo o site.

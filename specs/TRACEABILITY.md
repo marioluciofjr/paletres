@@ -11,7 +11,7 @@
 | RF-05 Harmonias | T06, T12, T23 | `domain/harmony/*`, `app/PaletteGenerator.js`, `ui/HarmonyPanel.js`, `ui/ColorWheel.js` | `unit/harmony.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` | ✅ |
 | RF-06 Garantia AA/AAA | T07 | `domain/guard/ContrastGuard.js` | `unit/guard.test.js` | ✅ |
 | RF-07 Proporção 60-30-10 | T07, T20 | `domain/proportion/UsageProportion.js` | `unit/proportion.test.js` | ✅ |
-| RF-08 Tints e shades | T07, T12 | `domain/tints/TintShadeGenerator.js`, `ui/TintShadeTable.js` | `unit/tints.test.js` | ✅ |
+| RF-08 Tons claros e escuros | T07, T12 | `domain/tints/TintShadeGenerator.js`, `ui/TintShadeTable.js` | `unit/tints.test.js` | ✅ |
 | RF-09 Daltonismo | T07, T12 | `domain/vision/ColorBlindSimulator.js`, `ui/ColorBlindPreview.js` | `unit/vision.test.js` | ✅ |
 | RF-10 Exportar e copiar | T08, T12 | `domain/export/*`, `infra/ClipboardService.js`, `ui/ExportPanel.js` | `unit/export.test.js`, `contract/export.contract.test.js` | ✅ |
 | RF-11 Link compartilhável | T08 | `infra/UrlStateCodec.js` | `contract/url.contract.test.js` | ✅ |
@@ -37,11 +37,12 @@
 | RF-32 Começar do zero | T31 | `app/PaletteStore.js` (`reset`), `infra/UrlStateCodec.js` (`clear`), `ui/HistoryToolbar.js`, `ui/PaletteGate.js` | `integration/store.test.js`, `contract/url.contract.test.js`, `e2e/site.spec.js` | ✅ |
 | RF-33 Busca do Google | T33 | `public/googlef4c73ca80a5f6c76.html`, `public/robots.txt`, `public/sitemap.xml`, `index.html` (canonical) | `e2e/site.spec.js` | ✅ |
 | RF-34 Estrela no GitHub | T34 | `index.html` (`#sobre` → `.star-cta`), `src/styles/components.css` (`.sobre__grid`, `.star-cta`), `src/ui/Icons.js` (`star`) | `e2e/site.spec.js` | ✅ |
+| RF-35 Paleta a partir de uma imagem | T35 | `domain/color/Oklab.js`, `domain/image/*` (`ColorQuantizer`, `DominantColorPicker`, `ImagePaletteExtractor`, `MosaicLayout`, `PaletteSuggester`), `infra/ImageFileLoader.js`, `ui/SampleImage.js`, `ui/ImagePalettePanel.js` | `unit/image.test.js`, `integration/image-panel.test.js`, `e2e/site.spec.js`, `e2e/a11y.spec.js` (axe no painel, 2 temas) | ✅ |
 | RF-30 Passos 1 a 4 seguidos | T25 | `index.html` | `e2e/site.spec.js` | ✅ |
 | RNF-01 WCAG 2.2 AA na interface | T03, T14, T16 | todo `ui/` | `e2e/a11y.spec.js` + 2 ciclos de auditoria | ✅ |
 | RNF-02 Identidade Prazo Certo | T10, T16 | `styles/*` | auditor UX (2 ciclos, aprovado) | ✅ |
 | RNF-03 Site estático | T01, T17 | `vite.config.js` | `npm run build` + `vite preview` | ✅ |
 | RNF-04 OOP e camadas | todas | `src/**` | revisão de código + lint | ✅ |
-| RNF-06 TDD | todas | — | `tests/**` (210 Vitest + 50 Playwright na v1.1.0) | ✅ |
+| RNF-06 TDD | todas | — | `tests/**` (268 Vitest + 63 Playwright na v1.2.0) | ✅ |
 | RNF-09 Didático para não designers | T11–T13, T16 | `ui/*`, textos | e2e + auditor UX (aprovado) | ✅ |
 | RNF-07 Movimento reduzido | T10, T24 | `ui/ParallaxScene.js` | `e2e/site.spec.js` | ✅ |

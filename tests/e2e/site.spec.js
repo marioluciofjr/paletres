@@ -187,7 +187,7 @@ test.describe('Teste na prática', () => {
   test('color grading: imagem de exemplo, legenda das 3 cores e modo zonas (RF-18)', async ({ page }) => {
     await page.goto(BRAND);
     await expect(page.locator('.grade-legend__list li')).toHaveCount(3);
-    await page.getByRole('button', { name: 'Usar imagem de exemplo' }).click();
+    await page.locator('[data-component="grading"]').getByRole('button', { name: 'Usar imagem de exemplo' }).click();
     await expect(page.locator('.stage')).toBeVisible();
     await expect(page.locator('[data-action="download-graded"]')).toHaveAttribute('aria-disabled', 'false');
     await page.locator('#pratica label.chip', { hasText: 'Onde entra cada cor' }).click();
@@ -205,8 +205,105 @@ test.describe('Teste na prática', () => {
 
   test('arquivo de formato errado mostra erro em texto (RF-18)', async ({ page }) => {
     await page.goto(BRAND);
-    await page.locator('#pratica input[type="file"]').setInputFiles({ name: 'nota.txt', mimeType: 'text/plain', buffer: Buffer.from('oi') });
-    await expect(page.locator('#pratica [role="alert"]')).toContainText('Formato não aceito');
+    await page.locator('[data-component="grading"] input[type="file"]').setInputFiles({ name: 'nota.txt', mimeType: 'text/plain', buffer: Buffer.from('oi') });
+    await expect(page.locator('[data-component="grading"] [role="alert"]')).toContainText('Formato não aceito');
+  });
+});
+
+/**
+ * Desenha no navegador uma imagem PNG com faixas verticais das cores pedidas e devolve os bytes.
+ * Assim o teste envia uma imagem de verdade, sem guardar arquivos de imagem no repositório.
+ */
+async function stripesPng(page, hexes) {
+  const dataUrl = await page.evaluate((list) => {
+    const c = document.createElement('canvas');
+    c.width = 300;
+    c.height = 200;
+    const ctx = c.getContext('2d');
+    list.forEach((hex, i) => {
+      ctx.fillStyle = hex;
+      ctx.fillRect(Math.floor((i * 300) / list.length), 0, Math.ceil(300 / list.length), 200);
+    });
+    return c.toDataURL('image/png');
+  }, hexes);
+  return Buffer.from(dataUrl.split(',')[1], 'base64');
+}
+
+test.describe('Paleta a partir de uma imagem (RF-35)', () => {
+  const panel = (page) => page.locator('[data-component="image-palette"]');
+  const upload = async (page, hexes) => {
+    const buffer = await stripesPng(page, hexes);
+    await panel(page).locator('input[type="file"]').setInputFiles({ name: 'faixas.png', mimeType: 'image/png', buffer });
+  };
+  const SIX = ['#E63946', '#2A9D8F', '#F4A261', '#264653', '#8E44AD', '#F1C40F'];
+
+  test('6 cores → grade 2 × 3; "Usar esta paleta" troca a paleta, o link e dá para desfazer', async ({ page }) => {
+    await page.goto(BRAND);
+    await upload(page, SIX);
+    const tiles = panel(page).locator('.mosaic__tile');
+    await expect(tiles).toHaveCount(6);
+    const tops = await tiles.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+    expect(new Set(tops).size).toBe(2); // 2 linhas
+    expect(tops.filter((t) => t === tops[0])).toHaveLength(3); // 3 na primeira
+    await panel(page).getByRole('button', { name: 'Usar esta paleta' }).click();
+    await expect(page).not.toHaveURL(/230023-f2f2f2-42ffff/);
+    await expect(page.locator('.toast')).toContainText('Desfazer');
+  });
+
+  test('5 cores → pirâmide: 2 peças em cima, centralizadas sobre as 3 de baixo', async ({ page }) => {
+    await page.goto(BRAND);
+    await upload(page, SIX.slice(0, 5));
+    const rows = panel(page).locator('.mosaic__row');
+    await expect(rows).toHaveCount(2);
+    await expect(rows.nth(0).locator('.mosaic__tile')).toHaveCount(2);
+    await expect(rows.nth(1).locator('.mosaic__tile')).toHaveCount(3);
+    const top = await rows.nth(0).locator('.mosaic__tile').first().boundingBox();
+    const bottom = await rows.nth(1).locator('.mosaic__tile').first().boundingBox();
+    expect(top.x).toBeGreaterThan(bottom.x + 10);
+  });
+
+  test('1 cor → oferece outra imagem ou a paleta monocromática', async ({ page }) => {
+    await page.goto(BRAND);
+    await upload(page, ['#2A9D8F']);
+    await expect(panel(page).getByRole('button', { name: 'Carregar outra imagem' })).toBeVisible();
+    await panel(page).getByRole('button', { name: 'Gerar paleta monocromática' }).click();
+    await expect(panel(page).locator('.image-suggestion__swatch')).toHaveCount(3);
+    await expect(panel(page).locator('.image-suggestion')).toContainText('monocromática');
+  });
+
+  test('escolha manual: 3 cliques no mosaico montam a paleta; o teclado também funciona', async ({ page }) => {
+    await page.goto(BRAND);
+    await upload(page, SIX);
+    const tiles = panel(page).locator('.mosaic__tile');
+    await tiles.nth(0).click();
+    await tiles.nth(1).click();
+    await tiles.nth(2).focus();
+    await page.keyboard.press('Enter');
+    await expect(panel(page).locator('.mosaic__tile[aria-pressed="true"]')).toHaveCount(3);
+    await expect(panel(page).locator('.image-suggestion')).toContainText('que você escolheu');
+    await expect(tiles.nth(2)).toBeFocused();
+  });
+
+  test('imagem de exemplo: acha as cores e sugere uma paleta', async ({ page }) => {
+    await page.goto(BRAND);
+    await panel(page).getByRole('button', { name: 'Usar imagem de exemplo' }).click();
+    await expect(panel(page).locator('.mosaic__tile')).toHaveCount(6);
+    await expect(panel(page).locator('.image-suggestion')).toContainText('Contraste AA');
+  });
+
+  test('arquivo de formato errado mostra erro em texto', async ({ page }) => {
+    await page.goto(BRAND);
+    await panel(page).locator('input[type="file"]').setInputFiles({ name: 'nota.txt', mimeType: 'text/plain', buffer: Buffer.from('oi') });
+    await expect(panel(page).locator('[role="alert"]')).toContainText('Formato não aceito');
+  });
+
+  test('no celular, o mosaico cabe na tela sem rolagem lateral', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(BRAND);
+    await upload(page, SIX);
+    await expect(panel(page).locator('.mosaic__tile')).toHaveCount(6);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBe(0);
   });
 });
 
@@ -360,5 +457,15 @@ test.describe('Estrela no GitHub', () => {
     const texto2 = await page.locator('#sobre .sobre__text').boundingBox();
     const card2 = await page.locator('#sobre .star-cta').boundingBox();
     expect(card2.y).toBeGreaterThan(texto2.y + texto2.height - 1);
+  });
+});
+
+test.describe('Tons claros e escuros (RF-08)', () => {
+  test('o nome da seção e do card do Aprenda está em português', async ({ page }) => {
+    await page.goto(BRAND);
+    await expect(page.locator('#tons-title')).toHaveText('Tons claros e escuros');
+    await expect(page.locator('#aprenda h3', { hasText: 'Tons claros e escuros' })).toBeVisible();
+    await expect(page.locator('#tons')).not.toContainText('Tints e shades');
+    await expect(page.locator('.tint-cell').first()).toHaveAttribute('aria-label', /^Claro 90% da cor A/);
   });
 });

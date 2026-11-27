@@ -1,9 +1,9 @@
 /**
- * TintShadeGenerator — gera tons mais claros (tints) e mais escuros (shades) de uma cor,
+ * TintShadeGenerator — gera tons claros e tons escuros de uma cor (em inglês, "tints" e "shades"),
  * do mesmo jeito que o maketintsandshades.com: misturando em RGB com branco ou preto.
  *
- *  - Tint de 30% = 70% da cor + 30% de branco.
- *  - Shade de 30% = 70% da cor + 30% de preto.
+ *  - Tom claro de 30% (tint) = 70% da cor + 30% de branco.
+ *  - Tom escuro de 30% (shade) = 70% da cor + 30% de preto.
  * Paramos em 90% porque 100% seria sempre branco ou preto puro.
  */
 import { Color } from '../color/Color.js';
@@ -31,12 +31,12 @@ export class TintShadeGenerator {
   }
 
   /**
-   * Escala completa, do mais claro ao mais escuro: tints (90% → 10%), a original, shades (10% → 90%).
+   * Escala completa, do mais claro ao mais escuro: tons claros (90% → 10%), a original, tons escuros (10% → 90%).
    * @returns {Array<{ color: Color, label: string, kind: 'tint'|'base'|'shade', amount: number }>}
    */
   scale(color) {
-    const tints = [...this.#steps].reverse().map((p) => ({ color: this.tint(color, p / 100), label: `Tint ${p}%`, kind: 'tint', amount: p }));
-    const shades = this.#steps.map((p) => ({ color: this.shade(color, p / 100), label: `Shade ${p}%`, kind: 'shade', amount: p }));
+    const tints = [...this.#steps].reverse().map((p) => ({ color: this.tint(color, p / 100), label: `Claro ${p}%`, kind: 'tint', amount: p }));
+    const shades = this.#steps.map((p) => ({ color: this.shade(color, p / 100), label: `Escuro ${p}%`, kind: 'shade', amount: p }));
     return [...tints, { color, label: 'Original', kind: 'base', amount: 0 }, ...shades];
   }
 }

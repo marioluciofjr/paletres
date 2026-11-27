@@ -72,3 +72,13 @@ Os valores de contrato do APCA saíram na v1.1.0, junto com o APCA (ADR-10).
 | Rascunho das harmonias | `integration/store.test.js` (8 testes), `integration/ui.test.js`, `e2e/site.spec.js` |
 | 3 comparações (uma por par, 2 prévias, 1 valor) | `unit/contrast.test.js`, `unit/verdict.test.js`, `integration/ui.test.js`, `e2e/site.spec.js` |
 | Sobre, CTA, Clawd ao lado dos contatos, card de IA, fontes oficiais e ordem dos passos | `e2e/site.spec.js` |
+
+## 8. Cobertura da v1.2.0
+
+| Mudança | Testes |
+| :--- | :--- |
+| OKLab, cores dominantes (1 a 8 cores, ruído, transparência, manchas, fundo branco e preto, vaga de destaque), formato do mosaico e sugestão do trio (AAA, queda para AA, 2 cores, monocromática, escolha manual) | `unit/image.test.js` (37 testes, com imagens sintéticas de `tests/helpers/syntheticImage.js`) |
+| Painel da imagem: mosaico por quantidade, opções com 1 e 2 cores, escolha manual, aplicar com Desfazer, avisos e "Começar do zero" | `integration/image-panel.test.js` (21 testes, com um carregador falso) |
+| Correções da auditoria a11y-web: foco ao redesenhar, anúncios da escolha, instrução ligada ao mosaico, campo de arquivo ligado à dica e ao erro, foco visível nas peças (tema escuro e peça escolhida) e "Escolhida" a 320px | `integration/image-panel.test.js` (5 testes) e `e2e/a11y.spec.js` (3 testes) |
+| O site real: PNG gerado no navegador com faixas de cor, pirâmide, monocromática, teclado, imagem de exemplo, celular sem rolagem lateral e axe no painel nos 2 temas | `e2e/site.spec.js` e `e2e/a11y.spec.js` |
+| "Tons claros e escuros" | `unit/tints.test.js` (rótulos) e `e2e/site.spec.js` |

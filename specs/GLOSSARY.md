@@ -11,8 +11,9 @@
 | **HSB** | Matiz (*Hue*, 0–360°, o "tom" no círculo), Saturação (0–100%, o quanto a cor é viva) e Brilho (*Brightness*, 0–100%, o quanto ela é clara). Também chamado de HSV. |
 | **Matiz base** | A matiz de onde a harmonia parte. |
 | **Círculo cromático** | As matizes dispostas num círculo de 360°. |
-| **Tint** | Tom mais claro: a cor misturada com branco. |
-| **Shade** | Tom mais escuro: a cor misturada com preto. |
+| **Tom claro** (*tint*) | A cor misturada com branco. No site, desde a v1.2.0, aparece o nome em português. |
+| **Tom escuro** (*shade*) | A cor misturada com preto. |
+| **OKLab** | Espaço de cor em que a mesma distância numérica quer dizer mais ou menos a mesma diferença visível. Usado para achar e juntar as cores de uma imagem. Cerca de 0,02 é o mínimo que o olho nota. |
 | **Luminância relativa** | O quanto uma cor parece clara ao olho, de 0 (preto) a 1 (branco). É a base do cálculo WCAG. |
 
 ## Contraste
@@ -59,6 +60,9 @@
 | **Mapa de gradiente (gradient map)** | Técnica que troca a cor de cada pixel conforme a claridade dele: sombras, meios-tons e luzes recebem cores escolhidas. |
 | **Rascunho (draft)** | Paleta nova da seção de harmonias, mostrada ao lado da paleta atual. Só vira a paleta da pessoa com "Usar esta paleta". |
 | **Portão (gate)** | Estado inicial do site, antes de "Gerar paleta": os passos ficam escondidos e aparece um aviso. |
+| **k-means** | Algoritmo que separa itens em K grupos parecidos: cada item vai para o grupo de "centro" mais próximo, e cada centro vira a média do seu grupo, até ninguém trocar. No Paletrês, separa os pixels de uma imagem em grupos de cor. |
+| **Mosaico** | Os quadrados com as cores principais da imagem (até 6), no formato que muda com a quantidade: linha, grade 2 × 2, pirâmide de base 3 ou grade 2 × 3. Inspirado no "Criar mosaico de objetos" do Adobe Illustrator, mas montado pelas cores dominantes, não pela posição. |
+| **Vaga de destaque** | A 6ª peça do mosaico quando a imagem tem mais de 6 cores: vai para a cor mais viva que sobrou (ex.: uma flor vermelha num campo verde), em vez da 6ª maior área. |
 | **Clawd** | Mascote do Claude Code, em pixel art laranja. No rodapé, ele "fala" o crédito do projeto. |
 | **Color Hunt** | Site com paletas feitas por designers (colorhunt.co). É a fonte das 15 paletas prontas. |
 | **TDD** | *Test Driven Development*: escrever o teste antes do código. |

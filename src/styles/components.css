@@ -1328,6 +1328,208 @@
   align-items: center;
 }
 
+/* ---------- Paleta a partir de uma imagem (RF-35) ---------- */
+.image-palette {
+  margin-top: var(--space-12);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.image-palette > .eyebrow,
+.image-palette > h3,
+.image-palette > .callout {
+  margin: 0;
+}
+
+.image-palette__result {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.image-palette__summary {
+  margin: 0;
+  font-weight: 700;
+}
+
+.image-palette__help,
+.image-palette__options {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.image-palette__help p,
+.image-palette__options p {
+  margin: 0;
+}
+
+.image-palette__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/*
+ * O mosaico: cada linha centraliza as peças, todas da mesma largura (1/3 da linha).
+ * Assim 2 em cima e 3 embaixo viram a pirâmide, e 2 + 2 viram a grade 2 × 2.
+ */
+/* Vão de 16px: o anel de "escolhida" ocupa 6px para fora de cada peça, e dois anéis vizinhos não se encostam. */
+.mosaic {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.mosaic__row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.mosaic__tile {
+  flex: 0 0 calc((100% - 2 * var(--space-4)) / 3);
+  min-width: 0;
+  min-height: 104px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--space-3);
+  font: inherit;
+  text-align: left;
+}
+
+button.mosaic__tile {
+  cursor: pointer;
+}
+
+/*
+ * Foco do teclado. No tema escuro, a moldura ganha um anel cinza ([data-theme='dark'] .frame),
+ * que venceria o :focus-visible geral; por isso repetimos a regra com o tema (auditoria a11y-web A1).
+ */
+.mosaic__tile:focus-visible,
+[data-theme='dark'] .mosaic__tile:focus-visible {
+  outline: var(--stroke-focus) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Peça escolhida: borda grossa por fora e a palavra "Escolhida" (nunca só a cor). */
+.mosaic__tile[aria-pressed='true'],
+[data-theme='dark'] .mosaic__tile[aria-pressed='true'] {
+  outline: var(--stroke-accent) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Escolhida E com foco: um 2º anel por fora do 1º, para dar para ver onde o foco está (auditoria a11y-web A2). */
+.mosaic__tile[aria-pressed='true']:focus-visible,
+[data-theme='dark'] .mosaic__tile[aria-pressed='true']:focus-visible {
+  outline: var(--stroke-accent) solid var(--focus-ring);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 9px var(--surface), 0 0 0 12px var(--focus-ring);
+}
+
+.mosaic__picked {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: 100%;
+  margin-bottom: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.mosaic__picked .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.mosaic__hex {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.mosaic__share,
+.mosaic__role {
+  font-size: 0.8125rem;
+}
+
+.mosaic__role {
+  font-weight: 700;
+}
+
+.image-suggestion {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  padding-top: var(--space-4);
+  border-top: var(--stroke-control) solid var(--border);
+}
+
+.image-suggestion__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.image-suggestion__title h4 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.image-suggestion__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.image-suggestion__swatch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.image-suggestion__chip {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+
+.image-suggestion__origin {
+  font-size: 0.875rem;
+}
+
+.image-suggestion__message {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .mosaic__tile {
+    min-height: 88px;
+    padding: var(--space-2);
+  }
+
+  .mosaic__share,
+  .mosaic__role {
+    font-size: 0.75rem;
+  }
+}
+
+/* Telas bem estreitas (320px): a peça tem uns 70px; sem o ícone, "Escolhida" cabe (auditoria a11y-web M3). */
+@media (max-width: 360px) {
+  .mosaic__picked .icon {
+    display: none;
+  }
+
+  .mosaic__tile {
+    padding: var(--space-1) var(--space-2);
+  }
+}
+
 /* ---------- Color grading ---------- */
 .grading {
   margin-top: var(--space-12);
@@ -1466,7 +1668,7 @@
   text-align: center;
 }
 
-/* ---------- Tints e shades ---------- */
+/* ---------- Tons claros e escuros ---------- */
 .tints-mode {
   margin-bottom: var(--space-6);
 }

@@ -34,18 +34,19 @@
 
 | Módulo | Classe(s) | Responsabilidade única |
 | :--- | :--- | :--- |
-| `domain/color` | `Color`, `ColorConverter` | Representar uma cor imutável e converter HEX ↔ RGB ↔ HSB. |
+| `domain/color` | `Color`, `ColorConverter`, `Oklab` | Representar uma cor imutável, converter HEX ↔ RGB ↔ HSB e medir diferenças como o olho percebe (OKLab). |
 | `domain/contrast` | `ContrastStrategy`, `Wcag2Contrast`, `ContrastEvaluator`, `PaletteComparator` | Calcular o contraste WCAG 2.2 e montar as 3 comparações (uma por par: `first`, `second`, `ratio`, `levels`). |
 | `domain/palette` | `Palette`, `PresetCatalog` | Guardar as 3 cores e trocar uma delas sem mutação; catálogo das 15 paletas prontas do Color Hunt. |
 | `domain/harmony` | `HarmonyStrategy` e 11 subclasses, `HarmonyRegistry` | Gerar 3 cores a partir de uma matiz base. |
 | `domain/guard` | `ContrastGuard` | Ajustar o brilho (e, no limite, a saturação) por varredura até o par principal de texto atingir AA ou AAA e o destaque ter ≥ 3:1. |
 | `domain/tints` | `TintShadeGenerator` | Gerar tons claros e escuros. |
+| `domain/image` | `ColorQuantizer`, `DominantColorPicker`, `ImagePaletteExtractor`, `MosaicLayout`, `PaletteSuggester` | Achar as cores principais de uma imagem (pixels RGBA, sem conhecer o canvas), decidir o formato do mosaico e sugerir o trio com contraste (RF-35). |
 | `domain/vision` | `ColorBlindSimulator` | Simular tipos de daltonismo. |
 | `domain/export` | `CssVarsExporter`, `JsonExporter`, `PngExporter` | Converter a paleta num formato de saída. |
 | `domain/proportion` | `UsageProportion`, `RoleAdvisor` | Guardar a regra 60-30-10 e sugerir papéis (dominante, secundária, destaque). |
 | `domain/contrast` | `ReadableTextPicker` | Escolher, entre as cores da paleta, a de maior contraste para o texto de uma superfície. |
 | `domain/grading` | `GradientMap` | Recolorir pixels (`Uint8ClampedArray` RGBA) mapeando a luminância às 3 cores, com intensidade. Dois modos: `smooth` (resultado final) e `zones` (3 faixas sem mistura). Não conhece o `<canvas>`. |
-| `infra` | `UrlStateCodec`, `ClipboardService`, `RandomSource`, `PreferenceStorage` | Falar com o navegador (URL, área de transferência, localStorage) e gerar números aleatórios. |
+| `infra` | `UrlStateCodec`, `ClipboardService`, `RandomSource`, `PreferenceStorage`, `ImageFileLoader` | Falar com o navegador (URL, área de transferência, localStorage, abrir imagens com segurança) e gerar números aleatórios. |
 | `app` | `PaletteStore`, `EventBus`, `GestureRecorder` | Guardar o estado (inclusive `started`, do RF-25) e avisar quem está inscrito. |
 | `app` | `PaletteGenerator` | Gerar uma paleta por harmonia + garantia. Usado pelo `start()` da store e pelo rascunho. |
 | `app` | `HarmonyWorkbench` | O rascunho das harmonias (RF-26): mesma interface de modelo da store, evento próprio `draft:changed`. |
@@ -91,6 +92,9 @@
 | ADR-14 | 3 comparações (uma por par), com 2 prévias por card | 6 cards, um por direção | Pedido do Mário: a WCAG dá o mesmo número nos dois sentidos, então 6 cards repetiam valores. As 2 prévias ficam porque a aparência muda. |
 | ADR-15 | "Começar do zero" com `store.reset()` + evento `app:reset` + `UrlStateCodec.clear()` | Recarregar a página | O endereço com `?p=` reabria a paleta e confundia o primeiro acesso. O reset limpa estado, histórico, rascunho e URL sem recarregar, mas guarda uma cópia: `restore()` desfaz o reset (auditoria UX: prevenção e recuperação de erro). |
 | ADR-16 | Deploy na Vercel (plano Hobby) com o subdomínio `paletres.prazocerto.me` | GitHub Pages | O Mário preferiu a experiência da Vercel. O domínio fica na HostGator: só um CNAME (`paletres` → valor do projeto na Vercel); o site WordPress em `prazocerto.me` não muda. Cada push na `main` publica. |
+| ADR-17 | Cores da imagem por k-means próprio no OKLab, sobre um histograma de 32 níveis por canal, sem sorteio | Biblioteca pronta (Color Thief, corte mediano) | Sem dependência nova; o OKLab mede diferenças como o olho; o resultado é determinístico e testável com imagens sintéticas; analisar uma versão de até 160 px leva milissegundos. |
+| ADR-18 | A sugestão do trio reaproveita o `ContrastGuard` (texto AA/AAA contra A + destaque ≥ 3:1) e testa todos os trios e papéis | Exigir AAA nos 3 pares | É impossível com 3 cores (7 × 7 = 49:1, acima do máximo de 21:1). Limite de mudança de 0,2 no OKLab por cor: acima disso, o AAA "desfiguraria" as cores da imagem e caímos para AA, avisando. |
+| ADR-19 | `ImageFileLoader` extraído do `ColorGradingPanel` e `SampleImage` compartilhada | Copiar o código de abrir imagem no painel novo | Uma regra só para formato, tamanho e decodificação nos dois painéis (alta coesão, sem duplicação). |
 | ADR-13 | Parallax por variável CSS (`--parallax-y`) e `translate` por bola | `transform` direto em cada elemento | As bolas são redesenhadas a cada paleta; a variável fica no contêiner e o efeito não se perde. |
 
 ## 6. Concessões aceitas
